@@ -13,7 +13,7 @@ export default function Contact() {
 
       <main className={styles.main}>
         <p className={styles.description}>
-          We don't collect any personal data about you :)
+          {"We don't collect any personal data about you :)"}
         </p>
       </main>
     </div>

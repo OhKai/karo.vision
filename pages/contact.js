@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function Contact() {
   return (
     <div className={styles.container}>
       <Head>
@@ -12,9 +12,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>KARO.VISION</h1>
-
-        <p className={styles.description}>Next gen app experiences.</p>
+        <p className={styles.description}>
+          You can contact me at eins_one (at) ymail.com
+        </p>
       </main>
     </div>
   );

@@ -17,12 +17,12 @@ export default function Home() {
         </svg>
         <div className="font-semibold">KARO.VISION</div>
       </div>
-      <div className="w-[1px] h-10 bg-[#2e2e2e] my-6"></div>
+      <div className="w-[1px] h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
       <div className="font-extralight md:text-xl text-lg">
         <span className="font-semibold mr-4">Kai Rohwer</span>{" "}
         Software&nbsp;Engineer
       </div>
-      <div className="w-[1px] h-10 bg-[#2e2e2e] my-6"></div>
+      <div className="w-[1px] h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
       <div className="flex items-center gap-5">
         <a href="https://www.twitter.com/karo_vision_" target="_blank">
           <Twitter className="w-6 h-6" />
@@ -34,7 +34,7 @@ export default function Home() {
           <Github className="w-6 h-6" />
         </a>
       </div>
-      <div className="w-[1px] h-10 bg-[#2e2e2e] my-6"></div>
+      <div className="w-[1px] h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
       <div className="text-lg font-mono font-bold">
         <a href="https://www.apai.tech/apps">apai.tech</a>
       </div>

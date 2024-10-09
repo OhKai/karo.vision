@@ -2,12 +2,12 @@
   "name": "home-cloud",
   "version": "1.0.0",
   "private": true,
-  "description": "Karo.Vision Home-Cloud",
+  "description": "karo.vision Home Cloud",
   "main": "./out/main/index.js",
-  "author": "Karo.Vision",
+  "author": "karo.vision",
   "homepage": "https://karo.vision",
   "scripts": {
-    "next-dev": "next dev",
+    "next-dev": "next dev --turbo",
     "next-build": "next build",
     "next-start": "next start",
     "next-lint": "next lint",
@@ -28,7 +28,13 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
-    "next": "14.2.15"
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.451.0",
+    "next": "14.2.15",
+    "tailwind-merge": "^2.5.3",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",
@@ -42,14 +48,14 @@
     "electron-builder": "^24.13.3",
     "electron-vite": "^2.3.0",
     "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.15",
     "eslint-plugin-react": "^7.34.3",
+    "postcss": "^8",
     "prettier": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "typescript": "^5.5.2",
-    "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "vite": "^5.3.1",
-    "eslint-config-next": "14.2.15"
+    "typescript": "^5.5.2",
+    "vite": "^5.3.1"
   }
 }

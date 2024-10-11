@@ -23,13 +23,14 @@ body {
     --primary: 0 30% 100%; /* #4d4d4d */
     --primary-foreground: 0 0% 100%; /* #ffffff */
     --secondary: 0 0% 96%; /* #f5f5f5 */
-    --secondary-foreground: 0 0% 62%; /* #9f9f9f */
+    --secondary-foreground: 0 0% 56%; /* #8e8e8e */
     --muted: 0 0% 99%; /* #fbfbfb */
     --muted-foreground: 0 0% 79%; /* #cacaca */
     --accent: 0 0% 96%; /* #f5f5f5 */
-    --accent-foreground: 0 0% 62%; /* #9f9f9f */
+    --accent-foreground: 0 0% 56%; /* #8e8e8e */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
+    --title: 0 0% 62%; /* #9f9f9f */
     --border: 0 0% 96%; /* #f5f5f5 */
     --input: 0 0% 96%; /* #f5f5f5 */
     --ring: 240 10% 3.9%;

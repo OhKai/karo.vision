@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { SlidersHorizontal } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export type SearchSortBy =
@@ -23,8 +23,9 @@ const SearchBar = () => {
       <div className="grid grid-cols-[40px_1fr_40px] gap-2 peer">
         <Input
           type="search"
+          spellCheck={false}
           placeholder="Search Files, Tags, Notes ..."
-          className="w-[590px] rounded-full h-[42px] px-5 col-start-2 font-medium focus-within:shadow-[0_2px_8px_-2px_hsl(var(--foreground)_/_8%)]"
+          className="w-[590px] rounded-full h-[42px] px-5 col-start-2 font-medium focus-within:shadow-[0_2px_8px_-2px_hsl(var(--foreground)_/_8%)] text-title"
         />
         <Button
           size="icon"
@@ -37,7 +38,7 @@ const SearchBar = () => {
       </div>
       <ToggleGroup
         type="single"
-        className="justify-stretch w-[278px] peer-focus-within:opacity-100 peer-focus-within:scale-100 peer-focus-within:translate-y-0 opacity-0 scale-95 translate-y-[-10px] transition-all"
+        className="justify-stretch w-[278px] focus-within:opacity-100 focus-within:scale-100 focus-within:translate-y-0 peer-focus-within:opacity-100 peer-focus-within:scale-100 peer-focus-within:translate-y-0 opacity-0 scale-95 translate-y-[-10px] transition-all"
         value={sortBy.split("-")[0] as "name" | "date" | "size" | "random"}
         onMouseDown={(e) => e.preventDefault()}
         onValueChange={(value) => {

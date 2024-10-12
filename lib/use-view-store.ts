@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { readLocalStorage } from "./utils";
+import { readLocalStorage, writeLocalStorage } from "./utils";
 
 type ViewState = {
   videos: "list" | "cards" | "tiles";
@@ -19,5 +19,8 @@ const initialViewState: ViewState = {
 
 export const useViewStore = create<ViewState & ViewAction>((set) => ({
   ...initialViewState,
-  updateView: (key, newView) => set({ [key]: newView }),
+  updateView: (key, newView) => {
+    set({ [key]: newView });
+    writeLocalStorage(`${key}-view`, newView);
+  },
 }));

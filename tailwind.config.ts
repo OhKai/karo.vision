@@ -58,7 +58,7 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        float: "inset 0 0 0 1px rgba(255, 255, 255, 0.15)",
+        float: "inset 0 0 0 1px rgba(255, 255, 255, 0.25)",
       },
     },
   },

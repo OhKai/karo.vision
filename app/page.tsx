@@ -22,8 +22,8 @@ const Home = () => {
   if (typeof window === "undefined") return null;
 
   return (
-    <div className="grid grid-rows-[70px_1fr] justify-items-center min-h-screen pb-20 font-[family-name:var(--font-geist-sans)]">
-      <header className="grid grid-cols-3 items-center justify-items-center w-full px-6 text-muted-foreground border-b border-secondary">
+    <div className="flex flex-col justify-items-center min-h-screen pb-20 font-[family-name:var(--font-geist-sans)]">
+      <header className="grid grid-cols-3 items-center justify-items-center w-full px-6 text-muted-foreground border-b border-secondary h-[70px] fixed backdrop-blur bg-background">
         <div className="flex items-center gap-2 justify-self-start select-none">
           <Image
             src="/logo.png"
@@ -47,8 +47,8 @@ const Home = () => {
           <Settings />
         </Button>
       </header>
-      <main className="flex flex-col gap-8 items-center py-4 w-full">
-        <SearchBar />
+      <main className="flex flex-col gap-8 items-center pb-4 mt-[204px] w-full">
+        <SearchBar className="fixed top-[74px]" floating />
         {videosView === "list" ? (
           <Table className="font-light text-xs">
             <TableHeader>
@@ -105,7 +105,340 @@ const Home = () => {
             </TableBody>
           </Table>
         ) : videosView === "cards" ? (
-          <div>
+          <div className="flex flex-col gap-3.5">
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+              <div className="w-[50%] shrink-0">
+                <Image
+                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
+                  alt=""
+                  className="rounded-l"
+                  width={400}
+                  height={225}
+                />
+              </div>
+              <div className="flex flex-col px-3.5 py-3.5 w-[400px]">
+                <h4 className="text-title text-[15px] font-medium mb-[3px]">
+                  Youtube
+                </h4>
+                <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
+                  Credit Card
+                </h3>
+                <Tags
+                  values={[
+                    "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
+                    "ahhhhaa",
+                    "dssdldsf sdfkdsksdfsd",
+                    "sdfdsfdsfdsfdfs",
+                    "favorites2",
+                    "ahhhhaa2",
+                    "dssdldsf sdfkdsksdfsd2",
+                    "sdfdsfdsfdsfdfs2",
+                  ]}
+                  maxLines={2}
+                />
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                  <span>/downloads/new</span>
+                  <span>05.06.2024</span>
+                  <span>1 GB</span>
+                </div>
+              </div>
+            </div>
             <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
               <div className="w-[50%] shrink-0">
                 <Image

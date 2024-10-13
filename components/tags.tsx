@@ -1,15 +1,17 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 type TagsProps = {
   values: string[];
   maxLines?: number;
   expandable?: boolean;
+  className?: string;
 };
 
 const getOverflowIndicatorLength = (digits: number) => 4 + 8.84 + 7.7 * digits; // gap + ml + "+" + "4" width * digits
 
-const Tags = ({ values, maxLines = 2, expandable }: TagsProps) => {
+const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cutoff, setCutoff] = useState<number | undefined>(undefined);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -56,7 +58,10 @@ const Tags = ({ values, maxLines = 2, expandable }: TagsProps) => {
   }, [cutoff, maxLines]);
 
   return (
-    <div ref={containerRef} className="flex flex-wrap gap-1 items-center">
+    <div
+      ref={containerRef}
+      className={cn("flex flex-wrap gap-1 items-center", className)}
+    >
       {values.slice(0, isExpanded ? undefined : cutoff).map((value) => (
         <Button
           key={value}

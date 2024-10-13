@@ -1,10 +1,15 @@
 import { TvMinimalPlay, Image as LImage, Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-const HeaderNav = () => {
+type HeaderNavProps = {
+  className?: string;
+};
+
+const HeaderNav = ({ className }: HeaderNavProps) => {
   return (
-    <nav className="flex gap-5">
+    <nav className={cn("flex gap-5", className)}>
       <Button
         asChild
         size="icon"

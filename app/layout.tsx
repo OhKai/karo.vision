@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   description: "karo.vision Home Cloud",
 };
 
+export const viewport: Viewport = {
+  // Disable autozoom on input focus in iOS.
+  maximumScale: 1,
+};
+
 const RootLayout = ({
   children,
 }: Readonly<{
@@ -26,7 +31,7 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased font-[family-name:var(--font-geist-sans)]`}
       >
         {children}
       </body>

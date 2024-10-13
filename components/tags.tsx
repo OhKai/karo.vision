@@ -1,6 +1,7 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { useResizeStore } from "@/lib/use-resize-store";
 
 type TagsProps = {
   values: string[];
@@ -15,10 +16,11 @@ const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cutoff, setCutoff] = useState<number | undefined>(undefined);
   const [isExpanded, setIsExpanded] = useState(false);
+  const windowWidth = useResizeStore((state) => state.windowWidth);
 
   useLayoutEffect(() => {
     setCutoff(undefined);
-  }, [values, maxLines]);
+  }, [values, maxLines, windowWidth]);
 
   useLayoutEffect(() => {
     // This is where we calculate the cutoff. It happens after the first render
@@ -54,6 +56,10 @@ const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
 
         i++;
       }
+
+      // IMPORTANT: No cutoff, but we need to update the state so a new render
+      // is triggered when setting it to undefined again (e.g. on resize).
+      setCutoff(containerRef.current!.children.length);
     }
   }, [cutoff, maxLines]);
 
@@ -73,10 +79,11 @@ const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
           {value}
         </Button>
       ))}
-      {!isExpanded && cutoff ? (
+      {!isExpanded && cutoff !== undefined && values.length - cutoff > 0 ? (
         <>
           <div className="text-xs text-title ml-0.5">
-            +{values.length - cutoff}
+            {cutoff > 0 && "+"}
+            {values.length - cutoff}
           </div>
           {expandable ? (
             <Button

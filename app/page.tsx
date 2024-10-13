@@ -51,7 +51,7 @@ const Home = () => {
           <Table className="font-light text-xs">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[92px] min-w-[92px] px-0"></TableHead>
+                <TableHead className="md:w-[92px] md:min-w-[92px] w-[84px] min-w-[84px] px-0"></TableHead>
                 <TableHead className="md:w-[100px] max-md:px-2">
                   Length
                 </TableHead>
@@ -87,17 +87,20 @@ const Home = () => {
                 <TableCell className="overflow-ellipsis overflow-hidden md:max-w-[100px] max-w-[65px] max-md:px-2">
                   99999:34:45
                 </TableCell>
-                <TableCell className="font-medium overflow-ellipsis overflow-hidden max-w-[300px] max-md:px-2">
-                  Credit Card
+                <TableCell className="font-medium overflow-ellipsis overflow-hidden md:max-w-[300px] max-w-[20vw] max-md:px-2 whitespace-nowrap">
+                  Credit Card abc reallylongotherwordshere asdasddf
                 </TableCell>
-                <TableCell className="overflow-ellipsis overflow-hidden max-w-[130px] max-md:px-2">
-                  Youtube
+                <TableCell className="overflow-ellipsis overflow-hidden md:max-w-[130px] max-w-[20vw] max-md:px-2 whitespace-nowrap">
+                  Youtube abc reallylongotherwordshere asdasddf
                 </TableCell>
-                <TableCell className="max-md:px-2">
-                  <Tags values={["favorites"]} />
+                <TableCell className="max-md:px-2 max-md:max-w-[20vw]">
+                  <Tags
+                    values={["favorites", "abc", "really long"]}
+                    maxLines={1}
+                  />
                 </TableCell>
-                <TableCell className="xl:table-cell hidden overflow-ellipsis overflow-hidden max-w-[250px]">
-                  /downloads/new
+                <TableCell className="xl:table-cell hidden overflow-ellipsis overflow-hidden max-w-[250px] whitespace-nowrap">
+                  /downloads/newabc reallylongotherwordshere asdasddf
                 </TableCell>
                 <TableCell className="lg:table-cell hidden">
                   05.06.2024

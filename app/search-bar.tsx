@@ -66,15 +66,17 @@ const SearchBar = ({ className, floating = false }: SearchBarProps) => {
               variant="ghost"
               className="text-muted-foreground"
               title="Search Options"
+              onMouseDown={(e) => e.preventDefault()}
             >
               <SlidersHorizontal />
             </Button>
           </PopoverTrigger>
           <PopoverContent
             className="text-title flex flex-col gap-4 w-[325px]"
-            autoFocus
             // Prevent autofocus on the first item.
-            onOpenAutoFocus={(e) => e.preventDefault()}
+            onOpenAutoFocus={(e) => {
+              document.activeElement === document.body && e.preventDefault();
+            }}
           >
             <ToggleGroup
               type="single"

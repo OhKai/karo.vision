@@ -112,8 +112,8 @@ const Home = () => {
             </TableBody>
           </Table>
         ) : videosView === "cards" ? (
-          <div className="flex flex-col gap-3.5">
-            <div className="flex bg-muted rounded-md shadow-sm w-[800px]">
+          <div className="flex flex-col gap-3.5 px-3">
+            <div className="flex bg-muted rounded-md shadow-sm max-w-[800px] w-full">
               <div className="w-1/2 shrink-0">
                 <Image
                   src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"

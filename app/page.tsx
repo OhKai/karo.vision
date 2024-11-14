@@ -42,7 +42,7 @@ const Home = () => {
           variant="ghost"
           title="Settings"
         >
-          <Settings />
+          <Settings className="!w-auto !h-auto" />
         </Button>
       </header>
       <main className="flex flex-col gap-8 items-center pb-4 mt-[204px] w-full">

@@ -1,7 +1,10 @@
+"use client";
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { useResizeStore } from "@/lib/use-resize-store";
+import { SquarePlus } from "lucide-react";
 
 type TagsProps = {
   values: string[];
@@ -64,38 +67,40 @@ const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
   }, [cutoff, maxLines]);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("flex flex-wrap gap-1 items-center", className)}
-    >
-      {values.slice(0, isExpanded ? undefined : cutoff).map((value) => (
+    <div className={cn(className)}>
+      <div ref={containerRef} className="flex flex-wrap gap-1 items-center">
+        {values.slice(0, isExpanded ? undefined : cutoff).map((value) => (
+          <Button
+            key={value}
+            data-key={value}
+            variant="secondary"
+            size="sm"
+            className="text-[11px] px-4 py-1 h-auto inline-block text-ellipsis overflow-hidden whitespace-nowrap"
+          >
+            {value}
+          </Button>
+        ))}
+        {!isExpanded && cutoff !== undefined && values.length - cutoff > 0 ? (
+          <>
+            <div className="text-xs text-title ml-0.5">
+              {cutoff > 0 && "+"}
+              {values.length - cutoff}
+            </div>
+          </>
+        ) : null}
+      </div>
+      {!isExpanded &&
+      cutoff !== undefined &&
+      values.length - cutoff > 0 &&
+      expandable ? (
         <Button
-          key={value}
-          data-key={value}
-          variant="secondary"
+          variant="default"
           size="sm"
-          className="text-[11px] px-4 py-1 h-auto inline-block text-ellipsis overflow-hidden whitespace-nowrap"
+          className="text-[11px] px-2 py-1 h-auto mt-2"
+          onClick={() => setIsExpanded(true)}
         >
-          {value}
+          <SquarePlus className="!w-3 !h-3" /> Show All
         </Button>
-      ))}
-      {!isExpanded && cutoff !== undefined && values.length - cutoff > 0 ? (
-        <>
-          <div className="text-xs text-title ml-0.5">
-            {cutoff > 0 && "+"}
-            {values.length - cutoff}
-          </div>
-          {expandable ? (
-            <Button
-              variant="default"
-              size="sm"
-              className="text-[11px] px-2 py-1 h-auto mt-1.5"
-              onClick={() => setIsExpanded(true)}
-            >
-              Show All
-            </Button>
-          ) : null}
-        </>
       ) : null}
     </div>
   );

@@ -75,7 +75,7 @@ const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
             data-key={value}
             variant="secondary"
             size="sm"
-            className="text-[11px] px-4 py-1 h-auto inline-block text-ellipsis overflow-hidden whitespace-nowrap"
+            className="text-[11px] px-4 py-1 h-auto inline-block truncate"
           >
             {value}
           </Button>

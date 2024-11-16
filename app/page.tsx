@@ -84,13 +84,13 @@ const Home = () => {
                     height={40.5}
                   />
                 </TableCell>
-                <TableCell className="overflow-ellipsis overflow-hidden md:max-w-[100px] max-w-[65px] max-md:px-2">
+                <TableCell className="truncate md:max-w-[100px] max-w-[65px] max-md:px-2">
                   99999:34:45
                 </TableCell>
-                <TableCell className="font-medium overflow-ellipsis overflow-hidden md:max-w-[300px] max-w-[20vw] max-md:px-2 whitespace-nowrap">
+                <TableCell className="font-medium truncate md:max-w-[300px] max-w-[20vw] max-md:px-2">
                   Credit Card abc reallylongotherwordshere asdasddf
                 </TableCell>
-                <TableCell className="overflow-ellipsis overflow-hidden md:max-w-[130px] max-w-[20vw] max-md:px-2 whitespace-nowrap">
+                <TableCell className="truncate md:max-w-[130px] max-w-[20vw] max-md:px-2">
                   Youtube abc reallylongotherwordshere asdasddf
                 </TableCell>
                 <TableCell className="max-md:px-2 max-md:max-w-[20vw]">
@@ -99,13 +99,13 @@ const Home = () => {
                     maxLines={1}
                   />
                 </TableCell>
-                <TableCell className="xl:table-cell hidden overflow-ellipsis overflow-hidden max-w-[250px] whitespace-nowrap">
+                <TableCell className="xl:table-cell hidden truncate max-w-[250px]">
                   /downloads/newabc reallylongotherwordshere asdasddf
                 </TableCell>
                 <TableCell className="lg:table-cell hidden">
                   05.06.2024
                 </TableCell>
-                <TableCell className="text-right lg:table-cell hidden overflow-ellipsis overflow-hidden max-w-[100px]">
+                <TableCell className="text-right lg:table-cell hidden truncate max-w-[100px]">
                   1 GB
                 </TableCell>
               </TableRow>

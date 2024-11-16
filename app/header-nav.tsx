@@ -13,9 +13,9 @@ const HeaderNav = ({ className }: HeaderNavProps) => {
       <Button
         asChild
         size="icon"
-        variant="ghost"
+        variant="icon"
         data-active="true"
-        className="relative data-[active=true]:text-title data-[active=true]:hover:text-accent-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
+        className="relative data-[active=true]:text-title data-[active=true]:hover:text-secondary-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
       >
         <Link href="/" title="Videos">
           <TvMinimalPlay className="!w-auto !h-auto" />
@@ -24,9 +24,9 @@ const HeaderNav = ({ className }: HeaderNavProps) => {
       <Button
         asChild
         size="icon"
-        variant="ghost"
+        variant="icon"
         data-active="false"
-        className="relative data-[active=true]:text-title data-[active=true]:hover:text-accent-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
+        className="relative data-[active=true]:text-title data-[active=true]:hover:text-secondary-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
       >
         <Link href="/photos" title="Photos">
           <LImage className="!w-auto !h-auto" />
@@ -35,9 +35,9 @@ const HeaderNav = ({ className }: HeaderNavProps) => {
       <Button
         asChild
         size="icon"
-        variant="ghost"
+        variant="icon"
         data-active={false}
-        className="relative data-[active=true]:text-title data-[active=true]:hover:text-accent-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
+        className="relative data-[active=true]:text-title data-[active=true]:hover:text-secondary-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
       >
         <Link href="/music" title="Music">
           <Music className="!w-auto !h-auto" />

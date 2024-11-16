@@ -39,7 +39,7 @@ const Home = () => {
         <Button
           className="justify-self-end"
           size="icon"
-          variant="ghost"
+          variant="icon"
           title="Settings"
         >
           <Settings className="!w-auto !h-auto" />
@@ -143,7 +143,7 @@ const Home = () => {
                   ]}
                   maxLines={2}
                 />
-                <div className="flex text-xs font-light justify-between flex-1 items-end text-accent-foreground">
+                <div className="flex text-xs font-light justify-between flex-1 items-end text-secondary-foreground">
                   <span>/downloads/new</span>
                   <span>05.06.2024</span>
                   <span>1 GB</span>
@@ -183,7 +183,7 @@ const Home = () => {
                   maxLines={1}
                   className="mb-2"
                 />
-                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-accent-foreground">
+                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-secondary-foreground">
                   <span>/downloads/new</span>
                   <span>05.06.2024</span>
                   <span>1 GB</span>
@@ -220,7 +220,7 @@ const Home = () => {
                   maxLines={1}
                   className="mb-2"
                 />
-                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-accent-foreground">
+                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-secondary-foreground">
                   <span>/downloads/new</span>
                   <span>05.06.2024</span>
                   <span>1 GB</span>
@@ -257,7 +257,7 @@ const Home = () => {
                   maxLines={1}
                   className="mb-2"
                 />
-                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-accent-foreground">
+                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-secondary-foreground">
                   <span>/downloads/new</span>
                   <span>05.06.2024</span>
                   <span>1 GB</span>
@@ -294,7 +294,7 @@ const Home = () => {
                   maxLines={1}
                   className="mb-2"
                 />
-                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-accent-foreground">
+                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-secondary-foreground">
                   <span>/downloads/new</span>
                   <span>05.06.2024</span>
                   <span>1 GB</span>
@@ -331,7 +331,7 @@ const Home = () => {
                   maxLines={1}
                   className="mb-2"
                 />
-                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-accent-foreground">
+                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-secondary-foreground">
                   <span>/downloads/new</span>
                   <span>05.06.2024</span>
                   <span>1 GB</span>
@@ -368,7 +368,7 @@ const Home = () => {
                   maxLines={1}
                   className="mb-2"
                 />
-                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-accent-foreground">
+                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-secondary-foreground">
                   <span>/downloads/new</span>
                   <span>05.06.2024</span>
                   <span>1 GB</span>
@@ -405,7 +405,7 @@ const Home = () => {
                   maxLines={1}
                   className="mb-2"
                 />
-                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-accent-foreground">
+                <div className="flex text-[11px] font-light justify-between flex-1 items-end text-secondary-foreground">
                   <span>/downloads/new</span>
                   <span>05.06.2024</span>
                   <span>1 GB</span>

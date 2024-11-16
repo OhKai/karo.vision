@@ -63,8 +63,7 @@ const SearchBar = ({ className, floating = false }: SearchBarProps) => {
           <PopoverTrigger asChild>
             <Button
               size="icon"
-              variant="ghost"
-              className="text-muted-foreground"
+              variant="icon"
               title="Search Options"
               onMouseDown={(e) => e.preventDefault()}
             >

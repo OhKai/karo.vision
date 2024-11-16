@@ -12,6 +12,7 @@ import {
 import {
   ArrowRightToLine,
   Camera,
+  Download,
   EllipsisVertical,
   FolderOpen,
   Pencil,
@@ -52,7 +53,7 @@ const Player = () => {
 
   return (
     <div
-      className="h-screen flex group"
+      className="h-screen flex overflow-hidden group"
       data-userinactive={isUserInactive}
       data-mediapaused={isMediaPaused}
     >
@@ -95,7 +96,7 @@ const Player = () => {
             expandable
             className="mb-7"
           />
-          <div className="grid grid-cols-2 text-xs font-light justify-between text-accent-foreground gap-2.5 mb-8">
+          <div className="grid grid-cols-2 text-xs font-light justify-between text-secondary-foreground gap-2.5 mb-8">
             <span>05.06.2024</span>
             <span>1 GB</span>
             <span>1024x720</span>
@@ -154,7 +155,7 @@ const Player = () => {
           <div className="flex gap-2.5">
             <Button variant="outline" className="flex-1">
               <Pencil /> Edit
-            </Button>{" "}
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon">
@@ -173,12 +174,17 @@ const Player = () => {
                   <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
+                  <Download />
+                  <span>Download video</span>
+                  <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
                   <RefreshCw />
-                  <span>Sync Player</span>
+                  <span>Sync player</span>
                   <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>{" "}
+            </DropdownMenu>
           </div>
           <Button variant="destructive">
             <Trash2 /> Delete

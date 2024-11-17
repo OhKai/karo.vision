@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { readLocalStorage, writeLocalStorage } from "./utils";
 
-type ViewState = {
+export type ViewState = {
   videos: "list" | "cards" | "tiles";
   photos: "list" | "tiles";
   music: "list";
@@ -14,7 +14,7 @@ type ViewAction = {
 const initialViewState: ViewState = {
   videos: readLocalStorage("videos-view", "cards") as ViewState["videos"],
   photos: readLocalStorage("photos-view", "tiles") as ViewState["photos"],
-  music: "list", // no local storage for music view, since it's only one option
+  music: "list", // No local storage for music view, since it's only one option.
 };
 
 export const useViewStore = create<ViewState & ViewAction>((set) => ({

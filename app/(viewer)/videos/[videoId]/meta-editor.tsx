@@ -50,7 +50,7 @@ const MetaEditor = ({ onClose }: MetaEditorProps) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 flex flex-col h-full"
       >
-        <div className="space-y-8 flex-1 overflow-auto px-3.5 -mx-3.5">
+        <div className="space-y-8 flex-1 overflow-auto px-4 -mx-4">
           <FormField
             control={form.control}
             name="topic"

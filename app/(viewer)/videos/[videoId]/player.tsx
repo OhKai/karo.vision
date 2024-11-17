@@ -15,6 +15,7 @@ import {
   Download,
   EllipsisVertical,
   FolderOpen,
+  House,
   Pencil,
   RefreshCw,
   Trash2,
@@ -55,26 +56,33 @@ const Player = () => {
 
   return (
     <div
-      className="h-screen flex overflow-hidden group"
+      className="md:h-screen flex md:overflow-hidden group md:flex-row flex-col"
       data-userinactive={isUserInactive}
       data-mediapaused={isMediaPaused}
     >
+      <Button
+        className="absolute left-[9px] top-4 backdrop-blur-lg bg-black/30 group-data-[userinactive=true]:group-data-[mediapaused=false]:[&:not(:hover)]:opacity-0 transition-opacity z-10"
+        title="Back to home page"
+      >
+        <House />
+      </Button>
       <MediaThemeYt className="w-full h-full" ref={playerRef}>
         <video
           slot="media"
           className="w-full h-full bg-foreground"
-          src=""
+          src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%200.7923510988921678.mp4"
           playsInline
           autoPlay
         ></video>
       </MediaThemeYt>
       <div
-        className="w-[350px] shrink-0 bg-white flex flex-col px-3.5 py-3.5 relative data-[opened=false]:-mr-[350px] mr-0 transition-all duration-500 group/sidebar"
+        className="md:w-[350px] shrink-0 bg-white flex flex-col px-4 py-4 relative md:data-[opened=false]:-mr-[350px] mr-0 md:transition-all md:duration-500 group/sidebar"
         data-opened={isSidebarOpen}
       >
         <Button
-          className="absolute -left-[57px] backdrop-blur-lg bg-black/30 group-data-[userinactive=true]:group-data-[mediapaused=false]:[&:not(:hover)]:opacity-0 transition-opacity"
+          className="absolute -left-[57px] backdrop-blur-lg bg-black/30 group-data-[userinactive=true]:group-data-[mediapaused=false]:[&:not(:hover)]:opacity-0 transition-opacity hidden md:flex"
           onClick={() => setSidebarOpen(!isSidebarOpen)}
+          title="Toggle sidebar"
         >
           <ArrowRightToLine className="group-data-[opened=false]/sidebar:-rotate-180 transition-transform duration-500" />
         </Button>
@@ -88,7 +96,7 @@ const Player = () => {
             <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
               Credit Card
             </h3>
-            <div className="flex flex-col grow overflow-auto px-3.5 -mx-3.5">
+            <div className="flex flex-col grow overflow-auto px-4 -mx-4">
               <Tags
                 values={[
                   "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",

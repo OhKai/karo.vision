@@ -16,7 +16,8 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
       className="justify-stretch"
       value={view}
       onValueChange={(value) => {
-        updateView(viewKey, value as "list" | "cards" | "tiles");
+        if (!value) return;
+        updateView(viewKey, value as ViewState[keyof ViewState]);
       }}
     >
       {enabledViews.includes("list") && (
@@ -26,6 +27,15 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
           className="flex-1"
         >
           List
+        </ToggleGroupItem>
+      )}
+      {enabledViews.includes("posters") && (
+        <ToggleGroupItem
+          value="posters"
+          aria-label="Toggle Posters"
+          className="flex-1"
+        >
+          Posters
         </ToggleGroupItem>
       )}
       {enabledViews.includes("cards") && (

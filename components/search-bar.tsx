@@ -47,7 +47,7 @@ const SearchBar = ({
         )}
       >
         <div
-          className="flex items-center justify-center text-black/[22%] text-xs font-bold bg-muted rounded-full w-[40px] h-[40px]"
+          className="flex items-center justify-center text-black/35 text-xs font-bold bg-muted rounded-full w-[40px] h-[40px]"
           title="205.535 results"
         >
           205K
@@ -63,6 +63,7 @@ const SearchBar = ({
             <Button
               size="icon"
               variant="icon"
+              className="bg-muted"
               title="Search Options"
               onMouseDown={(e) => e.preventDefault()}
             >

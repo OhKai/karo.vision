@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useResizeStore } from "@/lib/use-resize-store";
 
 type ResizeObserverProps = {
@@ -10,7 +10,7 @@ type ResizeObserverProps = {
 const ResizeObserver = ({ children }: ResizeObserverProps) => {
   const setWindowWidth = useResizeStore((state) => state.setWindowWidth);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };

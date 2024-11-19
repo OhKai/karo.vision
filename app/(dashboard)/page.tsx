@@ -99,7 +99,7 @@ const Home = () => {
         </Table>
       ) : videosView === "cards" ? (
         <div className="flex flex-col gap-3.5 px-3">
-          <div className="flex bg-muted rounded-md shadow-sm max-w-[800px] w-full">
+          <div className="flex bg-muted rounded shadow-sm max-w-[800px] w-full">
             <div className="w-1/2 shrink-0">
               <Image
                 src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
@@ -138,8 +138,8 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        <div className="grid min-[2090px]:grid-cols-6 min-[1600px]:grid-cols-5 min-[1300px]:grid-cols-4 lg:grid-cols-3 min-[680px]:grid-cols-2 grid-cols-1 w-full md:px-6 px-2 gap-3">
-          <div className="flex flex-col bg-muted rounded-md shadow-sm">
+        <div className="max-w-[2808px] grid min-[2090px]:grid-cols-6 min-[1600px]:grid-cols-5 min-[1300px]:grid-cols-4 lg:grid-cols-3 min-[680px]:grid-cols-2 grid-cols-1 w-full md:px-6 px-2 gap-3">
+          <div className="flex flex-col bg-muted rounded shadow-sm">
             <div className="shrink-0">
               <Image
                 src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"

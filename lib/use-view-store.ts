@@ -3,17 +3,20 @@ import { readLocalStorage, writeLocalStorage } from "./utils";
 
 export type ViewState = {
   videos: "list" | "cards" | "tiles";
-  photos: "list" | "tiles";
+  photos: "list" | "posters" | "tiles";
   music: "list";
 };
 
 type ViewAction = {
-  updateView: (key: keyof ViewState, newView: ViewState[typeof key]) => void;
+  updateView: <K extends keyof ViewState>(
+    key: K,
+    newView: ViewState[K],
+  ) => void;
 };
 
 const initialViewState: ViewState = {
-  videos: readLocalStorage("videos-view", "cards") as ViewState["videos"],
-  photos: readLocalStorage("photos-view", "tiles") as ViewState["photos"],
+  videos: readLocalStorage("videos-view", "tiles") as ViewState["videos"],
+  photos: readLocalStorage("photos-view", "posters") as ViewState["photos"],
   music: "list", // No local storage for music view, since it's only one option.
 };
 

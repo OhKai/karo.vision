@@ -12,6 +12,10 @@ const nextConfig = {
         source: "/videos/:path*",
         destination: "/videos/page",
       },
+      {
+        source: "/photos/:path*",
+        destination: "/photos/page",
+      },
     ];
   },
 };

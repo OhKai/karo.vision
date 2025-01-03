@@ -12,7 +12,7 @@ export interface ServerOptions {
   prefix?: string;
 }
 
-export function createServer(opts: ServerOptions) {
+export const createServer = (opts: ServerOptions) => {
   const dev = opts.dev ?? process.env.NODE_ENV !== "production";
   const port = opts.port ?? 2024;
   const prefix = opts.prefix ?? "/trpc";
@@ -49,4 +49,4 @@ export function createServer(opts: ServerOptions) {
   };
 
   return { server, start, stop };
-}
+};

@@ -1,8 +1,11 @@
-import { afterAll, beforeAll, expect, test, describe } from "vitest";
-import { readFileMetadata, scanFolder } from "./fs";
+import { afterAll, beforeAll, expect, test, describe, vi } from "vitest";
+import { getFilesystemInfos, readFileMetadata, scanFolder } from "./fs";
 import { join, basename } from "node:path";
 import { tmpdir } from "node:os";
 import { mkdtemp, writeFile, mkdir, rm } from "node:fs/promises";
+import systeminformation from "systeminformation";
+
+vi.mock("systeminformation");
 
 const setupTestDir = async () => {
   const tmpDir = await mkdtemp(join(tmpdir(), "home-cloud-test-"));
@@ -263,6 +266,87 @@ describe("fs", () => {
           code: "ENOENT",
         }),
       });
+    });
+  });
+
+  describe("getFilesystemInfos", () => {
+    const devices = [
+      {
+        name: "/dev/disk1s5s1",
+        identifier: "disk1s5s1",
+        type: "part",
+        fsType: "APFS",
+        mount: "/",
+        size: 451000901632,
+        physical: "SSD",
+        uuid: "9E285028-BA44-4C1C-A4DC-68E6180027F1",
+        label: "Macintosh HD",
+        model: "",
+        serial: "",
+        removable: false,
+        protocol: "PCI-Express",
+        group: "",
+        device: "",
+      },
+      {
+        name: "/dev/disk3s1",
+        identifier: "disk3s1",
+        type: "part",
+        fsType: "Journaled HFS+",
+        mount: "/Volumes/Elements9",
+        size: 2000041908633,
+        physical: "HDD",
+        uuid: "2113B732-4E54-4B4F-8D4C-B9EF4BCFB006",
+        label: "Elements9",
+        model: "",
+        serial: "",
+        removable: false,
+        protocol: "USB",
+        group: "",
+        device: "",
+      },
+    ];
+
+    test("should return the correct filesystem infos", async () => {
+      vi.mocked(systeminformation.blockDevices).mockResolvedValue(devices);
+
+      const filesystemInfos = await getFilesystemInfos([
+        "/Users/user/file.txt",
+        "/Volumes/Elements9/file.txt",
+      ]);
+
+      expect(filesystemInfos).toEqual([
+        {
+          fsType: "APFS",
+          label: "Macintosh HD",
+          mount: "/",
+          physical: "SSD",
+          protocol: "PCI-Express",
+          removable: false,
+          size: 451000901632,
+          uuid: "9E285028-BA44-4C1C-A4DC-68E6180027F1",
+        },
+        {
+          fsType: "Journaled HFS+",
+          label: "Elements9",
+          mount: "/Volumes/Elements9",
+          physical: "HDD",
+          protocol: "USB",
+          removable: false,
+          size: 2000041908633,
+          uuid: "2113B732-4E54-4B4F-8D4C-B9EF4BCFB006",
+        },
+      ]);
+    });
+
+    test("should return undefined if a device cannot be found", async () => {
+      vi.mocked(systeminformation.blockDevices).mockResolvedValue([]);
+
+      const filesystemInfos = await getFilesystemInfos([
+        "/Users/user/file.txt",
+      ]);
+
+      expect(filesystemInfos).toEqual([undefined]);
     });
   });
 });

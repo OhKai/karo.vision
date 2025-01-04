@@ -4,6 +4,7 @@ import ffmpeg from "fluent-ffmpeg";
 import fs from "node:fs/promises";
 import { Stats } from "node:fs";
 import type { Result } from "@/lib/typescript-utils";
+import { blockDevices, Systeminformation } from "systeminformation";
 
 // Some research about fast fs walk packages (01.01.2025):
 //
@@ -240,3 +241,43 @@ export async function readFileMetadata(file: File) {
 
   return { ok: true, value: statsObj };
 }
+
+/**
+ * Maps paths to their respective device information.
+ * @param paths The paths to map to device information.
+ * @returns The device information for each path, if any.
+ */
+export const getFilesystemInfos = async (paths: string[]) => {
+  // https://github.com/sebhildebrandt/systeminformation/blob/0c25994c8598d872bdbe8980b1a98cc9584600e6/lib/filesystem.js#L1010
+  const devices = await blockDevices();
+
+  const infos = paths.map((path) => {
+    // Find the device that the path is on by checking for the most specific mount path.
+    let device: Systeminformation.BlockDevicesData | undefined;
+    for (const _device of devices) {
+      if (
+        path.startsWith(_device.mount) &&
+        // Note: This also skips empty mount paths.
+        _device.mount.length > (device?.mount.length ?? 0)
+      ) {
+        device = _device;
+      }
+    }
+
+    // We only return some useful properties from the device object.
+    return (
+      device && {
+        fsType: device.fsType,
+        mount: device.mount,
+        size: device.size,
+        physical: device.physical,
+        uuid: device.uuid,
+        label: device.label,
+        removable: device.removable,
+        protocol: device.protocol,
+      }
+    );
+  });
+
+  return infos;
+};

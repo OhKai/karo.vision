@@ -1,11 +1,17 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { ErrorResult, Result, ValueResult } from "./typescript-utils";
 
-export function cn(...inputs: ClassValue[]) {
+export const result = {
+  ok: <T>(value?: T) => ({ ok: true, value }) as ValueResult<T>,
+  error: <E>(error?: E) => ({ ok: false, error }) as ErrorResult<E>,
+};
+
+export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
-}
+};
 
-export function readLocalStorage(key: string, initialValue: string) {
+export const readLocalStorage = (key: string, initialValue: string) => {
   if (typeof window === "undefined") {
     return initialValue;
   }
@@ -23,9 +29,9 @@ export function readLocalStorage(key: string, initialValue: string) {
     // localStorage can throw.
     return initialValue;
   }
-}
+};
 
-export function writeLocalStorage(key: string, value: string) {
+export const writeLocalStorage = (key: string, value: string) => {
   if (typeof window === "undefined") {
     return;
   }
@@ -37,4 +43,4 @@ export function writeLocalStorage(key: string, value: string) {
     // localStorage can throw.
     return;
   }
-}
+};

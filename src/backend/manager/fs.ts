@@ -5,6 +5,7 @@ import fs from "node:fs/promises";
 import { Stats } from "node:fs";
 import type { Result } from "@/lib/typescript-utils";
 import { blockDevices, Systeminformation } from "systeminformation";
+import { result } from "@/lib/utils";
 
 // Some research about fast fs walk packages (01.01.2025):
 //
@@ -117,7 +118,7 @@ type VideoMetadata = {
   updatedAt: Date;
   width?: number;
   height?: number;
-  duration?: string;
+  duration?: number;
   format?: string;
   framerate?: string;
   aspectRatio?: string;
@@ -151,6 +152,9 @@ type OtherMetadata = {
 
 /**
  * Reads metadata from a file. The metadata is file type specific.
+ *
+ * IMPORTANT: Since this function spawns a child process to run ffprobe, it should not be called too
+ * many times in parallel.
  *
  * @param file The file to read metadata from.
  * @returns The metadata of the file.
@@ -186,7 +190,7 @@ export async function readFileMetadata(file: File) {
   try {
     stats = await fs.stat(file.path);
   } catch (err) {
-    return { ok: false, error: err as NodeJS.ErrnoException };
+    return result.error(err as NodeJS.ErrnoException);
   }
   const statsObj = {
     type: file.type,
@@ -203,7 +207,6 @@ export async function readFileMetadata(file: File) {
       (resolve, reject) =>
         ffmpegCommand.ffprobe((err, metadata) => {
           if (err) {
-            console.error(err);
             return reject(err);
           }
           resolve(metadata);
@@ -217,29 +220,27 @@ export async function readFileMetadata(file: File) {
       (stream) => stream.codec_type === "video",
     );
 
-    return {
-      ok: true,
-      value: {
-        ...statsObj,
-        ...(videoStream &&
-          (file.type === "video"
-            ? {
-                width: videoStream.width,
-                height: videoStream.height,
-                duration: videoStream.duration,
-                format: videoStream.codec_name,
-                framerate: videoStream.r_frame_rate,
-                aspectRatio: videoStream.display_aspect_ratio,
-              }
-            : {
-                width: videoStream.width,
-                height: videoStream.height,
-              })),
-      },
-    };
+    return result.ok({
+      ...statsObj,
+      ...(videoStream &&
+        (file.type === "video"
+          ? {
+              width: videoStream.width,
+              height: videoStream.height,
+              // Wrongly typed as string in fluent-ffmpeg.
+              duration: videoStream.duration as unknown as number,
+              format: videoStream.codec_name,
+              framerate: videoStream.r_frame_rate,
+              aspectRatio: videoStream.display_aspect_ratio,
+            }
+          : {
+              width: videoStream.width,
+              height: videoStream.height,
+            })),
+    });
   }
 
-  return { ok: true, value: statsObj };
+  return result.ok(statsObj);
 }
 
 /**

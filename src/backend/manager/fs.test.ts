@@ -84,6 +84,7 @@ describe("fs", () => {
     test("should classify files correctly with partial custom extensions", async () => {
       const customExtensions = {
         videos: ["mov"],
+        exclude: ["rtf", "ogg"],
       };
 
       // Use Set to ignore order since fast-glob returns files in random order.

@@ -13,3 +13,5 @@ export const initDB = () => {
   // Apply all new migrations at runtime.
   migrate(db, { migrationsFolder: "./drizzle" });
 };
+
+export type Db = ReturnType<typeof drizzle<typeof schema>>;

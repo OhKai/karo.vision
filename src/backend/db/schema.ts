@@ -4,7 +4,7 @@ import { int, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 export const files = sqliteTable("files", {
   id: int().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
-  path: text().notNull(),
+  dirname: text().notNull(),
   rootFolderId: int("root_folder_id")
     .notNull()
     .references(() => rootFolders.id, { onDelete: "cascade" }),
@@ -29,13 +29,20 @@ export const filesRelations = relations(files, ({ one, many }) => ({
     fields: [files.rootFolderId],
     references: [rootFolders.id],
   }),
-  videos: many(videos),
+  video: one(videos),
 }));
 
 export const rootFolders = sqliteTable("root_folders", {
   id: int().primaryKey({ autoIncrement: true }),
   path: text().notNull(),
-  isRemovable: int("is_removable", { mode: "boolean" }),
+  deviceUUID: text("device_uuid"),
+  label: text(),
+  fsType: text("fs_type"),
+  protocol: text(),
+  physical: text(),
+  indexedAt: int("indexed_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`(unixepoch())`),
 });
 
 export const rootFoldersRelations = relations(rootFolders, ({ many }) => ({

@@ -1,14 +1,15 @@
 import { initDB } from "./db/drizzle";
 import { initManager } from "./manager";
 import { createServer } from "./server/index";
+import { PORT } from "@/config";
 
 (async () => {
-  const server = createServer({
+  const db = initDB();
+  const server = createServer(db, {
     prefix: "/api",
-    port: parseInt(process.env.PORT!),
+    port: parseInt(PORT),
   });
-  initDB();
-  await initManager();
+  await initManager(db);
 
   void server.start();
 })();

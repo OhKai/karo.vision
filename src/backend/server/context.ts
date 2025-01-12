@@ -1,13 +1,12 @@
 import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
+import { Db } from "../db/drizzle";
 
-export interface User {
-  name: string[] | string;
-}
-
-export const createContext = ({ req, res }: CreateFastifyContextOptions) => {
-  const user: User = { name: req.headers.username ?? "anonymous" };
-
-  return { req, res, user };
+export const createContext = ({
+  req,
+  res,
+  db,
+}: CreateFastifyContextOptions & { db: Db }) => {
+  return { req, res, db };
 };
 
 export type Context = Awaited<ReturnType<typeof createContext>>;

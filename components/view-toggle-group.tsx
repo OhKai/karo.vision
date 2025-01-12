@@ -1,5 +1,6 @@
 import { useViewStore, ViewState } from "@/lib/use-view-store";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { useTransition } from "react";
 
 type ViewToggleGroupProps = {
   viewKey: keyof ViewState;
@@ -9,6 +10,7 @@ type ViewToggleGroupProps = {
 const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
   const view = useViewStore((state) => state[viewKey]);
   const updateView = useViewStore((state) => state.updateView);
+  const [isPending, startTransition] = useTransition();
 
   return (
     <ToggleGroup
@@ -17,7 +19,9 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
       value={view}
       onValueChange={(value) => {
         if (!value) return;
-        updateView(viewKey, value as ViewState[keyof ViewState]);
+        startTransition(() =>
+          updateView(viewKey, value as ViewState[keyof ViewState]),
+        );
       }}
     >
       {enabledViews.includes("list") && (

@@ -1,5 +1,3 @@
-"use client";
-
 import { useLayoutEffect } from "react";
 import { useResizeStore } from "@/lib/use-resize-store";
 

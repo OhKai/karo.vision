@@ -8,8 +8,9 @@ import { files, rootFolders, videos } from "../db/schema";
 import { sql } from "drizzle-orm";
 import pLimit from "p-limit";
 
-export const initManager = async () => {
+export const initManager = async (db: Db) => {
   console.log("initManager");
+  console.log(await addRootFolder(db, "/Users/kairohwer/Downloads"));
 };
 
 export const addFile = async (
@@ -91,7 +92,9 @@ export const addRootFolder = async (
   // At this point we know that the folder exists and we have access to it. Check if the folder is
   // already a root folder, a subfolder of a root folder, or a parent folder of a root folder.
   const rootFolder = await db.query.rootFolders.findFirst({
-    where: sql`${sql.raw(folderPath + "/%")} LIKE ${rootFolders.path} || '/%'`,
+    // The '/' for the left operand is necessary to match exactly equal folder names, because we
+    // add it for the wildcard comparison.
+    where: sql`${rootFolders.path} || '/' LIKE ${folderPath} || '/%' OR ${folderPath} || '/' LIKE ${rootFolders.path} || '/%'`,
   });
 
   if (rootFolder) {

@@ -8,6 +8,13 @@
       "when": 1734772598467,
       "tag": "0000_illegal_gamora",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1736643541654,
+      "tag": "0001_soft_cobalt_man",
+      "breakpoints": true
     }
   ]
 }

@@ -44,3 +44,44 @@ export const writeLocalStorage = (key: string, value: string) => {
     return;
   }
 };
+
+/**
+ * Takes a `bytes` argument and returns its representation in an human-readable rounded string
+ * format.
+ */
+export function convertBytesToRoundedString(bytes: number) {
+  if (bytes > 1000 * 1000 * 1000) {
+    return `${(bytes / (1000 * 1000 * 1000)).toFixed(1)} GB`;
+  } else if (bytes > 1000 * 1000) {
+    return `${(bytes / (1000 * 1000)).toFixed(1)} MB`;
+  } else if (bytes > 1000) {
+    return `${(bytes / 1000).toFixed(1)} KB`;
+  } else {
+    return `${bytes} Bytes`;
+  }
+}
+
+/**
+ * Takes a `seconds` argument and returns its representation in an human-readable rounded string
+ * format.
+ */
+export function convertSecondsToRoundedString(seconds: number) {
+  return new Date(Math.round(seconds * 1000)).toISOString().substring(11, 19);
+}
+
+export const convertTimeStringToSeconds = (time: string) => {
+  const [hours, minutes, seconds] = time
+    .split(":")
+    .map((part) => parseInt(part));
+  return (hours * 60 + minutes) * 60 + (seconds || 0);
+};
+
+export function roundFPS(fps: string) {
+  if (fps.includes("/")) {
+    const numerator = parseInt(fps);
+    const denominator = parseInt(fps.substring(fps.indexOf("/") + 1));
+    return "" + Math.round(numerator / denominator);
+  } else {
+    return fps;
+  }
+}

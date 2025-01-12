@@ -1,9 +1,9 @@
 import { apiRouter } from "./routers/api";
-import { postsRouter } from "./routers/posts";
+import { videosRouter } from "./routers/videos";
 import { router } from "./trpc";
 
 export const appRouter = router({
-  posts: postsRouter,
+  videos: videosRouter,
   api: apiRouter,
 });
 

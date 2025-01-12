@@ -5,6 +5,8 @@ import {
 import fastify from "fastify";
 import { AppRouter, appRouter } from "./router";
 import { createContext } from "./context";
+import { Db } from "../db/drizzle";
+import cors from "@fastify/cors";
 
 export interface ServerOptions {
   dev?: boolean;
@@ -12,7 +14,7 @@ export interface ServerOptions {
   prefix?: string;
 }
 
-export const createServer = (opts: ServerOptions) => {
+export const createServer = (db: Db, opts: ServerOptions) => {
   const dev = opts.dev ?? process.env.NODE_ENV !== "production";
   const port = opts.port ?? 2024;
   const prefix = opts.prefix ?? "/trpc";
@@ -22,12 +24,19 @@ export const createServer = (opts: ServerOptions) => {
     prefix,
     trpcOptions: {
       router: appRouter,
-      createContext,
+      // Add db connection to context.
+      createContext: (opt) => createContext({ ...opt, db }),
       onError({ path, error }) {
         // report to error monitoring
         console.error(`Error in tRPC handler on path '${path}':`, error);
       },
     } satisfies FastifyTRPCPluginOptions<AppRouter>["trpcOptions"],
+  });
+
+  // TODO: What should CORS policy be in production? With multiple DB instances combining, we might
+  // need to be very permissive. Only applies to APIs used in the browser though.
+  void server.register(cors, {
+    origin: true,
   });
 
   server.get("/", async () => {

@@ -1,2 +1,3 @@
 export const DB_FILE_NAME = "database.db";
 export const PORT = "52776";
+export const INFINITE_SCROLL_PAGE_SIZE = 50;

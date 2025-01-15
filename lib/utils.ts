@@ -53,9 +53,9 @@ export function convertBytesToRoundedString(bytes: number) {
   if (bytes > 1000 * 1000 * 1000) {
     return `${(bytes / (1000 * 1000 * 1000)).toFixed(1)} GB`;
   } else if (bytes > 1000 * 1000) {
-    return `${(bytes / (1000 * 1000)).toFixed(1)} MB`;
+    return `${(bytes / (1000 * 1000)).toFixed(0)} MB`;
   } else if (bytes > 1000) {
-    return `${(bytes / 1000).toFixed(1)} KB`;
+    return `${(bytes / 1000).toFixed(0)} KB`;
   } else {
     return `${bytes} Bytes`;
   }

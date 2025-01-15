@@ -3,24 +3,55 @@
 import Image from "next/image";
 import SearchBar from "@/components/search-bar";
 import { useViewStore } from "@/lib/use-view-store";
-import Tags from "@/components/tags";
 import ViewToggleGroup from "@/components/view-toggle-group";
 import SortToggleGroup from "@/components/sort-toggle-group";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import FilesTable from "@/components/files-table";
 import { trpc } from "@/lib/trpc-client";
-import FileCard from "@/components/file-card";
-import FileTile from "@/components/file-tile";
+import { useIntersectionObserver } from "@/lib/use-intersection-observer";
+import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
+import VideoCard from "./video-card";
+import VideoTile from "./video-tile";
 
 const Home = () => {
   const videosView = useViewStore((state) => state.videos);
-  const { data: videos, isPending } = trpc.videos.list.useQuery();
+  const {
+    data: videosData,
+    isPending,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = trpc.videos.list.useInfiniteQuery(
+    {
+      direction: "forward",
+    },
+    {
+      // TODO: I plan to have SSE updates for server-side changes so we should not need revalidations?
+      staleTime: Infinity,
+      getNextPageParam: (lastPage, pages) =>
+        // TODO: This fetches one more empty page if the cutoff is exactly the page size.
+        lastPage.length === INFINITE_SCROLL_PAGE_SIZE
+          ? pages.length * INFINITE_SCROLL_PAGE_SIZE
+          : undefined,
+    },
+  );
+  // The ref callback can be used on multiple elements. It will set the same entry and call the same
+  // onChange handler.
+  const [_tripwireRef, entry] = useIntersectionObserver<HTMLDivElement>({
+    onChange: (newEntry) => {
+      if (newEntry.isIntersecting) {
+        fetchNextPage();
+      }
+    },
+  });
+  const tripwireRef =
+    hasNextPage && isFetchingNextPage ? undefined : _tripwireRef;
 
   return (
     <div className="mt-[134px] flex flex-col gap-8 items-center pb-4">
       <SearchBar
-        className="fixed top-[74px]"
+        className="fixed top-[74px] z-40"
         floating
         searchOptionsNode={
           <>
@@ -40,44 +71,45 @@ const Home = () => {
       />
       {isPending ? (
         <div>Loading...</div>
-      ) : videos?.length === 0 ? (
+      ) : videosData?.pages?.length === 0 ? (
         <div>No videos found</div>
       ) : videosView === "list" ? (
         <FilesTable />
       ) : videosView === "cards" ? (
         <div className="flex flex-col gap-3.5 px-3">
-          {videos?.map((video) => (
-            <FileCard key={video.fileId}>
-              <FileCard.Left>
-                <Image
-                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
-                  alt=""
-                  className="rounded-l"
-                  width={400}
-                  height={225}
-                />
-              </FileCard.Left>
-              <FileCard.Right content={video.file} />
-            </FileCard>
-          ))}
+          {videosData?.pages?.map((page, pageIndex) =>
+            page.map((video, videoIndex) => (
+              <VideoCard
+                key={video.fileId}
+                video={video}
+                ref={
+                  pageIndex === videosData.pages.length - 1 &&
+                  (videoIndex === page.length - 10 ||
+                    videoIndex === page.length - 1)
+                    ? tripwireRef
+                    : undefined
+                }
+              />
+            )),
+          )}
         </div>
       ) : (
         <div className="max-w-[2808px] grid min-[2090px]:grid-cols-6 min-[1600px]:grid-cols-5 min-[1300px]:grid-cols-4 lg:grid-cols-3 min-[680px]:grid-cols-2 grid-cols-1 w-full md:px-6 px-2 gap-3">
-          {videos?.map((video) => (
-            <FileTile key={video.fileId}>
-              <FileTile.Top>
-                <Image
-                  src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
-                  alt=""
-                  className="rounded-t"
-                  width={400}
-                  height={225}
-                  style={{ width: "100%", aspectRatio: "16 / 9" }}
-                />
-              </FileTile.Top>
-              <FileTile.Bottom content={video.file} />
-            </FileTile>
-          ))}
+          {videosData?.pages?.map((page, pageIndex) =>
+            page.map((video, videoIndex) => (
+              <VideoTile
+                key={video.fileId}
+                video={video}
+                ref={
+                  pageIndex === videosData.pages.length - 1 &&
+                  (videoIndex === page.length - 13 ||
+                    videoIndex === page.length - 1)
+                    ? tripwireRef
+                    : undefined
+                }
+              />
+            )),
+          )}
         </div>
       )}
     </div>

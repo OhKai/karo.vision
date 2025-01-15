@@ -43,9 +43,9 @@ export const addFile = async (
       case "video":
         await tx.insert(videos).values({
           fileId: newFile.id,
-          width: metadata.value.width ?? 0,
-          height: metadata.value.height ?? 0,
-          duration: metadata.value.duration ?? 0,
+          width: metadata.value.width ?? -1,
+          height: metadata.value.height ?? -1,
+          duration: metadata.value.duration ?? -1,
           format: metadata.value.format ?? "",
           framerate: metadata.value.framerate ?? "",
           aspectRatio: metadata.value.aspectRatio ?? "",

@@ -33,7 +33,12 @@ FileCard.Left = ({
   children?: ReactNode;
 }) => {
   return (
-    <div className={cn("w-1/2 shrink-0 overflow-hidden rounded-l", className)}>
+    <div
+      className={cn(
+        "w-1/2 shrink-0 overflow-hidden rounded-l relative",
+        className,
+      )}
+    >
       {children}
     </div>
   );

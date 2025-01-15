@@ -1,4 +1,5 @@
 import FileCard from "@/components/file-card";
+import { convertSecondsToRoundedString } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -110,6 +111,9 @@ const VideoCard = ({
             height={225}
           />
         )}
+        <div className="absolute bottom-2 right-1.5 rounded-sm bg-black/45 px-2 py-1 text-[0.8rem] font-medium backdrop-blur-lg text-border">
+          {convertSecondsToRoundedString(video.duration)}
+        </div>
       </FileCard.Left>
       <FileCard.Right content={video.file} />
     </FileCard>

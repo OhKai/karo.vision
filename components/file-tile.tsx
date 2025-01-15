@@ -29,7 +29,9 @@ FileTile.Top = ({
   children?: ReactNode;
 }) => {
   return (
-    <div className={cn("shrink-0 overflow-hidden rounded-t", className)}>
+    <div
+      className={cn("shrink-0 overflow-hidden rounded-t relative", className)}
+    >
       {children}
     </div>
   );

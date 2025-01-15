@@ -66,7 +66,23 @@ export function convertBytesToRoundedString(bytes: number) {
  * format.
  */
 export function convertSecondsToRoundedString(seconds: number) {
-  return new Date(Math.round(seconds * 1000)).toISOString().substring(11, 19);
+  if (seconds < 0) {
+    return "--:--:--";
+  }
+
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  if (hours > 99) {
+    return "99+ hr";
+  }
+
+  const paddedHours = hours.toString().padStart(2, "0");
+  const paddedMinutes = minutes.toString().padStart(2, "0");
+  const paddedSeconds = remainingSeconds.toString().padStart(2, "0");
+
+  return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
 }
 
 export const convertTimeStringToSeconds = (time: string) => {

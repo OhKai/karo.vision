@@ -227,8 +227,11 @@ export async function readFileMetadata(file: File) {
           ? {
               width: videoStream.width,
               height: videoStream.height,
-              // Wrongly typed as string in fluent-ffmpeg.
-              duration: videoStream.duration as unknown as number,
+              // Wrongly typed as string in fluent-ffmpeg. Except when it is "N/A".
+              duration:
+                typeof videoStream.duration === "string"
+                  ? -1
+                  : (videoStream.duration as unknown as number),
               format: videoStream.codec_name,
               framerate: videoStream.r_frame_rate,
               aspectRatio: videoStream.display_aspect_ratio,

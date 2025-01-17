@@ -7,7 +7,7 @@ import ViewToggleGroup from "@/components/view-toggle-group";
 import SortToggleGroup from "@/components/sort-toggle-group";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import FilesTable from "@/components/files-table";
+import VideosTable from "./videos-table";
 import { trpc } from "@/lib/trpc-client";
 import { useIntersectionObserver } from "@/lib/use-intersection-observer";
 import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
@@ -74,7 +74,7 @@ const Home = () => {
       ) : videosData?.pages?.length === 0 ? (
         <div>No videos found</div>
       ) : videosView === "list" ? (
-        <FilesTable />
+        <VideosTable videosPages={videosData?.pages} ref={tripwireRef} />
       ) : videosView === "cards" ? (
         <div className="flex flex-col gap-3.5 px-3">
           {videosData?.pages?.map((page, pageIndex) =>

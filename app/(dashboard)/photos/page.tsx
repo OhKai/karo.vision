@@ -10,7 +10,6 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Masonry from "@wowblvck/react-responsive-masonry";
 import { useResizeStore } from "@/lib/use-resize-store";
-import FilesTable from "@/components/files-table";
 
 const PhotosPage = () => {
   const photosView = useViewStore((state) => state.photos);
@@ -37,9 +36,8 @@ const PhotosPage = () => {
           </>
         }
       />
-      {photosView === "list" ? (
-        <FilesTable />
-      ) : photosView === "posters" ? (
+      {photosView === "list" ? //<FilesTable />
+      null : photosView === "posters" ? (
         <div className="max-w-[2808px] w-full md:px-6 px-2">
           <Masonry
             columnsCount={windowWidth < 768 ? 1 : windowWidth < 1400 ? 2 : 3}

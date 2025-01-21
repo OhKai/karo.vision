@@ -7,6 +7,7 @@ import { AppRouter, appRouter } from "./router";
 import { createContext } from "./context";
 import { Db } from "../db/drizzle";
 import cors from "@fastify/cors";
+import { fsRouter } from "./routers/fs";
 
 export interface ServerOptions {
   dev?: boolean;
@@ -42,6 +43,9 @@ export const createServer = (db: Db, opts: ServerOptions) => {
   server.get("/", async () => {
     return { hello: "wait-on 💨" };
   });
+
+  // Setup fs file routes.
+  fsRouter(server, db);
 
   const stop = async () => {
     await server.close();

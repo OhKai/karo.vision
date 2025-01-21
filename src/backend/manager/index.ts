@@ -1,5 +1,11 @@
 import { Result } from "@/lib/typescript-utils";
-import { File, getFilesystemInfos, readFileMetadata, scanFolder } from "./fs";
+import {
+  File,
+  generateVideoThumbnails,
+  getFilesystemInfos,
+  readFileMetadata,
+  scanFolder,
+} from "./fs";
 import { result } from "@/lib/utils";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -10,7 +16,12 @@ import pLimit from "p-limit";
 
 export const initManager = async (db: Db) => {
   console.log("initManager");
-  console.log(await addRootFolder(db, "/Users/kairohwer/Downloads"));
+  console.log(
+    await addRootFolder(
+      db,
+      "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__",
+    ),
+  );
 };
 
 export const addFile = async (
@@ -50,6 +61,27 @@ export const addFile = async (
           framerate: metadata.value.framerate ?? "",
           aspectRatio: metadata.value.aspectRatio ?? "",
         });
+
+        if (
+          (metadata.value.width ?? Number.NEGATIVE_INFINITY) +
+            (metadata.value.height ?? Number.NEGATIVE_INFINITY) >
+          0
+        ) {
+          const res = await generateVideoThumbnails(
+            newFile.id + ".png",
+            metadata.value.path,
+            { width: metadata.value.width!, height: metadata.value.height! },
+          );
+
+          if (!res.ok) {
+            console.error(
+              "Failed to generate video thumbnails:",
+              res.error,
+              metadata.value,
+            );
+          }
+        }
+
         break;
     }
 

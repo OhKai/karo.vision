@@ -285,3 +285,48 @@ export const getFilesystemInfos = async (paths: string[]) => {
 
   return infos;
 };
+
+export const generateVideoThumbnails = async (
+  thumbPattern: string,
+  filePath: string,
+  fileResolution: { width: number; height: number },
+  // The thumb size is the max size of a tile x2 for retina displays.
+  size: "thumb" | "seeker" = "thumb",
+  timestamps: string[] = ["12%"],
+) => {
+  const ffmpegCommand = ffmpeg(filePath);
+  // Ensure thumbnails directory exists.
+  const thumbDir = path.join(path.dirname(filePath), ".hc_thumbs");
+
+  try {
+    // Note: The recursive option prevents an error if the directory already exists.
+    await fs.mkdir(thumbDir, { recursive: true });
+  } catch (err) {
+    return result.error(err as NodeJS.ErrnoException);
+  }
+
+  // Calculate the thumbnail size based on the file resolution.
+  const ratio = fileResolution.width / fileResolution.height;
+  const biggerWidth = 16 / 9 <= ratio;
+  const thumbSize =
+    size === "thumb"
+      ? biggerWidth
+        ? `900x${Math.round(900 * (1 / ratio))}`
+        : `${Math.round(506 * ratio)}x506`
+      : "200x200";
+
+  try {
+    await new Promise((resolve, reject) =>
+      ffmpegCommand.on("end", resolve).on("error", reject).screenshots({
+        timestamps: timestamps,
+        filename: thumbPattern,
+        folder: thumbDir,
+        size: thumbSize,
+      }),
+    );
+  } catch (err) {
+    return result.error(err as Error);
+  }
+
+  return result.ok();
+};

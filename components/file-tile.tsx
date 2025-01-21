@@ -13,7 +13,10 @@ const FileTile = ({
   return (
     <div
       {...divProps}
-      className={cn("flex flex-col bg-muted rounded shadow-sm", className)}
+      className={cn(
+        "flex flex-col bg-muted group rounded shadow-sm hover:bg-[#fafafa]",
+        className,
+      )}
       ref={ref}
     >
       {children}
@@ -30,7 +33,10 @@ FileTile.Top = ({
 }) => {
   return (
     <div
-      className={cn("shrink-0 overflow-hidden rounded-t relative", className)}
+      className={cn(
+        "shrink-0 overflow-hidden rounded-t relative bg-secondary flex justify-center group-hover:bg-input",
+        className,
+      )}
     >
       {children}
     </div>

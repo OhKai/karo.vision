@@ -14,7 +14,7 @@ const FileCard = ({
     <div
       {...divProps}
       className={cn(
-        "flex bg-muted rounded shadow-sm max-w-[800px] w-full",
+        "flex bg-muted hover:bg-[#fafafa] group rounded shadow-sm max-w-[800px] w-full",
         className,
       )}
       ref={ref}
@@ -35,7 +35,7 @@ FileCard.Left = ({
   return (
     <div
       className={cn(
-        "w-1/2 shrink-0 overflow-hidden rounded-l relative",
+        "w-1/2 shrink-0 overflow-hidden rounded-l relative bg-secondary group-hover:bg-input flex justify-center items-center h-[225px]",
         className,
       )}
     >
@@ -77,7 +77,7 @@ FileCard.Right = ({
           </h4>
           <h3
             title={content.title ?? content.name}
-            className="text-xl font-medium tracking-[0.25px] mb-5 truncate whitespace-break-spaces after:content-[''] after:block after:absolute after:bg-gradient-to-b after:from-transparent after:to-muted after:w-[372px] after:h-[40px] after:bottom-0 relative grow"
+            className="text-xl font-medium tracking-[0.25px] mb-5 truncate whitespace-break-spaces after:content-[''] after:block after:absolute after:bg-gradient-to-b after:from-transparent after:to-muted after:w-[372px] after:h-[40px] after:bottom-0 group-hover:after:to-[#fafafa] relative grow"
           >
             {content.title ?? content.name}
           </h3>

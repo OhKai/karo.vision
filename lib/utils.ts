@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { ErrorResult, Result, ValueResult } from "./typescript-utils";
+import { PORT } from "@/config";
 
 export const result = {
   ok: <T>(value?: T) => ({ ok: true, value }) as ValueResult<T>,
@@ -101,3 +102,18 @@ export function roundFPS(fps: string) {
     return fps;
   }
 }
+
+export const fileURL = (fileId: number, download = false, token?: string) => {
+  const queryParams = new URLSearchParams({
+    ...(download ? { download: "1" } : {}),
+    ...(token ? { token } : {}),
+  });
+  return `${process.env.NODE_ENV === "development" ? `http://${location.hostname}:${PORT}` : ""}/files/${fileId}${queryParams.toString()}`;
+};
+
+export const fileThumbURL = (fileId: number, token?: string) => {
+  const queryParams = new URLSearchParams({
+    ...(token ? { token } : {}),
+  });
+  return `${process.env.NODE_ENV === "development" ? `http://${location.hostname}:${PORT}` : ""}/files/${fileId}/thumb${queryParams.toString()}`;
+};

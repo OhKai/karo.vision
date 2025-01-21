@@ -24,6 +24,9 @@ import MediaThemeYtElement from "player.style/yt.js";
 import MediaThemeYt from "player.style/yt/react";
 import { useEffect, useRef, useState } from "react";
 import MetaEditor from "./meta-editor";
+import { fileURL } from "@/lib/utils";
+import { useParams, usePathname } from "next/navigation";
+import PlayerError from "./player-error";
 
 const Player = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -31,6 +34,12 @@ const Player = () => {
   const [isUserInactive, setUserInactive] = useState(true);
   const [isMediaPaused, setMediaPaused] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [isConvertable, setIsConvertable] = useState(false);
+  const params = useParams();
+  // TODO: remove this test to see what it is in production
+  console.log(params);
+  // Note: This should always be a number since we check it server-side before returning this page.
+  const videoId = parseInt(usePathname().split("/").pop()!);
 
   useEffect(() => {
     const player = playerRef.current;
@@ -44,13 +53,23 @@ const Player = () => {
       setMediaPaused(e.detail);
     };
 
+    const handleErrorCode = (e: any) => {
+      // Code 4 = source not supported
+      if (e.detail === 4) {
+        // TODO: Only show this for viable formats?
+        setIsConvertable(true);
+      }
+    };
+
     // Event types: https://media-chrome.mux.dev/examples/vanilla/state-change-events-demo.html
     player.addEventListener("userinactivechange", handleUserInactive);
     player.addEventListener("mediapaused", handlePause);
+    player.addEventListener("mediaerrorcode", handleErrorCode);
 
     return () => {
       player.removeEventListener("userinactivechange", handleUserInactive);
       player.removeEventListener("mediapaused", handlePause);
+      player.removeEventListener("mediaerrorcode", handleErrorCode);
     };
   }, []);
 
@@ -66,15 +85,21 @@ const Player = () => {
       >
         <House />
       </Button>
-      <MediaThemeYt className="w-full h-full" ref={playerRef}>
-        <video
-          slot="media"
-          className="w-full h-full bg-foreground"
-          src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%200.7923510988921678.mp4"
-          playsInline
-          autoPlay
-        ></video>
-      </MediaThemeYt>
+      {isConvertable ? (
+        <div className="w-full h-full bg-secondary flex items-center justify-center">
+          <PlayerError />
+        </div>
+      ) : (
+        <MediaThemeYt className="w-full h-full" ref={playerRef}>
+          <video
+            slot="media"
+            className="w-full h-full bg-foreground"
+            src={fileURL(videoId)}
+            playsInline
+            autoPlay
+          ></video>
+        </MediaThemeYt>
+      )}
       <div
         className="md:w-[350px] shrink-0 bg-white flex flex-col px-4 py-4 relative md:data-[opened=false]:-mr-[350px] mr-0 md:transition-all md:duration-500 group/sidebar"
         data-opened={isSidebarOpen}

@@ -22,14 +22,18 @@ export type SearchSortBy =
 
 type SearchBarProps = {
   className?: string;
+  value: string[];
   floating?: boolean;
   searchOptionsNode?: React.ReactNode;
+  onChange: (search: string[]) => void;
 };
 
 const SearchBar = ({
   className,
+  value,
   floating = false,
   searchOptionsNode,
+  onChange,
 }: SearchBarProps) => {
   return (
     <div
@@ -57,6 +61,8 @@ const SearchBar = ({
           spellCheck={false}
           placeholder="Search Files, Tags, Notes ..."
           className="rounded-full h-[42px] px-5 col-start-2 font-medium focus-within:shadow-[0_2px_8px_-2px_hsl(var(--foreground)_/_8%)] text-title"
+          value={value[0]}
+          onChange={(e) => onChange([e.target.value])}
         />
         <Popover>
           <PopoverTrigger asChild>

@@ -19,25 +19,6 @@ import { CircleHelp } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-type VideosTableProps = {
-  className?: string;
-  videosPages?: {
-    fileId: number;
-    duration: number;
-    resumeTime: number | null;
-    file: {
-      topic: string | null;
-      title: string | null;
-      tags: string[] | null;
-      dirname: string;
-      createdAt: Date;
-      size: number;
-      name: string;
-    };
-  }[][];
-  ref?: React.Ref<HTMLTableRowElement>;
-};
-
 const TableThumbnailCell = ({ fileId }: { fileId: number }) => {
   // Wether this file is corrupted or not, in this case if we could find a thumbnail.
   const [hasThumb, setHasThump] = useState(true);
@@ -60,7 +41,32 @@ const TableThumbnailCell = ({ fileId }: { fileId: number }) => {
   );
 };
 
-const VideosTable = ({ className, videosPages, ref }: VideosTableProps) => {
+type VideosTableProps = {
+  className?: string;
+  videosPages?: {
+    fileId: number;
+    duration: number;
+    resumeTime: number | null;
+    file: {
+      topic: string | null;
+      title: string | null;
+      tags: string[] | null;
+      dirname: string;
+      createdAt: Date;
+      size: number;
+      name: string;
+    };
+  }[][];
+  isPending?: boolean;
+  ref?: React.Ref<HTMLTableRowElement>;
+};
+
+const VideosTable = ({
+  className,
+  videosPages,
+  isPending,
+  ref,
+}: VideosTableProps) => {
   const router = useRouter();
 
   return (
@@ -96,7 +102,7 @@ const VideosTable = ({ className, videosPages, ref }: VideosTableProps) => {
                 containIntrinsicHeight: "49.5px",
               }}
               onClick={() => router.push(`/videos/${video.fileId}`)}
-              className="cursor-pointer"
+              className={cn("cursor-pointer", { "animate-pulse": isPending })}
             >
               <TableThumbnailCell fileId={video.fileId} />
               <TableCell className="md:w-[100px] truncate md:max-w-[100px] max-w-[65px] max-md:px-2">

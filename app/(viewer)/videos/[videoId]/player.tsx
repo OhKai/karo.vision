@@ -27,6 +27,7 @@ import MetaEditor from "./meta-editor";
 import { fileURL } from "@/lib/utils";
 import { useParams, usePathname } from "next/navigation";
 import PlayerError from "./player-error";
+import Link from "next/link";
 
 const Player = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -79,12 +80,14 @@ const Player = () => {
       data-userinactive={isUserInactive}
       data-mediapaused={isMediaPaused}
     >
-      <Button
-        className="absolute left-[9px] top-4 backdrop-blur-lg bg-black/30 group-data-[userinactive=true]:group-data-[mediapaused=false]:[&:not(:hover)]:opacity-0 transition-opacity z-10"
-        title="Back to home page"
-      >
-        <House />
-      </Button>
+      <Link href="/">
+        <Button
+          className="absolute left-[9px] top-4 backdrop-blur-lg bg-black/30 group-data-[userinactive=true]:group-data-[mediapaused=false]:[&:not(:hover)]:opacity-0 transition-opacity z-10"
+          title="Back to home page"
+        >
+          <House />
+        </Button>
+      </Link>
       {isConvertable ? (
         <div className="w-full h-full bg-secondary flex items-center justify-center">
           <PlayerError />

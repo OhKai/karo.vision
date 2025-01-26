@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import SearchBar from "@/components/search-bar";
 import { useViewStore } from "@/lib/use-view-store";
 import ViewToggleGroup from "@/components/view-toggle-group";
@@ -13,18 +12,35 @@ import { useIntersectionObserver } from "@/lib/use-intersection-observer";
 import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
 import VideoCard from "./video-card";
 import VideoTile from "./video-tile";
+import { useQueryParams } from "@/lib/use-query-params";
+import { useState } from "react";
+import { useDebounceCallback } from "@/lib/use-debounce-callback";
 
 const Home = () => {
   const videosView = useViewStore((state) => state.videos);
+  const { query, updateQuery } = useQueryParams();
+  // Get search query from URL.
+  const search = [query.get("search") ?? ""];
+  // Temporarily store search input to debounce it.
+  const [tempSearch, setTempSearch] = useState(search);
+  const [updateSearch, clearDebounce] = useDebounceCallback(
+    (search: string[]) => {
+      // Update new search query in URL.
+      updateQuery("search", search[0]);
+    },
+    300,
+  );
   const {
     data: videosData,
     isPending,
+    isPlaceholderData,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
   } = trpc.videos.list.useInfiniteQuery(
     {
-      direction: "forward",
+      search: search.filter((q) => q.length > 0),
+      seed: 12345,
     },
     {
       // TODO: I plan to have SSE updates for server-side changes so we should not need revalidations?
@@ -34,8 +50,10 @@ const Home = () => {
         lastPage.length === INFINITE_SCROLL_PAGE_SIZE
           ? pages.length * INFINITE_SCROLL_PAGE_SIZE
           : undefined,
+      placeholderData: (prev) => prev,
     },
   );
+
   // The ref callback can be used on multiple elements. It will set the same entry and call the same
   // onChange handler.
   const [_tripwireRef, entry] = useIntersectionObserver<HTMLDivElement>({
@@ -53,6 +71,12 @@ const Home = () => {
       <SearchBar
         className="fixed top-[74px] z-40"
         floating
+        value={tempSearch}
+        onChange={(newSearch) => {
+          setTempSearch(newSearch);
+          // Debounce search update.
+          updateSearch(newSearch);
+        }}
         searchOptionsNode={
           <>
             <ViewToggleGroup
@@ -71,10 +95,20 @@ const Home = () => {
       />
       {isPending ? (
         <div>Loading...</div>
-      ) : videosData?.pages?.length === 0 ? (
-        <div>No videos found</div>
+      ) : (videosData?.pages?.[0].length ?? 0) === 0 ? (
+        isPlaceholderData ? (
+          <div>Loading</div>
+        ) : (
+          <div className="text-lg font-extralight text-accent-foreground mt-12">
+            No videos found
+          </div>
+        )
       ) : videosView === "list" ? (
-        <VideosTable videosPages={videosData?.pages} ref={tripwireRef} />
+        <VideosTable
+          videosPages={videosData?.pages}
+          ref={tripwireRef}
+          isPending={isPlaceholderData}
+        />
       ) : videosView === "cards" ? (
         <div className="flex flex-col gap-3.5 px-3">
           {videosData?.pages?.map((page, pageIndex) =>

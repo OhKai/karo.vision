@@ -23,17 +23,21 @@ export type SearchSortBy =
 type SearchBarProps = {
   className?: string;
   value: string[];
+  sortValue: SearchSortBy;
   floating?: boolean;
   searchOptionsNode?: React.ReactNode;
   onChange: (search: string[]) => void;
+  onSortChange: (sort: SearchSortBy) => void;
 };
 
 const SearchBar = ({
   className,
   value,
+  sortValue,
   floating = false,
   searchOptionsNode,
   onChange,
+  onSortChange,
 }: SearchBarProps) => {
   return (
     <div
@@ -95,7 +99,11 @@ const SearchBar = ({
             : "",
         )}
       >
-        <SortToggleGroup className="w-[278px] border-none bg-background/75" />
+        <SortToggleGroup
+          className="w-[278px] border-none bg-background/75"
+          value={sortValue}
+          onChange={onSortChange}
+        />
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ export const useQueryParams = () => {
 
   const updateQuery = useCallback(
     (key: string, value: string) => {
-      const newParams = new URLSearchParams(query.toString());
+      const newParams = new URLSearchParams(window.location.search);
       if (value) {
         newParams.set(key, value);
       } else {

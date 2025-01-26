@@ -1,6 +1,6 @@
 "use client";
 
-import SearchBar from "@/components/search-bar";
+import SearchBar, { SearchSortBy } from "@/components/search-bar";
 import { useViewStore } from "@/lib/use-view-store";
 import ViewToggleGroup from "@/components/view-toggle-group";
 import SortToggleGroup from "@/components/sort-toggle-group";
@@ -21,6 +21,8 @@ const Home = () => {
   const { query, updateQuery } = useQueryParams();
   // Get search query from URL.
   const search = [query.get("search") ?? ""];
+  const sort = (query.get("sort") ?? "date-desc") as SearchSortBy;
+  const seed = parseInt(query.get("seed") ?? "0");
   // Temporarily store search input to debounce it.
   const [tempSearch, setTempSearch] = useState(search);
   const [updateSearch, clearDebounce] = useDebounceCallback(
@@ -40,7 +42,8 @@ const Home = () => {
   } = trpc.videos.list.useInfiniteQuery(
     {
       search: search.filter((q) => q.length > 0),
-      seed: 12345,
+      seed: sort === "random" ? seed : undefined,
+      sort,
     },
     {
       // TODO: I plan to have SSE updates for server-side changes so we should not need revalidations?
@@ -65,6 +68,15 @@ const Home = () => {
   });
   const tripwireRef =
     hasNextPage && isFetchingNextPage ? undefined : _tripwireRef;
+  const onSortChange = (newSort: SearchSortBy) => {
+    updateQuery("sort", newSort);
+    if (newSort === "random") {
+      // Reset search when sorting by random.
+      updateQuery("seed", Math.floor(Math.random() * 2147483648).toString());
+    } else {
+      updateQuery("seed", "");
+    }
+  };
 
   return (
     <div className="mt-[134px] flex flex-col gap-8 items-center pb-4">
@@ -77,13 +89,19 @@ const Home = () => {
           // Debounce search update.
           updateSearch(newSearch);
         }}
+        sortValue={sort}
+        onSortChange={onSortChange}
         searchOptionsNode={
           <>
             <ViewToggleGroup
               viewKey="videos"
               enabledViews={["list", "cards", "tiles"]}
             />
-            <SortToggleGroup className="flex md:hidden" />
+            <SortToggleGroup
+              className="flex md:hidden"
+              value={sort}
+              onChange={onSortChange}
+            />
             <div className="flex items-center space-x-2">
               <Switch id="open-blank" />
               <Label htmlFor="open-blank" className="text-xs">

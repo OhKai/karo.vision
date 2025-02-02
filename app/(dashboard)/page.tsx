@@ -17,7 +17,19 @@ import { useState } from "react";
 import { useDebounceCallback } from "@/lib/use-debounce-callback";
 
 const Home = () => {
+  const utils = trpc.useUtils();
   const videosView = useViewStore((state) => state.videos);
+  const [prevView, setPrevView] = useState(videosView);
+
+  // https://react.dev/reference/react/useState#storing-information-from-previous-renders
+  if (prevView !== videosView) {
+    setPrevView(videosView);
+    // Wipe cache and force a re-fetch when view changes to avoid performance issues when switching
+    // views with a lot of data. Alternative would be to slowly add the cached data but this way we
+    // always have fresh data and everything is local (fast) anyways.
+    utils.videos.list.reset();
+  }
+
   const { query, updateQuery } = useQueryParams();
   // Get search query from URL.
   const search = [query.get("search") ?? ""];

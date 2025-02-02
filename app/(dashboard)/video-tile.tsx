@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useVideoPreview } from "./video-card";
 import FileTile from "@/components/file-tile";
 import {
+  cn,
   convertSecondsToRoundedString,
   fileThumbURL,
   fileURL,
@@ -35,6 +36,7 @@ const VideoTile = ({
   // Wether this file is corrupted or not, in this case if we could find a thumbnail.
   const [hasThumb, setHasThump] = useState(true);
   const [isPlayable, setIsPlayable] = useState(true);
+  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
   return (
     <Link href={`/videos/${video.fileId}`}>
@@ -76,9 +78,20 @@ const VideoTile = ({
               src={fileThumbURL(video.fileId)}
               loading="lazy"
               style={{ aspectRatio: "16 / 9" }}
-              className="w-full object-contain"
+              className={cn(
+                "w-full object-contain transition-opacity duration-300",
+                {
+                  "opacity-0": !hasInitiallyLoaded,
+                },
+              )}
               onError={(e) => {
                 setHasThump(false);
+              }}
+              onLoad={(e) => {
+                if (!hasInitiallyLoaded) {
+                  e.currentTarget.classList.add("opacity-100");
+                  setHasInitiallyLoaded(true);
+                }
               }}
             />
           )}

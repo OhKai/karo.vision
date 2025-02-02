@@ -1,5 +1,6 @@
 import FileCard from "@/components/file-card";
 import {
+  cn,
   convertSecondsToRoundedString,
   fileThumbURL,
   fileURL,
@@ -95,6 +96,7 @@ const VideoCard = ({
   // Wether this file is corrupted or not, in this case if we could find a thumbnail.
   const [hasThumb, setHasThump] = useState(true);
   const [isPlayable, setIsPlayable] = useState(true);
+  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
   return (
     <Link href={`/videos/${video.fileId}`}>
@@ -127,9 +129,20 @@ const VideoCard = ({
             <img
               src={fileThumbURL(video.fileId)}
               loading="lazy"
-              className="max-w-full max-h-full"
+              className={cn(
+                "max-w-full max-h-full transition-opacity duration-300",
+                {
+                  "opacity-0": !hasInitiallyLoaded,
+                },
+              )}
               onError={(e) => {
                 setHasThump(false);
+              }}
+              onLoad={(e) => {
+                if (!hasInitiallyLoaded) {
+                  e.currentTarget.classList.add("opacity-100");
+                  setHasInitiallyLoaded(true);
+                }
               }}
             />
           )}

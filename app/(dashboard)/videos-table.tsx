@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 const TableThumbnailCell = ({ fileId }: { fileId: number }) => {
   // Wether this file is corrupted or not, in this case if we could find a thumbnail.
   const [hasThumb, setHasThump] = useState(true);
+  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
   return (
     <TableCell className="md:w-[92px] md:min-w-[92px] w-[84px] min-w-[84px] h-[48.5px] p-1 md:pl-4 pl-2 flex justify-center items-center">
@@ -31,9 +32,20 @@ const TableThumbnailCell = ({ fileId }: { fileId: number }) => {
         <img
           src={fileThumbURL(fileId)}
           loading="lazy"
-          className="rounded max-w-[72px] max-h-[40.5px]"
+          className={cn(
+            "rounded max-w-[72px] max-h-[40.5px] transition-opacity duration-300",
+            {
+              "opacity-0": !hasInitiallyLoaded,
+            },
+          )}
           onError={(e) => {
             setHasThump(false);
+          }}
+          onLoad={(e) => {
+            if (!hasInitiallyLoaded) {
+              e.currentTarget.classList.add("opacity-100");
+              setHasInitiallyLoaded(true);
+            }
           }}
         />
       )}

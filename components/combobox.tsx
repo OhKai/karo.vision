@@ -21,39 +21,72 @@ import { CommandList } from "cmdk";
 
 type ComboboxProps<T> = {
   items: { value: T; tag?: string; label: React.ReactNode }[];
-  defaultValues?: T[];
+  defaultValue?: T[] | T;
   name: string;
   canAdd?: boolean;
   multiple?: boolean;
   emptyLabel?: (input: string) => React.ReactNode;
   popoverClassName?: string;
+  value?: T[] | T;
+  onChange?: (value: T[] | T) => void;
 } & ButtonProps;
 
 const Combobox = <T extends string | number>({
   items,
-  defaultValues = [],
+  defaultValue = [],
   name,
   canAdd = false,
   multiple = false,
   emptyLabel,
   popoverClassName,
+  value,
+  onChange,
   ...buttonProps
 }: ComboboxProps<T>) => {
+  const [controlled] = React.useState(value !== undefined);
+
+  if (!controlled && value !== undefined) {
+    console.error(
+      `Warning: A component is changing from uncontrolled to controlled. ` +
+        `This may be caused by the value changing from undefined to a defined value, ` +
+        `which should not happen. Decide between using a controlled or uncontrolled ` +
+        `input element for the lifetime of the component.`,
+    );
+  }
+
+  if (controlled && value === undefined) {
+    console.error(
+      `Warning: A component is changing from controlled to uncontrolled. ` +
+        `This may be caused by the value changing from a defined value to undefined, ` +
+        `which should not happen. Decide between using a controlled or uncontrolled ` +
+        `input element for the lifetime of the component.`,
+    );
+  }
+
   const [open, setOpen] = React.useState(false);
-  const [values, setValues] = React.useState<T[]>(defaultValues);
+  const [values, setValues] = controlled
+    ? ([Array.isArray(value) ? value : value ? [value] : [], () => {}] as [
+        T[],
+        React.Dispatch<React.SetStateAction<T[]>>,
+      ])
+    : React.useState<T[]>(
+        Array.isArray(defaultValue)
+          ? defaultValue
+          : defaultValue
+            ? [defaultValue]
+            : [],
+      );
   const [inputValue, setInputValue] = React.useState("");
   // To track if the default values have been manually changed
-  const hasChanged = React.useRef(false);
+  const [hasChanged, setHasChanged] = React.useState(false);
 
-  React.useEffect(() => {
-    if (!hasChanged.current) {
-      setValues((oldValues) =>
-        JSON.stringify(oldValues) !== JSON.stringify(defaultValues)
-          ? defaultValues
-          : oldValues,
-      );
-    }
-  }, [defaultValues]);
+  if (
+    !controlled &&
+    !hasChanged &&
+    JSON.stringify(values) !== JSON.stringify(defaultValue)
+  ) {
+    setValues(Array.isArray(defaultValue) ? defaultValue : [defaultValue]);
+  }
 
   const addedValues = values.filter(
     (value) => !items.find((item) => item.value === value),
@@ -78,11 +111,16 @@ const Combobox = <T extends string | number>({
 
   const onSelect = (value: T) => {
     if (values.includes(value)) {
-      setValues(values.filter((val) => val !== value));
+      const newValues = values.filter((val) => val !== value);
+      // Noop on controlled.
+      setValues(newValues);
+      onChange?.(multiple ? newValues : (newValues[0] ?? ""));
     } else {
-      setValues(multiple ? [...values, value] : [value]);
+      const newValues = multiple ? [...values, value] : [value];
+      setValues(newValues);
+      onChange?.(multiple ? newValues : (newValues[0] ?? ""));
     }
-    hasChanged.current = true;
+    setHasChanged(true);
 
     if (!multiple) {
       setOpen(false);
@@ -123,8 +161,10 @@ const Combobox = <T extends string | number>({
                       className="ml-1 opacity-60 transition-opacity duration-200 ease-in-out hover:cursor-pointer hover:opacity-100"
                       onClick={(e) => {
                         e.preventDefault();
-                        setValues(values.filter((v) => v !== value));
-                        hasChanged.current = true;
+                        const newValues = values.filter((v) => v !== value);
+                        setValues(newValues);
+                        onChange?.(multiple ? newValues : (newValues[0] ?? ""));
+                        setHasChanged(true);
                       }}
                     />
                   </Badge>
@@ -139,13 +179,22 @@ const Combobox = <T extends string | number>({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <input type="hidden" name={name} value={values.join("|")} />
+      {values.map((value) => (
+        <input
+          key={value}
+          type="hidden"
+          name={name + (multiple ? "[]" : "")}
+          value={value}
+          readOnly
+          disabled
+        />
+      ))}
       <PopoverContent className={cn("w-[322px] p-0", popoverClassName)}>
         <Command>
           <CommandInput
             value={inputValue}
             onValueChange={setInputValue}
-            placeholder="Search ..."
+            placeholder={canAdd ? "Search or create new ..." : "Search ..."}
           />
           <CommandList>
             <CommandEmpty>

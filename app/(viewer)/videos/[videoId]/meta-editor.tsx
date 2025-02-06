@@ -13,35 +13,65 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { trpc } from "@/lib/trpc-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Info } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  topic: z.string().optional(),
-  title: z.string().optional(),
-  tags: z.string().optional(),
-  notes: z.string().optional(),
+  topic: z.string(),
+  title: z.string(),
+  tags: z.array(z.string()),
+  description: z.string(),
 });
 
 type MetaEditorProps = {
   onClose: () => void;
+  video: {
+    file: {
+      id: number;
+      name: string;
+      topic: string | null;
+      title: string | null;
+      tags: string[] | null;
+    };
+    description: string | null;
+  };
 };
 
-const MetaEditor = ({ onClose }: MetaEditorProps) => {
+const MetaEditor = ({ onClose, video }: MetaEditorProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      topic: "",
-      tags: "a|b",
+      topic: video.file.topic ?? "",
+      title: video.file.title ?? "",
+      tags: video.file.tags ?? [],
+      description: video.description ?? "",
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const utils = trpc.useUtils();
+
+  const mutation = trpc.videos.update.useMutation({
+    onSuccess: (data, vars) => {
+      // Since everything is local, we can be aggressive with busting the cache.
+      utils.videos.list.invalidate();
+      utils.videos.byId.setData(video.file.id, data);
+
+      onClose();
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    mutation.mutate({
+      videoId: video.file.id,
+      // Ensure empty values stay null.
+      topic: values.topic || null,
+      title: values.title || null,
+      tags: values.tags.length === 0 ? null : values.tags,
+      description: values.description || null,
+    });
   }
 
   return (
@@ -59,7 +89,6 @@ const MetaEditor = ({ onClose }: MetaEditorProps) => {
                 <FormLabel>Topic</FormLabel>
                 <FormControl>
                   <Combobox
-                    defaultValues={field.value ? [field.value] : []}
                     canAdd
                     items={["Youtube", "Twitch"].map((site) => ({
                       value: site,
@@ -93,19 +122,22 @@ const MetaEditor = ({ onClose }: MetaEditorProps) => {
                   Give a custom title to your video. This will not change the
                   filename on disk. Special characters are allowed.
                 </FormDescription>
+                <div className="flex items-center text-xs text-secondary-foreground break-all">
+                  <Info className="shrink-0 w-4 h-4 mr-1" /> Filename:&nbsp;
+                  {video.file.name}
+                </div>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="title"
+            name="tags"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Tags</FormLabel>
                 <FormControl>
                   <Combobox
-                    defaultValues={field.value?.split("|") ?? []}
                     canAdd
                     multiple
                     items={["asd", "asdsfd"].map((tag) => ({
@@ -125,7 +157,7 @@ const MetaEditor = ({ onClose }: MetaEditorProps) => {
           />
           <FormField
             control={form.control}
-            name="notes"
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Notes</FormLabel>

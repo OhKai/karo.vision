@@ -24,10 +24,11 @@ import MediaThemeYtElement from "player.style/yt.js";
 import MediaThemeYt from "player.style/yt/react";
 import { useEffect, useRef, useState } from "react";
 import MetaEditor from "./meta-editor";
-import { fileURL } from "@/lib/utils";
+import { convertBytesToRoundedString, fileURL, roundFPS } from "@/lib/utils";
 import { useParams, usePathname } from "next/navigation";
 import PlayerError from "./player-error";
 import Link from "next/link";
+import { trpc } from "@/lib/trpc-client";
 
 const Player = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -41,6 +42,7 @@ const Player = () => {
   console.log(params);
   // Note: This should always be a number since we check it server-side before returning this page.
   const videoId = parseInt(usePathname().split("/").pop()!);
+  const { data: video, isPending } = trpc.videos.byId.useQuery(videoId);
 
   useEffect(() => {
     const player = playerRef.current;
@@ -114,87 +116,38 @@ const Player = () => {
         >
           <ArrowRightToLine className="group-data-[opened=false]/sidebar:-rotate-180 transition-transform duration-500" />
         </Button>
-        {isEditing ? (
-          <MetaEditor onClose={() => setIsEditing(false)} />
+        {isPending ? null : !video ? (
+          <div>Error</div>
+        ) : isEditing ? (
+          <MetaEditor video={video} onClose={() => setIsEditing(false)} />
         ) : (
           <>
             <h4 className="text-title text-[15px] font-medium mb-[3px]">
-              Youtube
+              {video.file.topic}
             </h4>
-            <h3 className="text-xl font-medium tracking-[0.25px] mb-5">
-              Credit Card
+            <h3 className="text-xl font-medium tracking-[0.25px] mb-5 break-words">
+              {video.file.title ?? video.file.name}
             </h3>
             <div className="flex flex-col grow overflow-auto px-4 -mx-4">
               <Tags
-                values={[
-                  "favoritesdssdldsf sdfkdsksdfsd abcddssdldsf sdfkdsksdfsd abcd dssdldsf sdfkdsksdfsd abcd",
-                  "ahhhhaa",
-                  "dssdldsf sdfkdsksdfsd",
-                  "sdfdsfdsfdsfdfs",
-                  "favorites2",
-                  "ahhhhaa2",
-                  "dssdldsf sdfkdsksdfsd2",
-                  "sdfdsfdsfdsfdfs2",
-                ]}
+                values={video.file.tags ?? []}
                 maxLines={2}
                 expandable
                 className="mb-7"
               />
               <div className="grid grid-cols-2 text-xs font-light justify-between text-secondary-foreground gap-2.5 mb-8">
-                <span>05.06.2024</span>
-                <span>1 GB</span>
-                <span>1024x720</span>
-                <span>60 FPS</span>
+                <span>{video.file.createdAt.toLocaleDateString()}</span>
+                <span>{convertBytesToRoundedString(video.file.size)}</span>
+                <span>
+                  {video.width}x{video.height}
+                </span>
+                <span>{roundFPS(video.framerate)} FPS</span>
                 <span className="truncate col-span-2">
-                  /downloads/new/downloads/new/downloads/new/downloads/new
+                  {video.file.dirname}
                 </span>
               </div>
               <div className="text-sm text-secondary-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                blandit, justo nec lacin ia fermentum, nunc nisl ultricies nunc,
-                nec a ugue lacus augue sit amet erat. Nulla facilisi. Ut sit
-                amet libero vitae magna fringilla aliquam. Nam euismod, turpis
-                ac malesuada tincidunt, odio mi ultricies lacus, a varius mi
-                odio nec ligula. Phasellus ac ligula nec nunc ultricies
-                ultricies. Nullam blandit, justo nec lacinia fermentum, nunc
-                nisl ultricies nunc, nec augue lacus augue sit amet erat. Nulla
-                facilisi. Ut sit amet libero vitae magna fringilla aliquam. Nam
-                euismod, turpis ac malesuada tincidunt, odio mi ultricies lacus,
-                a varius mi odio nec ligula. Phasellus ac ligula nec nunc
-                ultricies ultricies. Nullam blandit, justo nec lacinia
-                fermentum, nunc nisl ultricies nunc, nec augue lacus augue sit
-                amet erat. Nulla facilisi. Ut sit amet libero vitae magna
-                fringilla aliquam. Nam euismod, tur pis ac malesuada tincidunt,
-                odio mi ultricies lacus, a varius mi odio nec ligula. Phasellus
-                ac ligula nec nunc ultricies ultricies. Nullam blandit, justo
-                nec lacinia fermentum, nunc nisl ultricies nunc, nec augue lacus
-                augue sit amet erat. Nulla facilisi. Ut sit amet libero vitae
-                magna fringilla aliquam. Nam euismod, turpis ac malesuada
-                tincidunt, odio mi ultricies lacus, a varius mi odio nec ligula.
-                Phasellus ac ligula nec nunc ultricies ultricies. Nullam
-                blandit, justo nec lacinia fermentum, nunc nisl ultricies nunc,
-                nec augue lacus augue sit amet erat. Nulla facilisi. Ut sit amet
-                libero vitae magna fringilla aliquam. Nam euismod, tur pis ac
-                malesuada tincidunt, odio mi ultricies lacus, a varius mi odio
-                nec ligula. Phasellus ac ligula nec nunc ultricies ultricies.
-                Nullam blandit, justo nec lacinia ferment um, nunc nisl
-                ultricies nunc, nec augue lacus augue sit amet erat. Nulla
-                facilisi. Ut sit amet libero vitae magna fringilla aliquam. Nam
-                eu ismod, turpis ac malesuada tincidunt, odio mi ultricies
-                lacus, a varius mi odio nec ligula. Phasellus ac ligula nec nunc
-                ultricies ultricies. Nullam blandit, justo nec lacinia
-                fermentum, nunc nisl ultricies nunc, nec augue lacus augue sit
-                amet erat. Nulla facilisi. Ut sit amet libero vitae magna
-                fringilla aliquam. Nam euismod, tur pis ac malesuada tincidunt,
-                odio mi ultricies lacus, a varius mi odio nec ligula. Phasellus
-                ac ligula nec nunc ultricies ultricies. Nullam blandit, justo
-                nec lacinia ferment um, nunc nisl ultricies nunc, nec augue
-                lacus augue sit amet erat. Nulla facilisi. Ut sit amet libero
-                vitae magna fringilla aliquam. Nam eu ismod, turpis ac malesuada
-                tincidunt, odio mi ultricies lacus, a varius mi odio nec ligula.
-                Phasellus ac ligula nec nunc ultricies ultricies. Nullam
-                blandit, justo nec lacinia fermentum, nunc nisl ultricies nunc,
-                nec augue lacus augue sit amet erat. Nulla facilisi.
+                {video.description}
               </div>
             </div>
             <div className="flex gap-2.5 flex-col mt-3.5">

@@ -6,6 +6,24 @@ import { isNotNull, like, sql, eq, or, and, asc, desc } from "drizzle-orm";
 import { files, videos } from "../../db/schema";
 
 export const videosRouter = router({
+  byId: publicProcedure.input(z.number()).query(async ({ ctx, input }) => {
+    const res = await ctx.db
+      .select()
+      .from(videos)
+      .innerJoin(files, eq(videos.fileId, files.id))
+      .where(eq(videos.fileId, input))
+      .get();
+
+    if (!res) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "Video not found" });
+    }
+
+    return {
+      ...res.videos,
+      file: res.files,
+    };
+  }),
+
   list: publicProcedure
     .input(
       z.object({
@@ -78,5 +96,93 @@ export const videosRouter = router({
         ...row.videos,
         file: row.files,
       }));
+    }),
+
+  update: publicProcedure
+    .input(
+      z.object({
+        videoId: z.number(),
+        topic: z.string().nullish(),
+        title: z.string().nullish(),
+        tags: z.array(z.string().min(1)).nullish(),
+        description: z.string().nullish(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (
+        input.topic === undefined &&
+        input.title === undefined &&
+        input.tags === undefined &&
+        input.description === undefined
+      ) {
+        // Nothing to update (causes drizzle error).
+        const res = ctx.db
+          .select()
+          .from(videos)
+          .innerJoin(files, eq(videos.fileId, files.id))
+          .where(eq(videos.fileId, input.videoId))
+          .get();
+
+        if (!res) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Video not found",
+          });
+        }
+
+        return {
+          ...res.videos,
+          file: res.files,
+        };
+      }
+
+      // Start a transaction to ensure both updates succeed or both fail
+      return await ctx.db.transaction(async (tx) => {
+        // Update videos table
+        const videoUpdate = await tx
+          .update(videos)
+          .set({
+            description: input.description,
+          })
+          .where(eq(videos.fileId, input.videoId))
+          .run();
+
+        // Update files table
+        const fileUpdate = await tx
+          .update(files)
+          .set({
+            topic: input.topic,
+            title: input.title,
+            tags: input.tags,
+          })
+          .where(eq(files.id, input.videoId))
+          .run();
+
+        if (videoUpdate.changes === 0 || fileUpdate.changes === 0) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Video not found",
+          });
+        }
+
+        const res = ctx.db
+          .select()
+          .from(videos)
+          .innerJoin(files, eq(videos.fileId, files.id))
+          .where(eq(videos.fileId, input.videoId))
+          .get();
+
+        if (!res) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Video not found",
+          });
+        }
+
+        return {
+          ...res.videos,
+          file: res.files,
+        };
+      });
     }),
 });

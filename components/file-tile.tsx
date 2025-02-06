@@ -67,7 +67,7 @@ FileTile.Bottom = ({
       ) : (
         <>
           <h4 className="text-title text-[13px] font-medium">
-            {content.topic}
+            {content.topic ?? "•••"}
           </h4>
           <h3
             title={content.title ?? content.name}
@@ -75,7 +75,11 @@ FileTile.Bottom = ({
           >
             {content.title ?? content.name}
           </h3>
-          <Tags values={content.tags ?? []} maxLines={2} className="mb-2" />
+          {content.tags ? (
+            <Tags values={content.tags ?? []} maxLines={2} className="mb-2" />
+          ) : (
+            <div className="mb-2">&nbsp;</div>
+          )}
           <div className="flex text-[11px] font-light justify-between flex-1 items-end text-secondary-foreground gap-1">
             <span className="truncate" title={content.dirname}>
               {content.dirname}

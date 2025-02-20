@@ -84,7 +84,7 @@ const Player = () => {
     >
       <Link href="/">
         <Button
-          className="absolute left-[9px] top-4 backdrop-blur-lg bg-black/30 group-data-[userinactive=true]:group-data-[mediapaused=false]:[&:not(:hover)]:opacity-0 transition-opacity z-10"
+          className="absolute left-[9px] top-4 backdrop-blur-lg bg-black/30 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity z-10"
           title="Back to home page"
         >
           <House />
@@ -110,7 +110,7 @@ const Player = () => {
         data-opened={isSidebarOpen}
       >
         <Button
-          className="absolute -left-[57px] backdrop-blur-lg bg-black/30 group-data-[userinactive=true]:group-data-[mediapaused=false]:[&:not(:hover)]:opacity-0 transition-opacity hidden md:flex"
+          className="absolute -left-[57px] backdrop-blur-lg bg-black/30 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity hidden md:flex"
           onClick={() => setSidebarOpen(!isSidebarOpen)}
           title="Toggle sidebar"
         >

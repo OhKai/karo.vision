@@ -99,7 +99,7 @@ const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
           className="text-[11px] px-2 py-1 h-auto mt-2"
           onClick={() => setIsExpanded(true)}
         >
-          <SquarePlus className="!w-3 !h-3" /> Show All
+          <SquarePlus className="w-3! h-3!" /> Show All
         </Button>
       ) : null}
     </div>

@@ -119,7 +119,7 @@ const PhotosPage = () => {
             columnsCount={windowWidth < 768 ? 1 : windowWidth < 1400 ? 2 : 3}
             gutter="8px"
           >
-            <div className="flex bg-muted rounded shadow-sm">
+            <div className="flex bg-muted rounded shadow-xs">
               <Image
                 src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
                 alt=""
@@ -129,7 +129,7 @@ const PhotosPage = () => {
                 style={{ width: "100%" }}
               />
             </div>
-            <div className="flex bg-muted rounded shadow-sm">
+            <div className="flex bg-muted rounded shadow-xs">
               <Image
                 src="http://192.168.0.2:53852/fs?path=%2Fmedia%2Fpi%2FSeagate%20B%2F_lib%2Fpics%2F1024watermarked%2FDSC_0181.jpg"
                 alt=""
@@ -139,7 +139,7 @@ const PhotosPage = () => {
                 style={{ width: "100%" }}
               />
             </div>
-            <div className="flex bg-muted rounded shadow-sm">
+            <div className="flex bg-muted rounded shadow-xs">
               <Image
                 src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
                 alt=""
@@ -149,7 +149,7 @@ const PhotosPage = () => {
                 style={{ width: "100%", aspectRatio: "16 / 9" }}
               />
             </div>
-            <div className="flex bg-muted rounded shadow-sm">
+            <div className="flex bg-muted rounded shadow-xs">
               <Image
                 src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
                 alt=""
@@ -159,7 +159,7 @@ const PhotosPage = () => {
                 style={{ width: "100%", aspectRatio: "16 / 9" }}
               />
             </div>
-            <div className="flex bg-muted rounded shadow-sm">
+            <div className="flex bg-muted rounded shadow-xs">
               <Image
                 src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
                 alt=""
@@ -169,7 +169,7 @@ const PhotosPage = () => {
                 style={{ width: "100%", aspectRatio: "16 / 9" }}
               />
             </div>
-            <div className="flex bg-muted rounded shadow-sm">
+            <div className="flex bg-muted rounded shadow-xs">
               <Image
                 src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
                 alt=""
@@ -179,7 +179,7 @@ const PhotosPage = () => {
                 style={{ width: "100%", aspectRatio: "16 / 9" }}
               />
             </div>
-            <div className="flex bg-muted rounded shadow-sm">
+            <div className="flex bg-muted rounded shadow-xs">
               <Image
                 src="http://192.168.0.4:53852/fs?path=%2FVolumes%2FElements9%2Fdownloads%2FTwitch%20-%20__%20Barbie%20Suzy%20____%20%20(1).mp4.png"
                 alt=""

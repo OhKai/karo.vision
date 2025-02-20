@@ -10,7 +10,7 @@ const DashboardLayout = ({
 }>) => {
   return (
     <div className="flex flex-col justify-items-center min-h-screen pb-20">
-      <header className="grid grid-cols-3 items-center justify-items-center w-full md:px-6 px-2 text-muted-foreground border-b border-secondary h-[70px] fixed z-50 backdrop-blur bg-background/[97%]">
+      <header className="grid grid-cols-3 items-center justify-items-center w-full md:px-6 px-2 text-muted-foreground border-b border-secondary h-[70px] fixed z-50 backdrop-blur-sm bg-background/[97%]">
         <div className="items-center gap-2 justify-self-start select-none md:flex hidden">
           <Image
             src="/logo.png"
@@ -31,7 +31,7 @@ const DashboardLayout = ({
           variant="icon"
           title="Settings"
         >
-          <Settings className="!w-auto !h-auto" />
+          <Settings className="w-auto! h-auto!" />
         </Button>
       </header>
       <main className="mt-[70px] w-full">{children}</main>

@@ -77,7 +77,7 @@ const SearchBar = ({
               title="Search Options"
               onMouseDown={(e) => e.preventDefault()}
             >
-              <SlidersHorizontal className="!w-auto !h-auto" />
+              <SlidersHorizontal className="w-auto! h-auto!" />
             </Button>
           </PopoverTrigger>
           <PopoverContent

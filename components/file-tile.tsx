@@ -14,7 +14,7 @@ const FileTile = ({
     <div
       {...divProps}
       className={cn(
-        "flex flex-col bg-muted group rounded shadow-sm hover:bg-[#fafafa]",
+        "flex flex-col bg-muted group rounded shadow-xs hover:bg-[#fafafa]",
         className,
       )}
       ref={ref}

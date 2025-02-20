@@ -30,6 +30,7 @@ export const filesRelations = relations(files, ({ one, many }) => ({
     references: [rootFolders.id],
   }),
   video: one(videos),
+  photo: one(photos),
 }));
 
 export const rootFolders = sqliteTable("root_folders", {
@@ -66,6 +67,23 @@ export const videos = sqliteTable("videos", {
 export const videosRelations = relations(videos, ({ one }) => ({
   file: one(files, {
     fields: [videos.fileId],
+    references: [files.id],
+  }),
+}));
+
+export const photos = sqliteTable("photos", {
+  fileId: int("file_id")
+    .primaryKey()
+    .references(() => files.id, { onDelete: "cascade" }),
+  width: int().notNull(),
+  height: int().notNull(),
+  format: text().notNull(),
+  description: text(),
+});
+
+export const photosRelations = relations(photos, ({ one }) => ({
+  file: one(files, {
+    fields: [photos.fileId],
     references: [files.id],
   }),
 }));

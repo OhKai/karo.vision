@@ -16,6 +16,7 @@ const SortToggleGroup = ({
   return (
     <ToggleGroup
       type="single"
+      size="xs"
       className={cn("justify-stretch", className)}
       value={value.split("-")[0] as "name" | "date" | "size" | "random"}
       onMouseDown={(e) => e.preventDefault()}

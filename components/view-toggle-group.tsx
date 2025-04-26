@@ -16,6 +16,7 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
     <ToggleGroup
       type="single"
       className="justify-stretch"
+      size="xs"
       value={view}
       onValueChange={(value) => {
         if (!value) return;

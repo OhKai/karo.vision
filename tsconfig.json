@@ -33,6 +33,8 @@
     "lib/**/*.ts",
     "lib/**/*.tsx",
     "src/backend/**/*.ts",
+    "config.ts",
+    "drizzle.config.ts",
     "env.d.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts"

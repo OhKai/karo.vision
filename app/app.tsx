@@ -14,7 +14,9 @@ const trpcClient = trpc.createClient({
       // the API.
       url:
         process.env.NODE_ENV === "development"
-          ? `http://${location.hostname}:${PORT}/api`
+          ? typeof window !== "undefined"
+            ? `http://${location.hostname}:${PORT}/api`
+            : `http://localhost:${PORT}/api`
           : `/api`,
       transformer,
       // You can pass any HTTP headers you wish here

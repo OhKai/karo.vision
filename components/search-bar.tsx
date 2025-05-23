@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -55,33 +55,39 @@ const SearchBar = ({
         )}
       >
         <div
-          className="flex items-center justify-center text-black/35 text-xs font-bold bg-muted rounded-full w-[40px] h-[40px]"
+          className="flex items-center justify-center text-xs font-bold text-muted-foreground bg-background/75 rounded-full size-10"
           title="205.535 results"
         >
           205K
         </div>
-        <Input
-          type="search"
-          spellCheck={false}
-          placeholder="Search Files, Tags, Notes ..."
-          className="rounded-full h-[42px] px-5 col-start-2 font-medium focus-within:shadow-[0_2px_8px_-2px_hsl(var(--foreground)_/_8%)] text-title bg-muted"
-          value={value[0]}
-          onChange={(e) => onChange([e.target.value])}
-        />
+        <div className="relative col-start-2">
+          <Search
+            strokeWidth={2.5}
+            className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-accent-foreground pointer-events-none z-10"
+          />
+          <Input
+            type="search"
+            spellCheck={false}
+            placeholder="Search Files, Tags, Notes ..."
+            className="rounded-full h-[40px] pl-11 pr-5 font-medium bg-secondary focus-visible:ring-0 border-transparent focus-visible:border-zinc-300 text-accent-foreground"
+            value={value[0]}
+            onChange={(e) => onChange([e.target.value])}
+          />
+        </div>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               size="icon"
-              variant="icon"
-              className="bg-muted"
+              variant="ghost"
+              className="size-10 text-muted-foreground bg-background/75"
               title="Search Options"
               onMouseDown={(e) => e.preventDefault()}
             >
-              <SlidersHorizontal className="w-auto! h-auto!" />
+              <SlidersHorizontal className="size-6" />
             </Button>
           </PopoverTrigger>
           <PopoverContent
-            className="text-title flex flex-col gap-4 w-[325px]"
+            className="text-muted-foreground flex flex-col gap-4 w-[325px]"
             // Prevent autofocus on the first item.
             onOpenAutoFocus={(e) => {
               document.activeElement === document.body && e.preventDefault();
@@ -100,7 +106,8 @@ const SearchBar = ({
         )}
       >
         <SortToggleGroup
-          className="w-[278px] border-none bg-background/75"
+          className="w-[335px] bg-background/75 text-muted-foreground"
+          size="xs"
           value={sortValue}
           onChange={onSortChange}
         />

@@ -15,8 +15,9 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
   return (
     <ToggleGroup
       type="single"
-      className="justify-stretch"
-      size="xs"
+      size="sm"
+      className="w-auto"
+      variant="outline"
       value={view}
       onValueChange={(value) => {
         if (!value) return;
@@ -26,20 +27,12 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
       }}
     >
       {enabledViews.includes("list") && (
-        <ToggleGroupItem
-          value="list"
-          aria-label="Toggle List"
-          className="flex-1"
-        >
+        <ToggleGroupItem value="list" aria-label="Toggle List">
           List
         </ToggleGroupItem>
       )}
       {enabledViews.includes("posters") && (
-        <ToggleGroupItem
-          value="posters"
-          aria-label="Toggle Posters"
-          className="flex-1"
-        >
+        <ToggleGroupItem value="posters" aria-label="Toggle Posters">
           Posters
         </ToggleGroupItem>
       )}
@@ -47,7 +40,7 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
         <ToggleGroupItem
           value="cards"
           aria-label="Toggle Cards"
-          className="flex-1 hidden md:inline-flex"
+          className="hidden md:inline-flex"
         >
           Cards
         </ToggleGroupItem>
@@ -56,7 +49,7 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
         <ToggleGroupItem
           value="tiles"
           aria-label="Toggle Tiles"
-          className="flex-1 max-md:data-[cards=true]:bg-black/[4%] max-md:data-[cards=true]:text-accent-foreground"
+          className="max-md:data-[cards=true]:bg-black/[4%] max-md:data-[cards=true]:text-accent-foreground"
           // On mobile, coalesce to "tiles" if "cards" is selected.
           data-cards={view === "cards"}
         >

@@ -15,38 +15,38 @@ const HeaderNav = ({ className }: HeaderNavProps) => {
   console.log(segment);
 
   return (
-    <nav className={cn("flex gap-5", className)}>
+    <nav className={cn("flex gap-6", className)}>
       <Button
         asChild
         size="icon"
-        variant="icon"
+        variant="ghost"
         data-active={segment === null}
-        className="relative data-[active=true]:text-title data-[active=true]:hover:text-secondary-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
+        className="size-10 relative data-[active=true]:text-accent-foreground data-[active=true]:after:block data-[active=true]:after:size-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-accent-foreground"
       >
         <Link href="/" title="Videos">
-          <TvMinimalPlay className="w-auto! h-auto!" />
+          <TvMinimalPlay className="size-6" />
         </Link>
       </Button>
       <Button
         asChild
         size="icon"
-        variant="icon"
+        variant="ghost"
         data-active={segment === "photos"}
-        className="relative data-[active=true]:text-title data-[active=true]:hover:text-secondary-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
+        className="size-10 relative data-[active=true]:text-accent-foreground data-[active=true]:after:block data-[active=true]:after:size-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-accent-foreground"
       >
         <Link href="/photos" title="Photos">
-          <LImage className="w-auto! h-auto!" />
+          <LImage className="size-6" />
         </Link>
       </Button>
       <Button
         asChild
         size="icon"
-        variant="icon"
+        variant="ghost"
         data-active={segment === "music"}
-        className="relative data-[active=true]:text-title data-[active=true]:hover:text-secondary-foreground data-[active=true]:after:block data-[active=true]:after:w-1 data-[active=true]:after:h-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-title"
+        className="size-10 relative data-[active=true]:text-accent-foreground data-[active=true]:after:block data-[active=true]:after:size-1 data-[active=true]:after:absolute data-[active=true]:after:-bottom-1.5 data-[active=true]:after:rounded-full data-[active=true]:after:bg-accent-foreground"
       >
         <Link href="/music" title="Music">
-          <Music className="w-auto! h-auto!" />
+          <Music className="size-6" />
         </Link>
       </Button>
     </nav>

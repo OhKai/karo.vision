@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 
 export const useQueryParams = () => {
   const [query, setQuery] = useState<URLSearchParams>(
-    new URLSearchParams(window.location.search),
+    typeof window === "undefined"
+      ? new URLSearchParams()
+      : new URLSearchParams(window.location.search),
   );
 
   // TODO: if this hook gets used a lot, maybe put this in a zustand store instead.

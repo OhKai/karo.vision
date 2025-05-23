@@ -26,12 +26,12 @@ const DashboardLayout = ({
         </div>
         <HeaderNav className="col-start-2" />
         <Button
-          className="justify-self-end"
+          className="justify-self-end size-10"
           size="icon"
-          variant="icon"
+          variant="ghost"
           title="Settings"
         >
-          <Settings className="w-auto! h-auto!" />
+          <Settings className="size-6" />
         </Button>
       </header>
       <main className="mt-[70px] w-full">{children}</main>

@@ -107,14 +107,15 @@ const Home = () => {
               enabledViews={["list", "cards", "tiles"]}
             />
             <SortToggleGroup
-              className="flex md:hidden"
+              className="md:hidden w-auto"
+              size="sm"
               value={sort}
               onChange={onSortChange}
             />
             <div className="flex items-center space-x-2">
               <Switch id="open-blank" />
-              <Label htmlFor="open-blank" className="text-xs">
-                Open In New Tab
+              <Label htmlFor="open-blank" className="text-sm">
+                Open in new tab
               </Label>
             </div>
           </>

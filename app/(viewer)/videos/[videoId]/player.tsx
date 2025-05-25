@@ -84,7 +84,7 @@ const Player = () => {
     >
       <Link href="/">
         <Button
-          className="absolute left-[9px] top-4 backdrop-blur-lg bg-black/30 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity z-10"
+          className="absolute left-[9px] top-4 backdrop-blur-lg bg-primary/35 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity z-10"
           title="Back to home page"
         >
           <House />
@@ -106,11 +106,11 @@ const Player = () => {
         </MediaThemeYt>
       )}
       <div
-        className="md:w-[350px] shrink-0 bg-white flex flex-col px-4 py-4 relative md:data-[opened=false]:-mr-[350px] mr-0 md:transition-all md:duration-500 group/sidebar"
+        className="md:w-[350px] shrink-0 bg-background flex flex-col px-4 py-4 relative md:data-[opened=false]:-mr-[350px] mr-0 md:transition-all md:duration-500 group/sidebar"
         data-opened={isSidebarOpen}
       >
         <Button
-          className="absolute -left-[57px] backdrop-blur-lg bg-black/30 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity hidden md:flex"
+          className="absolute -left-[57px] backdrop-blur-lg bg-primary/35 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity hidden md:flex"
           onClick={() => setSidebarOpen(!isSidebarOpen)}
           title="Toggle sidebar"
         >
@@ -122,7 +122,7 @@ const Player = () => {
           <MetaEditor video={video} onClose={() => setIsEditing(false)} />
         ) : (
           <>
-            <h4 className="text-title text-[15px] font-medium mb-[3px]">
+            <h4 className="text-muted-foreground text-[15px] font-medium mb-[3px]">
               {video.file.topic}
             </h4>
             <h3 className="text-xl font-medium tracking-[0.25px] mb-5 break-words">
@@ -135,7 +135,7 @@ const Player = () => {
                 expandable
                 className="mb-7"
               />
-              <div className="grid grid-cols-2 text-xs font-light justify-between text-secondary-foreground gap-2.5 mb-8">
+              <div className="grid grid-cols-2 text-xs font-light justify-between text-muted-foreground gap-3 mb-8">
                 <span>{video.file.createdAt.toLocaleDateString()}</span>
                 <span>{convertBytesToRoundedString(video.file.size)}</span>
                 <span>

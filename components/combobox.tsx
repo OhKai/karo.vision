@@ -2,13 +2,14 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -17,7 +18,6 @@ import {
 } from "@/components/ui/popover";
 import { Badge } from "./ui/badge";
 import { Check, ChevronsUpDown, X } from "lucide-react";
-import { CommandList } from "cmdk";
 
 type ComboboxProps<T> = {
   items: { value: T; tag?: string; label: React.ReactNode }[];
@@ -29,7 +29,7 @@ type ComboboxProps<T> = {
   popoverClassName?: string;
   value?: T[] | T;
   onChange?: (value: T[] | T) => void;
-} & ButtonProps;
+} & React.ComponentProps<typeof Button>;
 
 const Combobox = <T extends string | number>({
   items,
@@ -144,21 +144,19 @@ const Combobox = <T extends string | number>({
           aria-expanded={open}
           {...buttonProps}
           className={cn(
-            "justify-between w-full bg-muted",
+            "justify-between w-full truncate",
             buttonProps.className,
-            "truncate [&_svg]:pointer-events-auto",
           )}
         >
           {values.length > 0 ? (
             multiple ? (
-              <div className="-ml-4 flex h-[38px] justify-start gap-1 overflow-auto py-2 pl-4">
+              <div className="-ml-4 flex gap-1 overflow-auto pl-4">
                 {values.map((value) => (
-                  <Badge key={value}>
+                  <Badge variant="default" className="bg-zinc-600" key={value}>
                     {combinedItems.find((item) => item.value === value)?.tag ??
                       value}
                     <X
-                      size={10}
-                      className="ml-1 opacity-60 transition-opacity duration-200 ease-in-out hover:cursor-pointer hover:opacity-100"
+                      className="ml-1 opacity-70 transition-opacity cursor-pointer hover:opacity-100 pointer-events-auto!"
                       onClick={(e) => {
                         e.preventDefault();
                         const newValues = values.filter((v) => v !== value);
@@ -176,7 +174,7 @@ const Combobox = <T extends string | number>({
           ) : (
             <>&nbsp;</>
           )}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="text-muted-foreground" />
         </Button>
       </PopoverTrigger>
       {values.map((value) => (
@@ -189,7 +187,7 @@ const Combobox = <T extends string | number>({
           disabled
         />
       ))}
-      <PopoverContent className={cn("w-[322px] p-0", popoverClassName)}>
+      <PopoverContent className={cn("w-[318px] p-0", popoverClassName)}>
         <Command>
           <CommandInput
             value={inputValue}
@@ -201,7 +199,7 @@ const Combobox = <T extends string | number>({
               {emptyLabel?.(inputValue) ?? `No entry found.`}
             </CommandEmpty>
             {combinedItems.length > 0 && (
-              <CommandGroup className="max-h-[50svh] overflow-auto">
+              <CommandGroup>
                 {combinedItems.map((item) => (
                   <CommandItem
                     key={item.value}
@@ -210,12 +208,8 @@ const Combobox = <T extends string | number>({
                   >
                     {item.label}
                     <Check
-                      className={cn(
-                        "ml-auto",
-                        values.includes(item.value)
-                          ? "opacity-100"
-                          : "opacity-0",
-                      )}
+                      className="ml-auto opacity-0 data-[selected=true]:opacity-100"
+                      data-selected={values.includes(item.value)}
                     />
                   </CommandItem>
                 ))}

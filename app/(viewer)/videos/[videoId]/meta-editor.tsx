@@ -122,8 +122,8 @@ const MetaEditor = ({ onClose, video }: MetaEditorProps) => {
                   Give a custom title to your video. This will not change the
                   filename on disk. Special characters are allowed.
                 </FormDescription>
-                <div className="flex items-center text-xs text-secondary-foreground break-all">
-                  <Info className="shrink-0 w-4 h-4 mr-1" /> Filename:&nbsp;
+                <div className="flex items-center text-xs text-zinc-400 break-all">
+                  <Info className="shrink-0 size-4 mr-1.5" /> Filename:&nbsp;
                   {video.file.name}
                 </div>
                 <FormMessage />

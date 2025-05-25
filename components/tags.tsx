@@ -11,11 +11,18 @@ type TagsProps = {
   maxLines?: number;
   expandable?: boolean;
   className?: string;
+  tagClassName?: string;
 };
 
 const getOverflowIndicatorLength = (digits: number) => 4 + 8.84 + 7.7 * digits; // gap + ml + "+" + "4" width * digits
 
-const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
+const Tags = ({
+  values,
+  maxLines = 2,
+  expandable,
+  className,
+  tagClassName,
+}: TagsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cutoff, setCutoff] = useState<number | undefined>(undefined);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -75,7 +82,10 @@ const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
             data-key={value}
             variant="secondary"
             size="sm"
-            className="text-[11px] px-4 py-1 h-auto inline-block truncate"
+            className={cn(
+              "text-[11px] px-4 py-1 h-auto inline-block truncate",
+              tagClassName,
+            )}
           >
             {value}
           </Button>
@@ -99,7 +109,7 @@ const Tags = ({ values, maxLines = 2, expandable, className }: TagsProps) => {
           className="text-[11px] px-2 py-1 h-auto mt-2"
           onClick={() => setIsExpanded(true)}
         >
-          <SquarePlus className="w-3! h-3!" /> Show All
+          <SquarePlus className="size-3" /> Show All
         </Button>
       ) : null}
     </div>

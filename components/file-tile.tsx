@@ -14,7 +14,7 @@ const FileTile = ({
     <div
       {...divProps}
       className={cn(
-        "flex flex-col bg-muted group rounded shadow-xs hover:bg-[#fafafa]",
+        "flex flex-col bg-zinc-50 group rounded shadow-xs hover:bg-zinc-100 transition-colors",
         className,
       )}
       ref={ref}
@@ -34,7 +34,7 @@ FileTile.Top = ({
   return (
     <div
       className={cn(
-        "shrink-0 overflow-hidden rounded-t relative bg-secondary flex justify-center group-hover:bg-input",
+        "shrink-0 overflow-hidden rounded-t relative bg-secondary flex justify-center group-hover:bg-input transition-colors",
         className,
       )}
     >
@@ -76,7 +76,12 @@ FileTile.Bottom = ({
             {content.title ?? content.name}
           </h3>
           {content.tags ? (
-            <Tags values={content.tags ?? []} maxLines={2} className="mb-2" />
+            <Tags
+              values={content.tags ?? []}
+              maxLines={2}
+              className="mb-2"
+              tagClassName="bg-zinc-200/50 group-hover:bg-zinc-200"
+            />
           ) : (
             <div className="mb-2">&nbsp;</div>
           )}

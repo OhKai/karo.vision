@@ -76,6 +76,36 @@ const Player = () => {
     };
   }, []);
 
+  const onPlayerControlPointerMove = (e: React.PointerEvent) => {
+    // Treat the button as a player control element to prevent the other controls from
+    // hiding when the mouse is over it. The corresponding logic in the player will set
+    // userInactive to false and prevent a timeout from hiding the controls, since the
+    // button as event target is not the player element. See:
+    // https://github.com/muxinc/media-chrome/blob/3290efcca50f38ba27a869e7e681ed0a35f05d94/src/js/media-container.ts#L563
+    playerRef.current?.mediaController.handleEvent(e.nativeEvent);
+  };
+
+  const onPlayerControlMouseLeave = (e: React.MouseEvent) => {
+    // Handle mouseleave event to check if the mouse is leaving the parent container without
+    // firing a mouseleave event on the player (if moving the mouse quickly out of the
+    // window). This is necessary because otherwise the controls would not be hidden like
+    // they are when the mouse is leaving the player.
+
+    // Check if the mouse is leaving to go outside the player container. (No instanceof Node
+    // if out of window)
+    const isLeavingPlayer = !(
+      e.relatedTarget instanceof Node &&
+      playerRef.current?.contains(e.relatedTarget)
+    );
+
+    if (isLeavingPlayer) {
+      // HACK: The player logic expects a mouseleave event when leaving the container, but
+      // the nativeEvent prop on this react event is of type mouseout. So we call the
+      // handler with the react event instead, since only the type is looked at anyway.
+      playerRef.current?.mediaController.handleEvent(e as any);
+    }
+  };
+
   return (
     <div
       className="md:h-screen flex md:overflow-hidden group md:flex-row flex-col"
@@ -86,6 +116,8 @@ const Player = () => {
         <Button
           className="absolute left-[9px] top-4 backdrop-blur-lg bg-primary/35 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity z-10"
           title="Back to home page"
+          onPointerMove={onPlayerControlPointerMove}
+          onMouseLeave={onPlayerControlMouseLeave}
         >
           <House />
         </Button>
@@ -113,6 +145,8 @@ const Player = () => {
           className="absolute -left-[57px] backdrop-blur-lg bg-primary/35 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity hidden md:flex"
           onClick={() => setSidebarOpen(!isSidebarOpen)}
           title="Toggle sidebar"
+          onPointerMove={onPlayerControlPointerMove}
+          onMouseLeave={onPlayerControlMouseLeave}
         >
           <ArrowRightToLine className="group-data-[opened=false]/sidebar:-rotate-180 transition-transform duration-500" />
         </Button>

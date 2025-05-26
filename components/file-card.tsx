@@ -72,7 +72,7 @@ FileCard.Right = ({
         content.node
       ) : (
         <>
-          <h4 className="text-title text-[15px] font-medium mb-[3px]">
+          <h4 className="text-muted-foreground text-[15px] font-medium mb-[3px]">
             {content.topic}
           </h4>
           <h3
@@ -86,7 +86,7 @@ FileCard.Right = ({
             maxLines={2}
             tagClassName="bg-zinc-200/50 group-hover:bg-zinc-200"
           />
-          <div className="flex text-xs font-light justify-between flex-1 items-end text-secondary-foreground gap-1">
+          <div className="flex text-xs font-light justify-between flex-1 items-end text-muted-foreground gap-1">
             <span className="truncate" title={content.dirname}>
               {content.dirname}
             </span>

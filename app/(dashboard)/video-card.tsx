@@ -146,7 +146,7 @@ const VideoCard = ({
               }}
             />
           )}
-          <div className="absolute bottom-2 right-1.5 rounded-sm bg-black/45 px-2 py-1 text-[0.8rem] font-medium backdrop-blur-lg text-border">
+          <div className="absolute bottom-2 right-1.5 rounded-sm bg-foreground/45 px-2 py-1 text-[0.8rem] font-medium backdrop-blur-lg text-background">
             {convertSecondsToRoundedString(video.duration)}
           </div>
           {!isPlayable && (

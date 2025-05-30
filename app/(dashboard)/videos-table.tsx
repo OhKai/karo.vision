@@ -132,7 +132,11 @@ const VideosTable = ({
               >
                 {video.file.topic}
               </TableCell>
-              <TableCell className="max-md:px-2 max-md:max-w-[20vw]">
+              {/*
+                max-w-0 - This prevents the cell from expanding beyond the remaining space
+                w-full - This allows the cell to take up the remaining available width
+              */}
+              <TableCell className="max-md:px-2 max-md:max-w-[20vw] max-w-0 w-full">
                 <Tags values={video.file.tags ?? []} maxLines={1} />
               </TableCell>
               <TableCell

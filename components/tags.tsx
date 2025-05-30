@@ -37,7 +37,7 @@ const Tags = ({
     // (or when the values change) but before the browser paints, so there is no
     // flicker.
     if (cutoff === undefined) {
-      let row = 0;
+      let row = 1;
       let offset = 0;
       let i = 0;
       for (const tag of Array.from(containerRef.current!.children)) {
@@ -53,12 +53,12 @@ const Tags = ({
           // Check if the indicator in the last row would overflow, if so, cut off one earlier.
           row === maxLines &&
           i < containerRef.current!.children.length - 1 && // not the last tag
-          (tag as HTMLDivElement).offsetLeft +
+          (tag as HTMLDivElement).offsetLeft + // parent is relative, so we can use offsetLeft to measure
             (tag as HTMLDivElement).offsetWidth +
             getOverflowIndicatorLength(
               (containerRef.current!.children.length - i).toString().length,
             ) >
-            containerRef.current!.offsetLeft + containerRef.current!.offsetWidth
+            containerRef.current!.offsetWidth
         ) {
           setCutoff(i);
           return;
@@ -75,7 +75,10 @@ const Tags = ({
 
   return (
     <div className={cn(className)}>
-      <div ref={containerRef} className="flex flex-wrap gap-1 items-center">
+      <div
+        ref={containerRef}
+        className="relative flex flex-wrap gap-1 items-center"
+      >
         {values.slice(0, isExpanded ? undefined : cutoff).map((value) => (
           <Button
             key={value}

@@ -86,7 +86,7 @@ const Tags = ({
             variant="secondary"
             size="sm"
             className={cn(
-              "text-[11px] px-4 py-1 h-auto inline-block truncate",
+              "text-[11px] px-4 py-1 h-auto inline-block truncate max-w-full",
               tagClassName,
             )}
           >

@@ -1,35 +1,8 @@
 "use client";
 
-import { trpc } from "@/lib/trpc-client";
-import { httpBatchLink } from "@trpc/client";
 import ResizeObserver from "./resize-observer";
-import { transformer } from "@/lib/transformer";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { PORT } from "@/config";
-
-const trpcClient = trpc.createClient({
-  links: [
-    httpBatchLink({
-      // In production we can use relative URLs since the client is served from the same origin as
-      // the API.
-      url:
-        process.env.NODE_ENV === "development"
-          ? typeof window !== "undefined"
-            ? `http://${location.hostname}:${PORT}/api`
-            : `http://localhost:${PORT}/api`
-          : `/api`,
-      transformer,
-      // You can pass any HTTP headers you wish here
-      async headers() {
-        return {
-          //authorization: getAuthCookie(),
-        };
-      },
-    }),
-  ],
-});
-
-const queryClient = new QueryClient();
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/lib/trpc-client";
 
 const App = ({
   children,
@@ -37,11 +10,9 @@ const App = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <ResizeObserver>{children}</ResizeObserver>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <QueryClientProvider client={queryClient}>
+      <ResizeObserver>{children}</ResizeObserver>
+    </QueryClientProvider>
   );
 };
 

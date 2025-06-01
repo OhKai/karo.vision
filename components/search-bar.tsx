@@ -10,6 +10,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import SortToggleGroup from "./sort-toggle-group";
+import ViewToggleGroup from "./view-toggle-group";
+import { ViewState } from "@/lib/use-view-store";
 
 export type SearchSortBy =
   | "name-asc"
@@ -28,6 +30,10 @@ type SearchBarProps = {
   searchOptionsNode?: React.ReactNode;
   onChange: (search: string[]) => void;
   onSortChange: (sort: SearchSortBy) => void;
+  viewToggle?: {
+    page: keyof ViewState;
+    enabledViews: ViewState[keyof ViewState][];
+  };
 };
 
 const SearchBar = ({
@@ -38,6 +44,7 @@ const SearchBar = ({
   searchOptionsNode,
   onChange,
   onSortChange,
+  viewToggle,
 }: SearchBarProps) => {
   return (
     <div
@@ -93,7 +100,21 @@ const SearchBar = ({
               document.activeElement === document.body && e.preventDefault();
             }}
           >
-            {searchOptionsNode}
+            <>
+              {viewToggle ? (
+                <ViewToggleGroup
+                  viewKey={viewToggle.page}
+                  enabledViews={viewToggle.enabledViews}
+                />
+              ) : null}
+              <SortToggleGroup
+                className="md:hidden w-auto"
+                size="sm"
+                value={sortValue}
+                onChange={onSortChange}
+              />
+              {searchOptionsNode}
+            </>
           </PopoverContent>
         </Popover>
       </div>

@@ -29,6 +29,7 @@ import { useParams, usePathname } from "next/navigation";
 import PlayerError from "./player-error";
 import Link from "next/link";
 import { trpc } from "@/lib/trpc-client";
+import { useQuery } from "@tanstack/react-query";
 
 const Player = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -42,7 +43,9 @@ const Player = () => {
   console.log(params);
   // Note: This should always be a number since we check it server-side before returning this page.
   const videoId = parseInt(usePathname().split("/").pop()!);
-  const { data: video, isPending } = trpc.videos.byId.useQuery(videoId);
+  const { data: video, isPending } = useQuery(
+    trpc.videos.byId.queryOptions(videoId),
+  );
 
   useEffect(() => {
     const player = playerRef.current;

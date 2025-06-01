@@ -7,7 +7,7 @@ import { files, photos } from "../../db/schema";
 
 export const photosRouter = router({
   byId: publicProcedure.input(z.number()).query(async ({ ctx, input }) => {
-    const res = await ctx.db
+    const res = ctx.db
       .select()
       .from(photos)
       .innerJoin(files, eq(photos.fileId, files.id))
@@ -65,7 +65,7 @@ export const photosRouter = router({
 
       // Had to use query builder because relational query is giving weird typescript errors and
       // includes file: null for when where clause is false.
-      const res = await ctx.db
+      const res = ctx.db
         .select()
         .from(photos)
         .innerJoin(files, eq(photos.fileId, files.id))
@@ -90,7 +90,8 @@ export const photosRouter = router({
                         ? desc(files.size)
                         : // Default to date-desc
                           desc(files.createdAt),
-        );
+        )
+        .all();
 
       return res.map((row) => ({
         ...row.photos,
@@ -137,7 +138,7 @@ export const photosRouter = router({
       }
 
       // Start a transaction to ensure both updates succeed or both fail
-      return await ctx.db.transaction(async (tx) => {
+      return ctx.db.transaction((tx) => {
         // Update photos table
         const photoUpdate = tx
           .update(photos)

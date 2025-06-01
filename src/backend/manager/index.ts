@@ -10,18 +10,13 @@ import { result } from "@/lib/utils";
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { Db } from "../db/drizzle";
-import { files, rootFolders, videos } from "../db/schema";
+import { files, photos, rootFolders, videos } from "../db/schema";
 import { sql } from "drizzle-orm";
 import pLimit from "p-limit";
 
 export const initManager = async (db: Db) => {
   console.log("initManager");
-  console.log(
-    await addRootFolder(
-      db,
-      "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__",
-    ),
-  );
+  console.log(await addRootFolder(db, "/Users/kairohwer/Downloads"));
 };
 
 export const addFile = async (
@@ -37,8 +32,8 @@ export const addFile = async (
   }
 
   // Add the file and type metadata to the database.
-  const newFile = await db.transaction(async (tx) => {
-    const [newFile] = await tx
+  const newFile = db.transaction((tx) => {
+    const newFile = tx
       .insert(files)
       .values({
         dirname: path.dirname(metadata.value.path),
@@ -48,45 +43,63 @@ export const addFile = async (
         createdAt: metadata.value.createdAt,
         updatedAt: metadata.value.updatedAt,
       })
-      .returning();
+      .returning()
+      .get();
 
     switch (metadata.value.type) {
       case "video":
-        await tx.insert(videos).values({
-          fileId: newFile.id,
-          width: metadata.value.width ?? -1,
-          height: metadata.value.height ?? -1,
-          duration: metadata.value.duration ?? -1,
-          format: metadata.value.format ?? "",
-          framerate: metadata.value.framerate ?? "",
-          aspectRatio: metadata.value.aspectRatio ?? "",
-        });
+        tx.insert(videos)
+          .values({
+            fileId: newFile.id,
+            width: metadata.value.width ?? -1,
+            height: metadata.value.height ?? -1,
+            duration: metadata.value.duration ?? -1,
+            format: metadata.value.format ?? "",
+            framerate: metadata.value.framerate ?? "",
+            aspectRatio: metadata.value.aspectRatio ?? "",
+          })
+          .run();
 
-        if (
-          (metadata.value.width ?? Number.NEGATIVE_INFINITY) +
-            (metadata.value.height ?? Number.NEGATIVE_INFINITY) >
-          0
-        ) {
-          const res = await generateVideoThumbnails(
-            newFile.id + ".png",
-            metadata.value.path,
-            { width: metadata.value.width!, height: metadata.value.height! },
-          );
+        break;
 
-          if (!res.ok) {
-            console.error(
-              "Failed to generate video thumbnails:",
-              res.error,
-              metadata.value,
-            );
-          }
-        }
+      case "photo":
+        tx.insert(photos)
+          .values({
+            fileId: newFile.id,
+            width: metadata.value.width ?? -1,
+            height: metadata.value.height ?? -1,
+            format: metadata.value.format ?? "",
+          })
+          .run();
 
         break;
     }
 
     return newFile;
   });
+
+  // Generate video thumbnail if the file is a video.
+  if (metadata.value.type === "video") {
+    if (
+      (metadata.value.width ?? Number.NEGATIVE_INFINITY) +
+        (metadata.value.height ?? Number.NEGATIVE_INFINITY) >
+      0
+    ) {
+      const res = await generateVideoThumbnails(
+        newFile.id + ".png",
+        metadata.value.path,
+        { width: metadata.value.width!, height: metadata.value.height! },
+      );
+
+      if (!res.ok) {
+        console.error(
+          "Failed to generate video thumbnails:",
+          res.error,
+          metadata.value,
+        );
+      }
+    }
+  }
 
   return result.ok(newFile);
 };
@@ -141,7 +154,7 @@ export const addRootFolder = async (
   const [folderInfos] = await getFilesystemInfos([folderPath]);
 
   // Add the folder as a new root folder.
-  const [newFolder] = await db
+  const newFolder = db
     .insert(rootFolders)
     .values({
       path: folderPath,
@@ -151,7 +164,8 @@ export const addRootFolder = async (
       physical: folderInfos?.physical,
       protocol: folderInfos?.protocol,
     })
-    .returning();
+    .returning()
+    .get();
 
   // Scan the folder for all files recursively.
   const fileStream = scanFolder(folderPath);

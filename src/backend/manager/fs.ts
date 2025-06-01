@@ -132,6 +132,7 @@ type PhotoMetadata = {
   updatedAt: Date;
   width?: number;
   height?: number;
+  format?: string;
 };
 
 type MusicMetadata = {
@@ -239,6 +240,7 @@ export async function readFileMetadata(file: File) {
           : {
               width: videoStream.width,
               height: videoStream.height,
+              format: videoStream.codec_name,
             })),
     });
   }

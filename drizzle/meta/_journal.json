@@ -15,6 +15,13 @@
       "when": 1736643541654,
       "tag": "0001_soft_cobalt_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1748740792614,
+      "tag": "0002_daily_jack_power",
+      "breakpoints": true
     }
   ]
 }

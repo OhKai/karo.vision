@@ -8,7 +8,7 @@ import { RouterLike, UtilsLike } from "@trpc/react-query/shared";
 
 export const videosRouter = router({
   byId: publicProcedure.input(z.number()).query(async ({ ctx, input }) => {
-    const res = await ctx.db
+    const res = ctx.db
       .select()
       .from(videos)
       .innerJoin(files, eq(videos.fileId, files.id))
@@ -66,7 +66,7 @@ export const videosRouter = router({
 
       // Had to use query builder because relational query is giving weird typescript errors and
       // includes file: null for when where clause is false.
-      const res = await ctx.db
+      const res = ctx.db
         .select()
         .from(videos)
         .innerJoin(files, eq(videos.fileId, files.id))
@@ -91,7 +91,8 @@ export const videosRouter = router({
                         ? desc(files.size)
                         : // Default to date-desc
                           desc(files.createdAt),
-        );
+        )
+        .all();
 
       return res.map((row) => ({
         ...row.videos,
@@ -138,9 +139,9 @@ export const videosRouter = router({
       }
 
       // Start a transaction to ensure both updates succeed or both fail
-      return await ctx.db.transaction(async (tx) => {
+      return ctx.db.transaction((tx) => {
         // Update videos table
-        const videoUpdate = await tx
+        const videoUpdate = tx
           .update(videos)
           .set({
             description: input.description,
@@ -149,7 +150,7 @@ export const videosRouter = router({
           .run();
 
         // Update files table
-        const fileUpdate = await tx
+        const fileUpdate = tx
           .update(files)
           .set({
             topic: input.topic,

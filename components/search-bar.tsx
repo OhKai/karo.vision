@@ -14,8 +14,8 @@ import ViewToggleGroup from "./view-toggle-group";
 import { ViewState } from "@/lib/use-view-store";
 
 export type SearchSortBy =
-  | "name-asc"
-  | "name-desc"
+  | "title-asc"
+  | "title-desc"
   | "date-asc"
   | "date-desc"
   | "size-asc"
@@ -49,20 +49,20 @@ const SearchBar = ({
   return (
     <div
       className={cn(
-        "flex flex-col gap-1 items-center justify-center w-[90vw] max-w-[726px]",
+        "flex w-[90vw] max-w-[726px] flex-col items-center justify-center gap-1",
         className,
       )}
     >
       <div
         className={cn(
-          "grid grid-cols-[40px_1fr_40px] gap-2 peer w-full",
+          "peer grid w-full grid-cols-[40px_1fr_40px] gap-2",
           floating
-            ? "backdrop-blur-[80px] px-5 py-3 bg-background/25 shadow-float rounded-[100px]"
+            ? "bg-background/25 shadow-float rounded-[100px] px-5 py-3 backdrop-blur-[80px]"
             : "",
         )}
       >
         <div
-          className="flex items-center justify-center text-xs font-bold text-muted-foreground bg-background/75 rounded-full size-10"
+          className="text-muted-foreground bg-background/75 flex size-10 items-center justify-center rounded-full text-xs font-bold"
           title="205.535 results"
         >
           205K
@@ -70,13 +70,13 @@ const SearchBar = ({
         <div className="relative col-start-2">
           <Search
             strokeWidth={2.5}
-            className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-accent-foreground pointer-events-none z-10"
+            className="text-accent-foreground pointer-events-none absolute top-1/2 left-4 z-10 size-4 -translate-y-1/2"
           />
           <Input
             type="search"
             spellCheck={false}
             placeholder="Search Files, Tags, Notes ..."
-            className="rounded-full h-[40px] pl-11 pr-5 font-medium bg-secondary focus-visible:ring-0 border-transparent focus-visible:border-zinc-300 text-accent-foreground"
+            className="bg-secondary text-accent-foreground h-[40px] rounded-full border-transparent pr-5 pl-11 font-medium focus-visible:border-zinc-300 focus-visible:ring-0"
             value={value[0]}
             onChange={(e) => onChange([e.target.value])}
           />
@@ -86,7 +86,7 @@ const SearchBar = ({
             <Button
               size="icon"
               variant="ghost"
-              className="size-10 text-muted-foreground bg-background/75"
+              className="text-muted-foreground bg-background/75 size-10"
               title="Search Options"
               onMouseDown={(e) => e.preventDefault()}
             >
@@ -94,7 +94,7 @@ const SearchBar = ({
             </Button>
           </PopoverTrigger>
           <PopoverContent
-            className="text-muted-foreground flex flex-col gap-4 w-[325px]"
+            className="text-muted-foreground flex w-[325px] flex-col gap-4"
             // Prevent autofocus on the first item.
             onOpenAutoFocus={(e) => {
               document.activeElement === document.body && e.preventDefault();
@@ -108,7 +108,7 @@ const SearchBar = ({
                 />
               ) : null}
               <SortToggleGroup
-                className="md:hidden w-auto"
+                className="w-auto md:hidden"
                 size="sm"
                 value={sortValue}
                 onChange={onSortChange}
@@ -120,14 +120,14 @@ const SearchBar = ({
       </div>
       <div
         className={cn(
-          "focus-within:pointer-events-auto focus-within:opacity-100 focus-within:scale-100 focus-within:translate-y-0 peer-focus-within:pointer-events-auto peer-focus-within:opacity-100 peer-focus-within:scale-100 peer-focus-within:translate-y-0 opacity-0 scale-95 translate-y-[-10px] transition-all md:block hidden pointer-events-none",
+          "pointer-events-none hidden translate-y-[-10px] scale-95 opacity-0 transition-all peer-focus-within:pointer-events-auto peer-focus-within:translate-y-0 peer-focus-within:scale-100 peer-focus-within:opacity-100 focus-within:pointer-events-auto focus-within:translate-y-0 focus-within:scale-100 focus-within:opacity-100 md:block",
           floating
-            ? "backdrop-blur-[80px] px-3 py-2.5 bg-background/25 shadow-float rounded-[14px]"
+            ? "bg-background/25 shadow-float rounded-[14px] px-3 py-2.5 backdrop-blur-[80px]"
             : "",
         )}
       >
         <SortToggleGroup
-          className="w-[335px] bg-background/75 text-muted-foreground"
+          className="bg-background/75 text-muted-foreground w-[335px]"
           size="xs"
           value={sortValue}
           onChange={onSortChange}

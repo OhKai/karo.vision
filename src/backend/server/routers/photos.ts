@@ -33,8 +33,8 @@ export const photosRouter = router({
         search: z.array(z.string().min(1)).optional(),
         sort: z
           .enum([
-            "name-asc",
-            "name-desc",
+            "title-asc",
+            "title-desc",
             "date-asc",
             "date-desc",
             "size-asc",
@@ -76,9 +76,9 @@ export const photosRouter = router({
           input.seed
             ? // LCG for random ordering.
               sql`(1103515245 * (${photos.fileId} + ${input.seed}) + 12345) % 2147483648`
-            : input.sort === "name-asc"
+            : input.sort === "title-asc"
               ? sql`COALESCE(${files.title}, ${files.name})`
-              : input.sort === "name-desc"
+              : input.sort === "title-desc"
                 ? sql`COALESCE(${files.title}, ${files.name}) DESC`
                 : input.sort === "date-asc"
                   ? asc(files.createdAt)

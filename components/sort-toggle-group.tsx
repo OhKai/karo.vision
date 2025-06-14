@@ -21,7 +21,7 @@ const SortToggleGroup = ({
       size={size}
       variant="outline"
       className={className}
-      value={value.split("-")[0] as "name" | "date" | "size" | "random"}
+      value={value.split("-")[0] as "title" | "date" | "size" | "random"}
       onMouseDown={(e) => e.preventDefault()}
       onValueChange={(newValue) => {
         if (!newValue) {
@@ -45,19 +45,19 @@ const SortToggleGroup = ({
         }
       }}
     >
-      <ToggleGroupItem value="name" aria-label="Toggle Name">
-        Name{" "}
-        {value.startsWith("name") ? (value.endsWith("asc") ? "↑" : "↓") : null}
+      <ToggleGroupItem value="title" aria-label="Toggle Title Sort">
+        Title{" "}
+        {value.startsWith("title") ? (value.endsWith("asc") ? "↑" : "↓") : null}
       </ToggleGroupItem>
-      <ToggleGroupItem value="date" aria-label="Toggle Date">
+      <ToggleGroupItem value="date" aria-label="Toggle Date Sort">
         Date{" "}
         {value.startsWith("date") ? (value.endsWith("asc") ? "↑" : "↓") : null}
       </ToggleGroupItem>
-      <ToggleGroupItem value="size" aria-label="Toggle Size">
+      <ToggleGroupItem value="size" aria-label="Toggle Size Sort">
         Size{" "}
         {value.startsWith("size") ? (value.endsWith("asc") ? "↑" : "↓") : null}
       </ToggleGroupItem>
-      <ToggleGroupItem value="random" aria-label="Toggle Random">
+      <ToggleGroupItem value="random" aria-label="Toggle Random Sort">
         <div className="flex items-center justify-center gap-1">
           Random {value === "random" ? <Shuffle className="size-3" /> : null}
         </div>

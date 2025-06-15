@@ -6,9 +6,9 @@ import { Label } from "@/components/ui/label";
 import Masonry from "@wowblvck/react-responsive-masonry";
 import { useResizeStore } from "@/lib/use-resize-store";
 import SearchPage, { useSearchPage } from "@/components/search-page";
-import { convertSecondsToRoundedString, fileURL } from "@/lib/utils";
+import { fileURL } from "@/lib/utils";
 import FilesTable from "@/components/files-table";
-import { TableCell, TableHead } from "@/components/ui/table";
+import { TableHead } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
 
 const PhotosPage = () => {

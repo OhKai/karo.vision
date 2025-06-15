@@ -1,46 +1,32 @@
-import { useCallback, useEffect, useState } from "react";
+"use client";
+
+import { useCallback } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 export const useQueryParams = () => {
-  const [query, setQuery] = useState<URLSearchParams>(
-    typeof window === "undefined"
-      ? new URLSearchParams()
-      : new URLSearchParams(window.location.search),
-  );
-
-  // TODO: if this hook gets used a lot, maybe put this in a zustand store instead.
-  useEffect(() => {
-    const syncUrlParams = () => {
-      setQuery(new URLSearchParams(window.location.search));
-    };
-
-    // Listen to popstate event (browser back/forward)
-    window.addEventListener("popstate", syncUrlParams);
-
-    return () => {
-      window.removeEventListener("popstate", syncUrlParams);
-    };
-  }, []);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const updateQuery = useCallback(
-    (key: string, value: string) => {
-      const newParams = new URLSearchParams(window.location.search);
-      if (value) {
-        newParams.set(key, value);
-      } else {
-        newParams.delete(key);
-      }
+    (newParams: { [key: string]: string }) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-      // Update URL without reload
-      window.history.pushState(
-        {},
-        "",
-        `${window.location.pathname}?${newParams.toString()}`,
-      );
+      Object.entries(newParams).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value);
+        } else {
+          params.delete(key);
+        }
+      });
 
-      setQuery(newParams);
+      router.push(`${pathname}?${params.toString()}`);
     },
-    [query],
+    [searchParams, router, pathname],
   );
 
-  return { query, updateQuery };
+  return {
+    query: searchParams,
+    updateQuery,
+  };
 };

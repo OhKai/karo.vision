@@ -36,17 +36,16 @@ export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
 
   const updateSearch = (search: string[]) => {
     // Update new search query in URL.
-    updateQuery("search", search[0]);
+    updateQuery({ search: search[0] });
   };
 
   const updateSort = (newSort: SearchSortBy) => {
-    updateQuery("sort", newSort);
-    if (newSort === "random") {
-      // Reset search when sorting by random.
-      updateQuery("seed", Math.floor(Math.random() * 2147483648).toString());
-    } else {
-      updateQuery("seed", "");
-    }
+    // Reset seed when sorting by random.
+    const seed =
+      newSort === "random"
+        ? Math.floor(Math.random() * 2147483648).toString()
+        : "";
+    updateQuery({ sort: newSort, seed });
   };
 
   const {
@@ -142,7 +141,7 @@ const SearchPage = ({
   );
 
   return (
-    <div className="mt-[134px] flex flex-col gap-8 items-center pb-4">
+    <div className="mt-[134px] flex flex-col items-center gap-8 pb-4">
       <SearchBar
         className="fixed top-[74px] z-40"
         floating

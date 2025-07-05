@@ -6,7 +6,6 @@ import { useIntersectionObserver } from "@/lib/use-intersection-observer";
 import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
 import { useQueryParams } from "@/lib/use-query-params";
 import { useState } from "react";
-import { useDebounceCallback } from "@/lib/use-debounce-callback";
 import useChange from "@/lib/use-change";
 import {
   useQueryClient,
@@ -28,15 +27,16 @@ export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
     queryClient.resetQueries({ queryKey: trpc[page].list.infiniteQueryKey() });
   });
 
-  const { query, updateQuery } = useQueryParams();
+  const { query, updateQuery, debounceQueryUpdate, clearDebouncedUpdates } =
+    useQueryParams();
   // Get search query from URL.
   const search = [query.get("search") ?? ""];
   const sort = (query.get("sort") ?? "date-desc") as SearchSortBy;
   const seed = parseInt(query.get("seed") ?? "0");
 
   const updateSearch = (search: string[]) => {
-    // Update new search query in URL.
-    updateQuery({ search: search[0] });
+    // Update new search query in URL with debounce.
+    debounceQueryUpdate({ search: search[0] });
   };
 
   const updateSort = (newSort: SearchSortBy) => {
@@ -135,10 +135,6 @@ const SearchPage = ({
 }: SearchPageProps) => {
   // Temporarily store search input to debounce it.
   const [tempSearch, setTempSearch] = useState(search);
-  const [debounceSearch, clearDebounce] = useDebounceCallback(
-    updateSearch,
-    300,
-  );
 
   return (
     <div className="mt-[134px] flex flex-col items-center gap-8 pb-4">
@@ -149,7 +145,7 @@ const SearchPage = ({
         onChange={(newSearch) => {
           setTempSearch(newSearch);
           // Debounce search update.
-          debounceSearch(newSearch);
+          updateSearch(newSearch);
         }}
         sortValue={sort}
         onSortChange={updateSort}

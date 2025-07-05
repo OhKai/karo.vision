@@ -7,11 +7,6 @@ export function useDebounceCallback<T extends (...args: any[]) => void>(
   const timeoutRef = useRef<number>(0);
 
   const cb = useMemo(() => {
-    // Clear existing timeout when callback changes.
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
     const debouncedFn = ((...args: Parameters<T>) => {
       // Clear existing timeout when callback is called.
       if (timeoutRef.current) {
@@ -24,7 +19,7 @@ export function useDebounceCallback<T extends (...args: any[]) => void>(
     }) as T;
 
     return debouncedFn;
-  }, [callback.toString(), delay]);
+  }, [delay]);
 
   return [cb, () => clearTimeout(timeoutRef.current)];
 }

@@ -111,13 +111,13 @@ const Player = () => {
 
   return (
     <div
-      className="md:h-screen flex md:overflow-hidden group md:flex-row flex-col"
+      className="group flex flex-col md:h-screen md:flex-row md:overflow-hidden"
       data-userinactive={isUserInactive}
       data-mediapaused={isMediaPaused}
     >
       <Link href="/">
         <Button
-          className="absolute left-[9px] top-4 backdrop-blur-lg bg-primary/35 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity z-10"
+          className="bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0"
           title="Back to home page"
           onPointerMove={onPlayerControlPointerMove}
           onMouseLeave={onPlayerControlMouseLeave}
@@ -126,14 +126,14 @@ const Player = () => {
         </Button>
       </Link>
       {isConvertable ? (
-        <div className="w-full h-full bg-secondary flex items-center justify-center">
+        <div className="bg-secondary flex h-full w-full items-center justify-center">
           <PlayerError />
         </div>
       ) : (
-        <MediaThemeYt className="w-full h-full" ref={playerRef}>
+        <MediaThemeYt className="h-full w-full" ref={playerRef}>
           <video
             slot="media"
-            className="w-full h-full bg-foreground"
+            className="bg-foreground h-full w-full"
             src={fileURL(videoId)}
             playsInline
             autoPlay
@@ -141,17 +141,17 @@ const Player = () => {
         </MediaThemeYt>
       )}
       <div
-        className="md:w-[350px] shrink-0 bg-background flex flex-col px-4 py-4 relative md:data-[opened=false]:-mr-[350px] mr-0 md:transition-all md:duration-500 group/sidebar"
+        className="bg-background group/sidebar relative mr-0 flex shrink-0 flex-col px-4 py-4 md:w-[350px] md:transition-all md:duration-500 md:data-[opened=false]:-mr-[350px]"
         data-opened={isSidebarOpen}
       >
         <Button
-          className="absolute -left-[57px] backdrop-blur-lg bg-primary/35 [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0 transition-opacity hidden md:flex"
+          className="bg-primary/35 absolute -left-[57px] hidden backdrop-blur-lg transition-opacity md:flex [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0"
           onClick={() => setSidebarOpen(!isSidebarOpen)}
           title="Toggle sidebar"
           onPointerMove={onPlayerControlPointerMove}
           onMouseLeave={onPlayerControlMouseLeave}
         >
-          <ArrowRightToLine className="group-data-[opened=false]/sidebar:-rotate-180 transition-transform duration-500" />
+          <ArrowRightToLine className="transition-transform duration-500 group-data-[opened=false]/sidebar:-rotate-180" />
         </Button>
         {isPending ? null : !video ? (
           <div>Error</div>
@@ -159,35 +159,35 @@ const Player = () => {
           <MetaEditor video={video} onClose={() => setIsEditing(false)} />
         ) : (
           <>
-            <h4 className="text-muted-foreground text-[15px] font-medium mb-[3px]">
+            <h4 className="text-muted-foreground mb-[3px] text-[15px] font-medium">
               {video.file.topic}
             </h4>
-            <h3 className="text-xl font-medium tracking-[0.25px] mb-5 break-words">
+            <h3 className="mb-5 text-xl font-medium tracking-[0.25px] break-words">
               {video.file.title ?? video.file.name}
             </h3>
-            <div className="flex flex-col grow overflow-auto px-4 -mx-4">
+            <div className="-mx-4 flex grow flex-col overflow-auto px-4">
               <Tags
                 values={video.file.tags ?? []}
                 maxLines={2}
                 expandable
                 className="mb-7"
               />
-              <div className="grid grid-cols-2 text-xs font-light justify-between text-muted-foreground gap-3 mb-8">
+              <div className="text-muted-foreground mb-8 grid grid-cols-2 justify-between gap-3 text-xs font-light">
                 <span>{video.file.createdAt.toLocaleDateString()}</span>
                 <span>{convertBytesToRoundedString(video.file.size)}</span>
                 <span>
                   {video.width}x{video.height}
                 </span>
                 <span>{roundFPS(video.framerate)} FPS</span>
-                <span className="truncate col-span-2">
+                <span className="col-span-2 truncate">
                   {video.file.dirname}
                 </span>
               </div>
-              <div className="text-sm text-secondary-foreground">
+              <div className="text-secondary-foreground text-sm">
                 {video.description}
               </div>
             </div>
-            <div className="flex gap-2.5 flex-col mt-3.5">
+            <div className="mt-3.5 flex flex-col gap-2.5">
               <div className="flex gap-2.5">
                 <Button
                   variant="outline"

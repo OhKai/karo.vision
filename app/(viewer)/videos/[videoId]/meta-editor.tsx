@@ -78,9 +78,9 @@ const MetaEditor = ({ onClose, video }: MetaEditorProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col h-full"
+        className="flex h-full flex-col space-y-8"
       >
-        <div className="space-y-8 flex-1 overflow-auto px-4 -mx-4">
+        <div className="-mx-4 flex-1 space-y-8 overflow-auto px-4">
           <FormField
             control={form.control}
             name="topic"
@@ -122,8 +122,8 @@ const MetaEditor = ({ onClose, video }: MetaEditorProps) => {
                   Give a custom title to your video. This will not change the
                   filename on disk. Special characters are allowed.
                 </FormDescription>
-                <div className="flex items-center text-xs text-zinc-400 break-all">
-                  <Info className="shrink-0 size-4 mr-1.5" /> Filename:&nbsp;
+                <div className="flex items-center text-xs break-all text-zinc-400">
+                  <Info className="mr-1.5 size-4 shrink-0" /> Filename:&nbsp;
                   {video.file.name}
                 </div>
                 <FormMessage />
@@ -173,7 +173,7 @@ const MetaEditor = ({ onClose, video }: MetaEditorProps) => {
             )}
           />
         </div>
-        <div className="flex gap-2.5 flex-col mt-3.5">
+        <div className="mt-3.5 flex flex-col gap-2.5">
           <Button type="submit">Save</Button>
           <Button variant="secondary" onClick={() => onClose()}>
             Cancel

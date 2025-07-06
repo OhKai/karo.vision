@@ -49,7 +49,7 @@ const VideoTile = ({
           {!hasThumb ? (
             <div
               style={{ aspectRatio: "16 / 9" }}
-              className="w-full flex items-center justify-center"
+              className="flex w-full items-center justify-center"
             >
               <CircleHelp className="text-muted-foreground h-3/4 w-3/4" />
             </div>
@@ -68,7 +68,7 @@ const VideoTile = ({
               loop
               // Note (15.01.2025): The rounded-t class should not be necessary since FileTile.Top is
               // already rounded-t, but for some reason it only works for the image and not the video.
-              className="rounded-t w-full"
+              className="w-full rounded-t"
               style={{ aspectRatio: "16 / 9" }}
               poster={fileThumbURL(video.fileId)}
               onError={() => setIsPlayable(false)}
@@ -95,12 +95,12 @@ const VideoTile = ({
               }}
             />
           )}
-          <div className="absolute bottom-2 right-1.5 rounded-sm bg-foreground/45 px-2 py-1 text-[0.8rem] font-medium backdrop-blur-lg text-background">
+          <div className="bg-foreground/45 text-background absolute right-1.5 bottom-2 rounded-sm px-2 py-1 text-[0.8rem] font-medium backdrop-blur-lg">
             {convertSecondsToRoundedString(video.duration)}
           </div>
           {!isPlayable && (
-            <div className="absolute h-8 w-40 top-1/2 left-1/2 -ml-[80px] -mt-4 flex justify-center items-center rounded-sm bg-black/45 text-sm font-medium backdrop-blur-lg text-border group-hover:opacity-100 opacity-0 transition-opacity">
-              <Info className="w-5 h-5 mr-1.5" /> Can't play video
+            <div className="text-border absolute top-1/2 left-1/2 -mt-4 -ml-[80px] flex h-8 w-40 items-center justify-center rounded-sm bg-black/45 text-sm font-medium opacity-0 backdrop-blur-lg transition-opacity group-hover:opacity-100">
+              <Info className="mr-1.5 h-5 w-5" /> Can't play video
             </div>
           )}
         </FileTile.Top>

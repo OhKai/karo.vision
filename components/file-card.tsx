@@ -14,7 +14,7 @@ const FileCard = ({
     <div
       {...divProps}
       className={cn(
-        "flex bg-zinc-50 group rounded shadow-xs max-w-[800px] w-full hover:bg-zinc-100 transition-colors",
+        "group flex w-full max-w-[800px] rounded bg-zinc-50 shadow-xs transition-colors hover:bg-zinc-100",
         className,
       )}
       ref={ref}
@@ -35,7 +35,7 @@ FileCard.Left = ({
   return (
     <div
       className={cn(
-        "w-1/2 shrink-0 overflow-hidden rounded-l relative bg-secondary group-hover:bg-input flex justify-center items-center h-[225px] transition-colors",
+        "bg-secondary group-hover:bg-input relative flex h-[225px] w-1/2 shrink-0 items-center justify-center overflow-hidden rounded-l transition-colors",
         className,
       )}
     >
@@ -64,7 +64,7 @@ FileCard.Right = ({
   return (
     <div
       className={cn(
-        "flex flex-col px-3.5 py-3.5 w-1/2 max-h-[225px]",
+        "flex max-h-[225px] w-1/2 flex-col px-3.5 py-3.5",
         className,
       )}
     >
@@ -72,12 +72,12 @@ FileCard.Right = ({
         content.node
       ) : (
         <>
-          <h4 className="text-muted-foreground text-[15px] font-medium mb-[3px]">
+          <h4 className="text-muted-foreground mb-[3px] text-[15px] font-medium">
             {content.topic}
           </h4>
           <h3
             title={content.title ?? content.name}
-            className="text-xl font-medium tracking-[0.25px] mb-5 truncate whitespace-break-spaces after:content-[''] after:block after:absolute after:bg-linear-to-b after:from-transparent after:to-zinc-50 after:w-[372px] after:h-[40px] after:bottom-0 group-hover:after:to-zinc-100 relative grow after:transition-colors"
+            className="relative mb-5 grow truncate text-xl font-medium tracking-[0.25px] whitespace-break-spaces after:absolute after:bottom-0 after:block after:h-[40px] after:w-[372px] after:bg-linear-to-b after:from-transparent after:to-zinc-50 after:transition-colors after:content-[''] group-hover:after:to-zinc-100"
           >
             {content.title ?? content.name}
           </h3>
@@ -86,7 +86,7 @@ FileCard.Right = ({
             maxLines={2}
             tagClassName="bg-zinc-200/50 group-hover:bg-zinc-200"
           />
-          <div className="flex text-xs font-light justify-between flex-1 items-end text-muted-foreground gap-1">
+          <div className="text-muted-foreground flex flex-1 items-end justify-between gap-1 text-xs font-light">
             <span className="truncate" title={content.dirname}>
               {content.dirname}
             </span>

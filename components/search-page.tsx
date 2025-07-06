@@ -5,7 +5,7 @@ import { useViewStore, ViewState } from "@/lib/use-view-store";
 import { useIntersectionObserver } from "@/lib/use-intersection-observer";
 import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
 import { useQueryParams } from "@/lib/use-query-params";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import useChange from "@/lib/use-change";
 import {
   useQueryClient,
@@ -15,6 +15,7 @@ import {
 import { trpc } from "@/lib/trpc-client";
 import type { Inputs, Outputs } from "@/lib/trpc-client";
 import { TRPCInfiniteData } from "@trpc/tanstack-react-query";
+import { is } from "drizzle-orm";
 
 export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
   const queryClient = useQueryClient();
@@ -27,7 +28,7 @@ export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
     queryClient.resetQueries({ queryKey: trpc[page].list.infiniteQueryKey() });
   });
 
-  const { query, updateQuery, debounceQueryUpdate, clearDebouncedUpdates } =
+  const { query, updateQuery, debounceQueryUpdate, isExternalChange } =
     useQueryParams();
   // Get search query from URL.
   const search = [query.get("search") ?? ""];
@@ -109,6 +110,7 @@ export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
     isPlaceholderData,
     tripwireRef,
     tripwireEntry,
+    isExternalChange,
   };
 };
 
@@ -121,6 +123,7 @@ type SearchPageProps = {
   enabledViews?: ViewState[keyof ViewState][];
   searchOptionsNode?: React.ReactNode;
   children: React.ReactNode;
+  isExternalChange?: boolean;
 };
 
 const SearchPage = ({
@@ -132,9 +135,22 @@ const SearchPage = ({
   enabledViews,
   searchOptionsNode,
   children,
+  isExternalChange,
 }: SearchPageProps) => {
   // Temporarily store search input to debounce it.
   const [tempSearch, setTempSearch] = useState(search);
+
+  console.log("SearchPage render", {
+    search,
+    isExternalChange,
+  });
+
+  // Sync tempSearch with URL search only on external changes (browser navigation)
+  useChange(search, () => {
+    if (isExternalChange) {
+      setTempSearch(search);
+    }
+  });
 
   return (
     <div className="mt-[134px] flex flex-col items-center gap-8 pb-4">

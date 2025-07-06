@@ -99,12 +99,8 @@
           "name": "files_root_folder_id_root_folders_id_fk",
           "tableFrom": "files",
           "tableTo": "root_folders",
-          "columnsFrom": [
-            "root_folder_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["root_folder_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -253,12 +249,8 @@
           "name": "videos_file_id_files_id_fk",
           "tableFrom": "videos",
           "tableTo": "files",
-          "columnsFrom": [
-            "file_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["file_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }

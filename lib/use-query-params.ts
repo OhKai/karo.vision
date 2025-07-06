@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import useChange from "./use-change";
 
 /**
  * Custom hook to manage query parameters in the URL with debounced updates. This is useful for
@@ -18,6 +19,22 @@ export const useQueryParams = () => {
   const searchParams = useSearchParams();
   const debouncedUpdatesRef = useRef<Record<string, string>>({});
   const debounceTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+  const lastPushedQueryRef = useRef<string>(undefined);
+  const [isExternalChange, setIsExternalChange] = useState(false);
+
+  // Check if the current query is different from what we last pushed (external change) to detect
+  // browser navigations.
+  useChange(searchParams, () => {
+    const currentQueryString = searchParams.toString();
+    const hasQueryChanged = currentQueryString !== lastPushedQueryRef.current;
+
+    setIsExternalChange(hasQueryChanged);
+
+    if (hasQueryChanged) {
+      // Unset the last pushed query to avoid forward nav not being marked as external.
+      lastPushedQueryRef.current = undefined;
+    }
+  });
 
   const updateQuery = useCallback(
     (updates: Record<string, string>) => {
@@ -49,7 +66,9 @@ export const useQueryParams = () => {
         debounceTimeoutRef.current = undefined;
       }
 
-      router.push(`?${current.toString()}`);
+      const queryString = current.toString();
+      lastPushedQueryRef.current = queryString;
+      router.push(`?${queryString}`);
     },
     [router, searchParams],
   );
@@ -97,5 +116,6 @@ export const useQueryParams = () => {
     updateQuery,
     debounceQueryUpdate,
     clearDebouncedUpdates,
+    isExternalChange,
   };
 };

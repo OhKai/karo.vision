@@ -4,9 +4,9 @@ import Link from "next/link";
 
 const NotFoundPage = () => {
   return (
-    <div className="mt-32 flex flex-col gap-6 items-center">
-      <MessageSquareWarning className="w-[80px] h-[80px] text-muted-foreground/35" />
-      <div className="text-center text-muted-foreground">
+    <div className="mt-32 flex flex-col items-center gap-6">
+      <MessageSquareWarning className="text-muted-foreground/35 h-[80px] w-[80px]" />
+      <div className="text-muted-foreground text-center">
         The page you are looking for does not exist.
       </div>
       <Button asChild>

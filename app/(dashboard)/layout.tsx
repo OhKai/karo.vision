@@ -9,9 +9,9 @@ const DashboardLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="flex flex-col justify-items-center min-h-screen pb-20">
-      <header className="grid grid-cols-3 items-center justify-items-center w-full md:px-6 px-2 text-muted-foreground border-b border-secondary h-[70px] fixed z-50 backdrop-blur-sm bg-background/[97%]">
-        <div className="items-center gap-2 justify-self-start select-none md:flex hidden">
+    <div className="flex min-h-screen flex-col justify-items-center pb-20">
+      <header className="text-muted-foreground border-secondary bg-background/[97%] fixed z-50 grid h-[70px] w-full grid-cols-3 items-center justify-items-center border-b px-2 backdrop-blur-sm md:px-6">
+        <div className="hidden items-center gap-2 justify-self-start select-none md:flex">
           <Image
             src="/logo.png"
             alt="Karo.Vision Home Cloud"
@@ -19,14 +19,14 @@ const DashboardLayout = ({
             height={31}
             className="invert-[.145]"
           />
-          <h2 className="text-base font-bold flex flex-col leading-none tracking-[0.25px]">
+          <h2 className="flex flex-col text-base leading-none font-bold tracking-[0.25px]">
             <span className="text-xs">karo.vision</span>
             <span>Home&nbsp;Cloud</span>
           </h2>
         </div>
         <HeaderNav className="col-start-2" />
         <Button
-          className="justify-self-end size-10"
+          className="size-10 justify-self-end"
           size="icon"
           variant="ghost"
           title="Settings"

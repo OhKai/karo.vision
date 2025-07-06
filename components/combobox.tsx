@@ -144,7 +144,7 @@ const Combobox = <T extends string | number>({
           aria-expanded={open}
           {...buttonProps}
           className={cn(
-            "justify-between w-full truncate",
+            "w-full justify-between truncate",
             buttonProps.className,
           )}
         >
@@ -156,7 +156,7 @@ const Combobox = <T extends string | number>({
                     {combinedItems.find((item) => item.value === value)?.tag ??
                       value}
                     <X
-                      className="ml-1 opacity-70 transition-opacity cursor-pointer hover:opacity-100 pointer-events-auto!"
+                      className="pointer-events-auto! ml-1 cursor-pointer opacity-70 transition-opacity hover:opacity-100"
                       onClick={(e) => {
                         e.preventDefault();
                         const newValues = values.filter((v) => v !== value);

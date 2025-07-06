@@ -10,7 +10,7 @@ import {
 
 const PlayerError = () => {
   return (
-    <Card className="w-[650px] max-lg:w-full m-5">
+    <Card className="m-5 w-[650px] max-lg:w-full">
       <CardHeader>
         <CardTitle>Playback error</CardTitle>
         <CardDescription>

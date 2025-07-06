@@ -77,7 +77,7 @@ const Tags = ({
     <div className={cn(className)}>
       <div
         ref={containerRef}
-        className="relative flex flex-wrap gap-1 items-center"
+        className="relative flex flex-wrap items-center gap-1"
       >
         {values.slice(0, isExpanded ? undefined : cutoff).map((value) => (
           <Button
@@ -86,7 +86,7 @@ const Tags = ({
             variant="secondary"
             size="sm"
             className={cn(
-              "text-[11px] px-4 py-1 h-auto inline-block truncate max-w-full",
+              "inline-block h-auto max-w-full truncate px-4 py-1 text-[11px]",
               tagClassName,
             )}
           >
@@ -95,7 +95,7 @@ const Tags = ({
         ))}
         {!isExpanded && cutoff !== undefined && values.length - cutoff > 0 ? (
           <>
-            <div className="text-xs text-title ml-0.5">
+            <div className="text-title ml-0.5 text-xs">
               {cutoff > 0 && "+"}
               {values.length - cutoff}
             </div>
@@ -109,7 +109,7 @@ const Tags = ({
         <Button
           variant="default"
           size="sm"
-          className="text-[11px] px-2 py-1 h-auto mt-2"
+          className="mt-2 h-auto px-2 py-1 text-[11px]"
           onClick={() => setIsExpanded(true)}
         >
           <SquarePlus className="size-3" /> Show All

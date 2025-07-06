@@ -21,7 +21,7 @@ const HeaderNav = ({ className }: HeaderNavProps) => {
         size="icon"
         variant="ghost"
         data-active={segment === null}
-        className="size-10 relative data-[active=true]:text-accent-foreground after:block after:size-1 after:absolute after:-bottom-1.5 after:rounded-full data-[active=true]:after:bg-accent-foreground after:transition-colors"
+        className="data-[active=true]:text-accent-foreground data-[active=true]:after:bg-accent-foreground relative size-10 after:absolute after:-bottom-1.5 after:block after:size-1 after:rounded-full after:transition-colors"
       >
         <Link href="/" title="Videos">
           <TvMinimalPlay className="size-6" />
@@ -32,7 +32,7 @@ const HeaderNav = ({ className }: HeaderNavProps) => {
         size="icon"
         variant="ghost"
         data-active={segment === "photos"}
-        className="size-10 relative data-[active=true]:text-accent-foreground after:block after:size-1 after:absolute after:-bottom-1.5 after:rounded-full data-[active=true]:after:bg-accent-foreground after:transition-colors"
+        className="data-[active=true]:text-accent-foreground data-[active=true]:after:bg-accent-foreground relative size-10 after:absolute after:-bottom-1.5 after:block after:size-1 after:rounded-full after:transition-colors"
       >
         <Link href="/photos" title="Photos">
           <LImage className="size-6" />
@@ -43,7 +43,7 @@ const HeaderNav = ({ className }: HeaderNavProps) => {
         size="icon"
         variant="ghost"
         data-active={segment === "music"}
-        className="size-10 relative data-[active=true]:text-accent-foreground after:block after:size-1 after:absolute after:-bottom-1.5 after:rounded-full data-[active=true]:after:bg-accent-foreground after:transition-colors"
+        className="data-[active=true]:text-accent-foreground data-[active=true]:after:bg-accent-foreground relative size-10 after:absolute after:-bottom-1.5 after:block after:size-1 after:rounded-full after:transition-colors"
       >
         <Link href="/music" title="Music">
           <Music className="size-6" />

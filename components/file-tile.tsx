@@ -14,7 +14,7 @@ const FileTile = ({
     <div
       {...divProps}
       className={cn(
-        "h-full flex flex-col bg-zinc-50 group rounded shadow-xs hover:bg-zinc-100 transition-colors",
+        "group flex h-full flex-col rounded bg-zinc-50 shadow-xs transition-colors hover:bg-zinc-100",
         className,
       )}
       ref={ref}
@@ -34,7 +34,7 @@ FileTile.Top = ({
   return (
     <div
       className={cn(
-        "shrink-0 overflow-hidden rounded-t relative bg-secondary flex justify-center group-hover:bg-input transition-colors",
+        "bg-secondary group-hover:bg-input relative flex shrink-0 justify-center overflow-hidden rounded-t transition-colors",
         className,
       )}
     >
@@ -61,7 +61,7 @@ FileTile.Bottom = ({
       };
 }) => {
   return (
-    <div className={cn("flex flex-col grow px-2.5 py-2.5 w-full", className)}>
+    <div className={cn("flex w-full grow flex-col px-2.5 py-2.5", className)}>
       {"node" in content ? (
         content.node
       ) : (
@@ -71,7 +71,7 @@ FileTile.Bottom = ({
           </h4>
           <h3
             title={content.title ?? content.name}
-            className="text-[17px] font-medium tracking-[0.25px] mb-3.5 truncate"
+            className="mb-3.5 truncate text-[17px] font-medium tracking-[0.25px]"
           >
             {content.title ?? content.name}
           </h3>
@@ -83,7 +83,7 @@ FileTile.Bottom = ({
               tagClassName="bg-zinc-200/50 group-hover:bg-zinc-200"
             />
           ) : null}
-          <div className="flex text-[11px] font-light justify-between flex-1 items-end text-muted-foreground gap-1">
+          <div className="text-muted-foreground flex flex-1 items-end justify-between gap-1 text-[11px] font-light">
             <span className="truncate" title={content.dirname}>
               {content.dirname}
             </span>

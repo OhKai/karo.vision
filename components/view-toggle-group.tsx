@@ -49,7 +49,7 @@ const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
         <ToggleGroupItem
           value="tiles"
           aria-label="Toggle Tiles"
-          className="max-md:data-[cards=true]:bg-black/[4%] max-md:data-[cards=true]:text-accent-foreground"
+          className="max-md:data-[cards=true]:text-accent-foreground max-md:data-[cards=true]:bg-black/[4%]"
           // On mobile, coalesce to "tiles" if "cards" is selected.
           data-cards={view === "cards"}
         >

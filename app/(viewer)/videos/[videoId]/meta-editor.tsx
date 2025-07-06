@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   topic: z.string(),
@@ -51,17 +52,25 @@ const MetaEditor = ({ onClose, video }: MetaEditorProps) => {
     },
   });
 
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
-  const mutation = trpc.videos.update.useMutation({
-    onSuccess: (data, vars) => {
-      // Since everything is local, we can be aggressive with busting the cache.
-      utils.videos.list.invalidate();
-      utils.videos.byId.setData(video.file.id, data);
+  const mutation = useMutation(
+    trpc.videos.update.mutationOptions({
+      onSuccess: (data, variables) => {
+        // Since everything is local, we can be aggressive with busting the cache.
+        queryClient.invalidateQueries({
+          queryKey: trpc.videos.list.infiniteQueryKey(),
+        });
+        // Immediately update the video data in the cache to avoid flickering or submit delay.
+        queryClient.setQueryData(
+          trpc.videos.byId.queryKey(video.file.id),
+          data,
+        );
 
-      onClose();
-    },
-  });
+        onClose();
+      },
+    }),
+  );
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     mutation.mutate({

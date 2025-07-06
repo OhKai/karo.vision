@@ -15,7 +15,6 @@ import {
 import { trpc } from "@/lib/trpc-client";
 import type { Inputs, Outputs } from "@/lib/trpc-client";
 import { TRPCInfiniteData } from "@trpc/tanstack-react-query";
-import { is } from "drizzle-orm";
 
 export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
   const queryClient = useQueryClient();

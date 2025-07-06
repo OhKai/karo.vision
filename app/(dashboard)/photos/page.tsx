@@ -1,16 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Masonry from "@wowblvck/react-responsive-masonry";
 import { useResizeStore } from "@/lib/use-resize-store";
 import SearchPage, { useSearchPage } from "@/components/search-page";
-import { fileURL } from "@/lib/utils";
 import FilesTable from "@/components/files-table";
 import { TableHead } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
 import PhotoTile from "./photo-tile";
+import PhotoPoster from "./photo-poster";
 
 const PhotosPage = () => {
   const windowWidth = useResizeStore((state) => state.windowWidth);
@@ -77,9 +76,9 @@ const PhotosPage = () => {
           >
             {searchPage.data?.pages?.map((page, pageIndex) =>
               page.map((photo, photoIndex) => (
-                <div
-                  className="bg-muted flex w-full rounded shadow-xs"
+                <PhotoPoster
                   key={photo.fileId}
+                  photo={photo}
                   ref={
                     pageIndex === searchPage.data!.pages.length - 1 &&
                     (photoIndex === page.length - 10 ||
@@ -87,16 +86,7 @@ const PhotosPage = () => {
                       ? searchPage.tripwireRef
                       : undefined
                   }
-                >
-                  <Image
-                    src={fileURL(photo.fileId)}
-                    alt=""
-                    className="rounded"
-                    width={400}
-                    height={225}
-                    style={{ width: "100%" }}
-                  />
-                </div>
+                />
               )),
             )}
           </Masonry>

@@ -39,29 +39,27 @@ const PhotoTile = ({
               <CircleHelp className="text-muted-foreground h-3/4 w-3/4" />
             </div>
           ) : (
-            <div className="relative overflow-hidden">
-              <img
-                src={fileThumbURL(photo.fileId)}
-                alt=""
-                loading="lazy"
-                style={{ aspectRatio: "16 / 9" }}
-                className={cn(
-                  "w-full object-contain transition-all duration-300 group-hover:scale-105",
-                  {
-                    "opacity-0": !hasInitiallyLoaded,
-                  },
-                )}
-                onError={() => {
-                  setHasThumb(false);
-                }}
-                onLoad={(e) => {
-                  if (!hasInitiallyLoaded) {
-                    e.currentTarget.classList.add("opacity-100");
-                    setHasInitiallyLoaded(true);
-                  }
-                }}
-              />
-            </div>
+            <img
+              src={fileThumbURL(photo.fileId)}
+              alt=""
+              loading="lazy"
+              style={{ aspectRatio: "16 / 9" }}
+              className={cn(
+                "w-full object-contain transition-all duration-300 group-hover:scale-105",
+                {
+                  "opacity-0": !hasInitiallyLoaded,
+                },
+              )}
+              onError={() => {
+                setHasThumb(false);
+              }}
+              onLoad={(e) => {
+                if (!hasInitiallyLoaded) {
+                  e.currentTarget.classList.add("opacity-100");
+                  setHasInitiallyLoaded(true);
+                }
+              }}
+            />
           )}
         </FileTile.Top>
         <FileTile.Bottom content={photo.file} />

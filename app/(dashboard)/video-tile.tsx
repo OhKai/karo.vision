@@ -76,6 +76,7 @@ const VideoTile = ({
           ) : (
             <img
               src={fileThumbURL(video.fileId)}
+              alt=""
               loading="lazy"
               style={{ aspectRatio: "16 / 9" }}
               className={cn(

@@ -10,6 +10,7 @@ import { fileURL } from "@/lib/utils";
 import FilesTable from "@/components/files-table";
 import { TableHead } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
+import PhotoTile from "./photo-tile";
 
 const PhotosPage = () => {
   const windowWidth = useResizeStore((state) => state.windowWidth);
@@ -101,7 +102,23 @@ const PhotosPage = () => {
           </Masonry>
         </div>
       ) : (
-        <div className="grid w-full max-w-[2808px] grid-cols-1 gap-3 px-2 min-[680px]:grid-cols-2 min-[1300px]:grid-cols-4 min-[1600px]:grid-cols-5 min-[2090px]:grid-cols-6 md:px-6 lg:grid-cols-3"></div>
+        <div className="grid w-full max-w-[2808px] grid-cols-1 gap-3 px-2 min-[680px]:grid-cols-2 min-[1300px]:grid-cols-4 min-[1600px]:grid-cols-5 min-[2090px]:grid-cols-6 md:px-6 lg:grid-cols-3">
+          {searchPage.data?.pages?.map((page, pageIndex) =>
+            page.map((photo, photoIndex) => (
+              <PhotoTile
+                key={photo.fileId}
+                photo={photo}
+                ref={
+                  pageIndex === searchPage.data!.pages.length - 1 &&
+                  (photoIndex === page.length - 13 ||
+                    photoIndex === page.length - 1)
+                    ? searchPage.tripwireRef
+                    : undefined
+                }
+              />
+            )),
+          )}
+        </div>
       )}
     </SearchPage>
   );

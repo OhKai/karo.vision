@@ -115,3 +115,4 @@ The app uses tRPC for type-safe API calls between frontend and backend:
 - **Custom Hooks**: Extract complex logic, especially when it uses other hooks
 - **Presentation vs Container**: Keep components focused on UI, move data logic to hooks
 - **Props Interface**: Define explicit interfaces for component props, avoid inline types
+- **Tailwind Patterns**: Use modern Tailwind best practices for styling

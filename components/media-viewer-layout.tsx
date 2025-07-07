@@ -10,8 +10,7 @@ import Tags from "./tags";
 type MediaViewerContextType = {
   isSidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
-  isUserInactive?: boolean;
-  isMediaPaused?: boolean;
+  showControls: boolean;
 };
 
 const MediaViewerContext = createContext<MediaViewerContextType | null>(null);
@@ -26,28 +25,25 @@ const useMediaViewer = () => {
 
 type MediaViewerLayoutProps = {
   children: ReactNode;
-  isUserInactive?: boolean;
-  isMediaPaused?: boolean;
+  showControls?: boolean;
   initialSidebarOpen?: boolean;
 };
 
 // Root layout component
 export const MediaViewerLayout = ({
   children,
-  isUserInactive = true,
-  isMediaPaused = true,
+  showControls = true,
   initialSidebarOpen = true,
 }: MediaViewerLayoutProps) => {
   const [isSidebarOpen, setSidebarOpen] = useState(initialSidebarOpen);
 
   return (
     <MediaViewerContext.Provider
-      value={{ isSidebarOpen, setSidebarOpen, isUserInactive, isMediaPaused }}
+      value={{ isSidebarOpen, setSidebarOpen, showControls }}
     >
       <div
         className="group flex flex-col md:h-screen md:flex-row md:overflow-hidden"
-        data-userinactive={isUserInactive}
-        data-mediapaused={isMediaPaused}
+        data-showcontrols={showControls}
       >
         {children}
       </div>
@@ -55,22 +51,15 @@ export const MediaViewerLayout = ({
   );
 };
 
-type HomeButtonProps = {
-  onPointerMove?: (e: React.PointerEvent) => void;
-  onMouseLeave?: (e: React.MouseEvent) => void;
-};
+type HomeButtonProps = React.ComponentProps<typeof Button>;
 
-MediaViewerLayout.HomeButton = ({
-  onPointerMove,
-  onMouseLeave,
-}: HomeButtonProps) => {
+MediaViewerLayout.HomeButton = (props: HomeButtonProps) => {
   return (
     <Link href="/">
       <Button
-        className="bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0"
+        className="bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0"
         title="Back to home page"
-        onPointerMove={onPointerMove}
-        onMouseLeave={onMouseLeave}
+        {...props}
       >
         <House />
       </Button>
@@ -88,14 +77,12 @@ MediaViewerLayout.MediaContent = ({ children }: MediaContentProps) => {
 
 type SidebarProps = {
   children: ReactNode;
-  onToggleButtonPointerMove?: (e: React.PointerEvent) => void;
-  onToggleButtonMouseLeave?: (e: React.MouseEvent) => void;
+  toggleButtonProps?: React.ComponentProps<typeof Button>;
 };
 
 MediaViewerLayout.Sidebar = ({
   children,
-  onToggleButtonPointerMove,
-  onToggleButtonMouseLeave,
+  toggleButtonProps,
 }: SidebarProps) => {
   const { isSidebarOpen, setSidebarOpen } = useMediaViewer();
 
@@ -105,11 +92,10 @@ MediaViewerLayout.Sidebar = ({
       data-opened={isSidebarOpen}
     >
       <Button
-        className="bg-primary/35 absolute -left-[57px] hidden backdrop-blur-lg transition-opacity md:flex [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0"
+        className="bg-primary/35 absolute -left-[57px] hidden backdrop-blur-lg transition-opacity md:flex [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0"
         onClick={() => setSidebarOpen(!isSidebarOpen)}
         title="Toggle sidebar"
-        onPointerMove={onToggleButtonPointerMove}
-        onMouseLeave={onToggleButtonMouseLeave}
+        {...toggleButtonProps}
       >
         <ArrowRightToLine className="transition-transform duration-500 group-data-[opened=false]/sidebar:-rotate-180" />
       </Button>

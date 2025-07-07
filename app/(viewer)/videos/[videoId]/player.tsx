@@ -105,11 +105,10 @@ const Player = () => {
     }
   };
 
+  const showControls = isMediaPaused || !isUserInactive;
+
   return (
-    <MediaViewerLayout
-      isUserInactive={isUserInactive}
-      isMediaPaused={isMediaPaused}
-    >
+    <MediaViewerLayout showControls={showControls}>
       <MediaViewerLayout.HomeButton
         onPointerMove={onPlayerControlPointerMove}
         onMouseLeave={onPlayerControlMouseLeave}
@@ -134,8 +133,10 @@ const Player = () => {
       </MediaViewerLayout.MediaContent>
 
       <MediaViewerLayout.Sidebar
-        onToggleButtonPointerMove={onPlayerControlPointerMove}
-        onToggleButtonMouseLeave={onPlayerControlMouseLeave}
+        toggleButtonProps={{
+          onPointerMove: onPlayerControlPointerMove,
+          onMouseLeave: onPlayerControlMouseLeave,
+        }}
       >
         {isPending ? null : !video ? (
           <div>Error</div>

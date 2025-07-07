@@ -99,6 +99,7 @@ The app uses tRPC for type-safe API calls between frontend and backend:
 - **Leverage type inference**: Let TypeScript infer types when obvious, be explicit when it adds clarity
 - **Use discriminated unions**: For component variants and state machines
 - **Export types from modules**: Especially tRPC router input/output types
+- **Prefer arrow functions**: For uniformity use arrow functions unless there are good technical reasons not to
 
 ### State Management Guidelines
 

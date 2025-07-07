@@ -1,6 +1,5 @@
 "use client";
 
-import Tags from "@/components/tags";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,12 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  ArrowRightToLine,
   Camera,
   Download,
   EllipsisVertical,
   FolderOpen,
-  House,
   Pencil,
   RefreshCw,
   Trash2,
@@ -27,12 +24,11 @@ import MetaEditor from "./meta-editor";
 import { convertBytesToRoundedString, fileURL, roundFPS } from "@/lib/utils";
 import { useParams, usePathname } from "next/navigation";
 import PlayerError from "./player-error";
-import Link from "next/link";
 import { trpc } from "@/lib/trpc-client";
 import { useQuery } from "@tanstack/react-query";
+import { MediaViewerLayout } from "@/components/media-viewer-layout";
 
 const Player = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
   const playerRef = useRef<MediaThemeYtElement>(null);
   const [isUserInactive, setUserInactive] = useState(true);
   const [isMediaPaused, setMediaPaused] = useState(true);
@@ -110,84 +106,61 @@ const Player = () => {
   };
 
   return (
-    <div
-      className="group flex flex-col md:h-screen md:flex-row md:overflow-hidden"
-      data-userinactive={isUserInactive}
-      data-mediapaused={isMediaPaused}
+    <MediaViewerLayout
+      isUserInactive={isUserInactive}
+      isMediaPaused={isMediaPaused}
     >
-      <Link href="/">
-        <Button
-          className="bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0"
-          title="Back to home page"
-          onPointerMove={onPlayerControlPointerMove}
-          onMouseLeave={onPlayerControlMouseLeave}
-        >
-          <House />
-        </Button>
-      </Link>
-      {isConvertable ? (
-        <div className="bg-secondary flex h-full w-full items-center justify-center">
-          <PlayerError />
-        </div>
-      ) : (
-        <MediaThemeYt className="h-full w-full" ref={playerRef}>
-          <video
-            slot="media"
-            className="bg-foreground h-full w-full"
-            src={fileURL(videoId)}
-            playsInline
-            autoPlay
-          ></video>
-        </MediaThemeYt>
-      )}
-      <div
-        className="bg-background group/sidebar relative mr-0 flex shrink-0 flex-col px-4 py-4 md:w-[350px] md:transition-all md:duration-500 md:data-[opened=false]:-mr-[350px]"
-        data-opened={isSidebarOpen}
+      <MediaViewerLayout.HomeButton
+        onPointerMove={onPlayerControlPointerMove}
+        onMouseLeave={onPlayerControlMouseLeave}
+      />
+      
+      <MediaViewerLayout.MediaContent>
+        {isConvertable ? (
+          <div className="bg-secondary flex h-full w-full items-center justify-center">
+            <PlayerError />
+          </div>
+        ) : (
+          <MediaThemeYt className="h-full w-full" ref={playerRef}>
+            <video
+              slot="media"
+              className="bg-foreground h-full w-full"
+              src={fileURL(videoId)}
+              playsInline
+              autoPlay
+            ></video>
+          </MediaThemeYt>
+        )}
+      </MediaViewerLayout.MediaContent>
+
+      <MediaViewerLayout.Sidebar
+        onToggleButtonPointerMove={onPlayerControlPointerMove}
+        onToggleButtonMouseLeave={onPlayerControlMouseLeave}
       >
-        <Button
-          className="bg-primary/35 absolute -left-[57px] hidden backdrop-blur-lg transition-opacity md:flex [&:not(:hover)]:group-data-[mediapaused=false]:group-data-[userinactive=true]:opacity-0"
-          onClick={() => setSidebarOpen(!isSidebarOpen)}
-          title="Toggle sidebar"
-          onPointerMove={onPlayerControlPointerMove}
-          onMouseLeave={onPlayerControlMouseLeave}
-        >
-          <ArrowRightToLine className="transition-transform duration-500 group-data-[opened=false]/sidebar:-rotate-180" />
-        </Button>
         {isPending ? null : !video ? (
           <div>Error</div>
         ) : isEditing ? (
           <MetaEditor video={video} onClose={() => setIsEditing(false)} />
         ) : (
           <>
-            <h4 className="text-muted-foreground mb-[3px] text-[15px] font-medium">
-              {video.file.topic}
-            </h4>
-            <h3 className="mb-5 text-xl font-medium tracking-[0.25px] break-words">
-              {video.file.title ?? video.file.name}
-            </h3>
-            <div className="-mx-4 flex grow flex-col overflow-auto px-4">
-              <Tags
-                values={video.file.tags ?? []}
-                maxLines={2}
-                expandable
-                className="mb-7"
-              />
-              <div className="text-muted-foreground mb-8 grid grid-cols-2 justify-between gap-3 text-xs font-light">
-                <span>{video.file.createdAt.toLocaleDateString()}</span>
-                <span>{convertBytesToRoundedString(video.file.size)}</span>
-                <span>
-                  {video.width}x{video.height}
-                </span>
-                <span>{roundFPS(video.framerate)} FPS</span>
-                <span className="col-span-2 truncate">
-                  {video.file.dirname}
-                </span>
-              </div>
-              <div className="text-secondary-foreground text-sm">
-                {video.description}
-              </div>
-            </div>
-            <div className="mt-3.5 flex flex-col gap-2.5">
+            <MediaViewerLayout.SidebarInfo
+              topic={video.file.topic}
+              title={video.file.title ?? video.file.name}
+              tags={video.file.tags ?? []}
+              description={video.description}
+            >
+              <span>{video.file.createdAt.toLocaleDateString()}</span>
+              <span>{convertBytesToRoundedString(video.file.size)}</span>
+              <span>
+                {video.width}x{video.height}
+              </span>
+              <span>{roundFPS(video.framerate)} FPS</span>
+              <span className="col-span-2 truncate">
+                {video.file.dirname}
+              </span>
+            </MediaViewerLayout.SidebarInfo>
+            
+            <MediaViewerLayout.SidebarActions>
               <div className="flex gap-2.5">
                 <Button
                   variant="outline"
@@ -229,11 +202,11 @@ const Player = () => {
               <Button variant="destructive">
                 <Trash2 /> Delete
               </Button>
-            </div>
+            </MediaViewerLayout.SidebarActions>
           </>
         )}
-      </div>
-    </div>
+      </MediaViewerLayout.Sidebar>
+    </MediaViewerLayout>
   );
 };
 

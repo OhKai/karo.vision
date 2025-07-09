@@ -20,12 +20,12 @@ import {
 import MediaThemeYtElement from "player.style/yt.js";
 import MediaThemeYt from "player.style/yt/react";
 import { useEffect, useRef, useState } from "react";
-import MetaEditor from "./meta-editor";
+import MetaEditor from "@/components/meta-editor";
 import { convertBytesToRoundedString, fileURL, roundFPS } from "@/lib/utils";
 import { useParams, usePathname } from "next/navigation";
 import PlayerError from "./player-error";
 import { trpc } from "@/lib/trpc-client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { MediaViewerLayout } from "@/components/media-viewer-layout";
 
 const Player = () => {
@@ -39,9 +39,23 @@ const Player = () => {
   console.log(params);
   // Note: This should always be a number since we check it server-side before returning this page.
   const videoId = parseInt(usePathname().split("/").pop()!);
+  const queryClient = useQueryClient();
   const { data: video, isPending } = useQuery(
     trpc.videos.byId.queryOptions(videoId),
   );
+
+  const videoMutationOptions = trpc.videos.update.mutationOptions({
+    onSuccess: (data) => {
+      // Since everything is local, we can be aggressive with busting the cache.
+      queryClient.invalidateQueries({
+        queryKey: trpc.videos.list.infiniteQueryKey(),
+      });
+      // Invalidate and wait for the specific video data to be refetched.
+      return queryClient.invalidateQueries({
+        queryKey: trpc.videos.byId.queryKey(videoId),
+      });
+    },
+  });
 
   useEffect(() => {
     const player = playerRef.current;
@@ -113,7 +127,6 @@ const Player = () => {
         onPointerMove={onPlayerControlPointerMove}
         onMouseLeave={onPlayerControlMouseLeave}
       />
-      
       <MediaViewerLayout.MediaContent>
         {isConvertable ? (
           <div className="bg-secondary flex h-full w-full items-center justify-center">
@@ -131,7 +144,6 @@ const Player = () => {
           </MediaThemeYt>
         )}
       </MediaViewerLayout.MediaContent>
-
       <MediaViewerLayout.Sidebar
         toggleButtonProps={{
           onPointerMove: onPlayerControlPointerMove,
@@ -139,9 +151,22 @@ const Player = () => {
         }}
       >
         {isPending ? null : !video ? (
-          <div>Error</div>
+          <div>Video metadata could not be loaded.</div>
         ) : isEditing ? (
-          <MetaEditor video={video} onClose={() => setIsEditing(false)} />
+          <MetaEditor
+            file={{
+              id: video.file.id,
+              name: video.file.name,
+              topic: video.file.topic,
+              title: video.file.title,
+              tags: video.file.tags,
+              description: video.description,
+            }}
+            fileType="video"
+            onClose={() => setIsEditing(false)}
+            mutationOptions={videoMutationOptions}
+            topicSuggestions={["Youtube", "Twitch", "Movies", "TV Shows"]}
+          />
         ) : (
           <>
             <MediaViewerLayout.SidebarInfo
@@ -156,11 +181,8 @@ const Player = () => {
                 {video.width}x{video.height}
               </span>
               <span>{roundFPS(video.framerate)} FPS</span>
-              <span className="col-span-2 truncate">
-                {video.file.dirname}
-              </span>
+              <span className="col-span-2 truncate">{video.file.dirname}</span>
             </MediaViewerLayout.SidebarInfo>
-            
             <MediaViewerLayout.SidebarActions>
               <div className="flex gap-2.5">
                 <Button

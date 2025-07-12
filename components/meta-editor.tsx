@@ -12,78 +12,117 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { ReactNode } from "react";
 
-const formSchema = z.object({
+// Base schema that all meta editors will have
+const baseSchema = z.object({
   topic: z.string(),
   title: z.string(),
   tags: z.array(z.string()),
-  description: z.string(),
 });
 
+// Base file type with required fields
 export type MetaEditorFile = {
-  id: number;
+  fileId: number;
   name: string;
   topic: string | null;
   title: string | null;
   tags: string[] | null;
-  description?: string | null;
 };
 
-export type MetaEditorProps<T, E, C> = {
+// Generic props that support additional schema
+export type MetaEditorProps<S extends z.ZodRawShape> = {
   file: MetaEditorFile;
   fileType?: string;
   onClose: () => void;
   mutationOptions: UseMutationOptions<
-    T,
-    E,
+    any,
+    any,
     {
-      videoId: number;
+      fileId: number;
       topic?: string | null;
       title?: string | null;
       tags?: string[] | null;
-      description?: string | null;
     },
-    C
+    any
   >;
   topicSuggestions?: string[];
   tagSuggestions?: string[];
+  additionalSchema?: z.ZodObject<S>;
+  additionalDefaults?: z.infer<z.ZodObject<S>>;
+  renderAdditional?: (
+    form: UseFormReturn<
+      {
+        topic: string;
+        title: string;
+        tags: string[];
+      } & z.infer<z.ZodObject<S>>
+    >,
+  ) => ReactNode;
 };
 
-const MetaEditor = <T, E, C>({
+function MetaEditor<S extends z.ZodRawShape>({
   file,
   fileType = "file",
   onClose,
   mutationOptions,
   topicSuggestions = [],
   tagSuggestions = [],
-}: MetaEditorProps<T, E, C>) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  additionalSchema,
+  additionalDefaults,
+  renderAdditional,
+}: MetaEditorProps<S>) {
+  // Merge schemas if additional schema is provided
+  const formSchema = additionalSchema
+    ? baseSchema.merge(additionalSchema)
+    : baseSchema;
+
+  const form = useForm({
+    // We treat the form as only containing the base schema fields because typescript has issues
+    // with generics in this context.
+    resolver: zodResolver(formSchema as typeof baseSchema),
     defaultValues: {
       topic: file.topic ?? "",
       title: file.title ?? "",
       tags: file.tags ?? [],
-      description: file.description ?? "",
+      ...(additionalDefaults || {}),
     },
   });
 
   const mutation = useMutation(mutationOptions);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit: SubmitHandler<{
+    title: string;
+    topic: string;
+    tags: string[];
+  }> = async (values) => {
+    const { topic, title, tags, ...additionalValues } = values;
+
+    const baseValues = {
+      fileId: file.fileId,
+      // Ensure empty values stay null.
+      topic: topic || null,
+      title: title || null,
+      tags: tags.length === 0 ? null : tags,
+    };
+
+    const processedAdditionalValues = Object.entries(additionalValues).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]: value === "" ? null : value,
+      }),
+      {},
+    );
+
     mutation.mutate(
       {
-        videoId: file.id,
-        // Ensure empty values stay null.
-        topic: values.topic || null,
-        title: values.title || null,
-        tags: values.tags.length === 0 ? null : values.tags,
-        description: values.description || null,
+        ...baseValues,
+        ...processedAdditionalValues,
       },
       {
         onSuccess: () => {
@@ -91,7 +130,7 @@ const MetaEditor = <T, E, C>({
         },
       },
     );
-  }
+  };
 
   return (
     <Form {...form}>
@@ -174,23 +213,15 @@ const MetaEditor = <T, E, C>({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Notes</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder=""
-                    className="text-accent-foreground"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {renderAdditional?.(
+            form as UseFormReturn<
+              {
+                topic: string;
+                title: string;
+                tags: string[];
+              } & z.infer<z.ZodObject<S>>
+            >,
+          )}
         </div>
         <div className="mt-3.5 flex flex-col gap-2.5">
           <Button type="submit" disabled={mutation.isPending}>
@@ -203,6 +234,6 @@ const MetaEditor = <T, E, C>({
       </form>
     </Form>
   );
-};
+}
 
 export default MetaEditor;

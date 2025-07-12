@@ -27,6 +27,15 @@ import PlayerError from "./player-error";
 import { trpc } from "@/lib/trpc-client";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { MediaViewerLayout } from "@/components/media-viewer-layout";
+import z from "zod";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 
 const Player = () => {
   const playerRef = useRef<MediaThemeYtElement>(null);
@@ -155,17 +164,39 @@ const Player = () => {
         ) : isEditing ? (
           <MetaEditor
             file={{
-              id: video.file.id,
+              fileId: video.file.id,
               name: video.file.name,
               topic: video.file.topic,
               title: video.file.title,
               tags: video.file.tags,
-              description: video.description,
             }}
             fileType="video"
             onClose={() => setIsEditing(false)}
             mutationOptions={videoMutationOptions}
             topicSuggestions={["Youtube", "Twitch", "Movies", "TV Shows"]}
+            additionalSchema={z.object({
+              description: z.string(),
+            })}
+            additionalDefaults={{ description: video.description ?? "" }}
+            renderAdditional={(form) => (
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Notes</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder=""
+                        className="text-accent-foreground"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           />
         ) : (
           <>

@@ -102,7 +102,7 @@ export const photosRouter = router({
   update: publicProcedure
     .input(
       z.object({
-        photoId: z.number(),
+        fileId: z.number(),
         topic: z.string().nullish(),
         title: z.string().nullish(),
         tags: z.array(z.string().min(1)).nullish(),
@@ -121,7 +121,7 @@ export const photosRouter = router({
           .select()
           .from(photos)
           .innerJoin(files, eq(photos.fileId, files.id))
-          .where(eq(photos.fileId, input.photoId))
+          .where(eq(photos.fileId, input.fileId))
           .get();
 
         if (!res) {
@@ -145,7 +145,7 @@ export const photosRouter = router({
           .set({
             description: input.description,
           })
-          .where(eq(photos.fileId, input.photoId))
+          .where(eq(photos.fileId, input.fileId))
           .run();
 
         // Update files table
@@ -156,7 +156,7 @@ export const photosRouter = router({
             title: input.title,
             tags: input.tags,
           })
-          .where(eq(files.id, input.photoId))
+          .where(eq(files.id, input.fileId))
           .run();
 
         if (photoUpdate.changes === 0 || fileUpdate.changes === 0) {
@@ -170,7 +170,7 @@ export const photosRouter = router({
           .select()
           .from(photos)
           .innerJoin(files, eq(photos.fileId, files.id))
-          .where(eq(photos.fileId, input.photoId))
+          .where(eq(photos.fileId, input.fileId))
           .get();
 
         if (!res) {

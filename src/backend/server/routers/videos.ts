@@ -103,7 +103,7 @@ export const videosRouter = router({
   update: publicProcedure
     .input(
       z.object({
-        videoId: z.number(),
+        fileId: z.number(),
         topic: z.string().nullish(),
         title: z.string().nullish(),
         tags: z.array(z.string().min(1)).nullish(),
@@ -122,7 +122,7 @@ export const videosRouter = router({
           .select()
           .from(videos)
           .innerJoin(files, eq(videos.fileId, files.id))
-          .where(eq(videos.fileId, input.videoId))
+          .where(eq(videos.fileId, input.fileId))
           .get();
 
         if (!res) {
@@ -146,7 +146,7 @@ export const videosRouter = router({
           .set({
             description: input.description,
           })
-          .where(eq(videos.fileId, input.videoId))
+          .where(eq(videos.fileId, input.fileId))
           .run();
 
         // Update files table
@@ -157,7 +157,7 @@ export const videosRouter = router({
             title: input.title,
             tags: input.tags,
           })
-          .where(eq(files.id, input.videoId))
+          .where(eq(files.id, input.fileId))
           .run();
 
         if (videoUpdate.changes === 0 || fileUpdate.changes === 0) {
@@ -171,7 +171,7 @@ export const videosRouter = router({
           .select()
           .from(videos)
           .innerJoin(files, eq(videos.fileId, files.id))
-          .where(eq(videos.fileId, input.videoId))
+          .where(eq(videos.fileId, input.fileId))
           .get();
 
         if (!res) {

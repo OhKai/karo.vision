@@ -5,6 +5,7 @@ import { ArrowRightToLine, House } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, createContext, useContext, useState } from "react";
 import Tags from "./tags";
+import { cn } from "@/lib/utils";
 
 // Context for sharing state between compound components
 type MediaViewerContextType = {
@@ -57,9 +58,12 @@ MediaViewerLayout.HomeButton = (props: HomeButtonProps) => {
   return (
     <Link href="/">
       <Button
-        className="bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0"
         title="Back to home page"
         {...props}
+        className={cn(
+          "bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0",
+          props.className,
+        )}
       >
         <House />
       </Button>
@@ -80,10 +84,7 @@ type SidebarProps = {
   toggleButtonProps?: React.ComponentProps<typeof Button>;
 };
 
-MediaViewerLayout.Sidebar = ({
-  children,
-  toggleButtonProps,
-}: SidebarProps) => {
+MediaViewerLayout.Sidebar = ({ children, toggleButtonProps }: SidebarProps) => {
   const { isSidebarOpen, setSidebarOpen } = useMediaViewer();
 
   return (
@@ -92,10 +93,13 @@ MediaViewerLayout.Sidebar = ({
       data-opened={isSidebarOpen}
     >
       <Button
-        className="bg-primary/35 absolute -left-[57px] hidden backdrop-blur-lg transition-opacity md:flex [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0"
         onClick={() => setSidebarOpen(!isSidebarOpen)}
         title="Toggle sidebar"
         {...toggleButtonProps}
+        className={cn(
+          "bg-primary/35 absolute -left-[57px] hidden backdrop-blur-lg transition-opacity md:flex [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0",
+          toggleButtonProps?.className,
+        )}
       >
         <ArrowRightToLine className="transition-transform duration-500 group-data-[opened=false]/sidebar:-rotate-180" />
       </Button>
@@ -112,12 +116,12 @@ type SidebarInfoProps = {
   children?: ReactNode; // For the metadata spans
 };
 
-MediaViewerLayout.SidebarInfo = ({ 
-  topic, 
-  title, 
-  tags = [], 
+MediaViewerLayout.SidebarInfo = ({
+  topic,
+  title,
+  tags = [],
   description,
-  children 
+  children,
 }: SidebarInfoProps) => {
   return (
     <>
@@ -130,21 +134,14 @@ MediaViewerLayout.SidebarInfo = ({
         {title}
       </h3>
       <div className="-mx-4 flex grow flex-col overflow-auto px-4">
-        <Tags
-          values={tags}
-          maxLines={2}
-          expandable
-          className="mb-7"
-        />
+        <Tags values={tags} maxLines={2} expandable className="mb-7" />
         {children && (
           <div className="text-muted-foreground mb-8 grid grid-cols-2 justify-between gap-3 text-xs font-light">
             {children}
           </div>
         )}
         {description && (
-          <div className="text-secondary-foreground text-sm">
-            {description}
-          </div>
+          <div className="text-secondary-foreground text-sm">{description}</div>
         )}
       </div>
     </>

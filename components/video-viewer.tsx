@@ -16,6 +16,7 @@ import {
   Pencil,
   RefreshCw,
   Trash2,
+  Video,
 } from "lucide-react";
 import MediaThemeYtElement from "player.style/yt.js";
 import MediaThemeYt from "player.style/yt/react";
@@ -23,7 +24,7 @@ import { useEffect, useRef, useState } from "react";
 import MetaEditor from "@/components/meta-editor";
 import { convertBytesToRoundedString, fileURL, roundFPS } from "@/lib/utils";
 import { useParams, usePathname } from "next/navigation";
-import PlayerError from "./player-error";
+import PlayerError from "@/components/player-error";
 import { trpc } from "@/lib/trpc-client";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { MediaViewerLayout } from "@/components/media-viewer-layout";
@@ -36,18 +37,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 
-const Player = () => {
+type VideoViewerProps = { videoId: number };
+
+const VideoViewer = ({ videoId }: VideoViewerProps) => {
   const playerRef = useRef<MediaThemeYtElement>(null);
   const [isUserInactive, setUserInactive] = useState(true);
   const [isMediaPaused, setMediaPaused] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isConvertable, setIsConvertable] = useState(false);
-  const params = useParams();
-  // TODO: remove this test to see what it is in production
-  console.log(params);
-  // Note: This should always be a number since we check it server-side before returning this page.
-  const videoId = parseInt(usePathname().split("/").pop()!);
   const queryClient = useQueryClient();
   const { data: video, isPending } = useQuery(
     trpc.videos.byId.queryOptions(videoId),
@@ -132,10 +131,12 @@ const Player = () => {
 
   return (
     <MediaViewerLayout showControls={showControls}>
-      <MediaViewerLayout.HomeButton
-        onPointerMove={onPlayerControlPointerMove}
-        onMouseLeave={onPlayerControlMouseLeave}
-      />
+      <Link href="/">
+        <MediaViewerLayout.HomeButton
+          onPointerMove={onPlayerControlPointerMove}
+          onMouseLeave={onPlayerControlMouseLeave}
+        />
+      </Link>
       <MediaViewerLayout.MediaContent>
         {isConvertable ? (
           <div className="bg-secondary flex h-full w-full items-center justify-center">
@@ -264,4 +265,4 @@ const Player = () => {
   );
 };
 
-export default Player;
+export default VideoViewer;

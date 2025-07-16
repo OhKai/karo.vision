@@ -1,11 +1,11 @@
-import Player from "./player";
+import Viewer from "./viewer";
 
 export async function generateStaticParams() {
   return [{ videoId: "page" }];
 }
 
 const VideoPage = () => {
-  return <Player />;
+  return <Viewer />;
 };
 
 export default VideoPage;

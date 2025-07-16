@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRightToLine, House } from "lucide-react";
-import Link from "next/link";
 import { ReactNode, createContext, useContext, useState } from "react";
 import Tags from "./tags";
 import { cn } from "@/lib/utils";
@@ -54,20 +53,18 @@ export const MediaViewerLayout = ({
 
 type HomeButtonProps = React.ComponentProps<typeof Button>;
 
-MediaViewerLayout.HomeButton = (props: HomeButtonProps) => {
+MediaViewerLayout.HomeButton = ({ className, ...props }: HomeButtonProps) => {
   return (
-    <Link href="/">
-      <Button
-        title="Back to home page"
-        {...props}
-        className={cn(
-          "bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0",
-          props.className,
-        )}
-      >
-        <House />
-      </Button>
-    </Link>
+    <Button
+      title="Back to home page"
+      className={cn(
+        "bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0",
+        className,
+      )}
+      {...props}
+    >
+      <House />
+    </Button>
   );
 };
 

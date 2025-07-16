@@ -32,6 +32,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 
 const Viewer = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -54,7 +55,9 @@ const Viewer = () => {
 
   return (
     <MediaViewerLayout showControls={true}>
-      <MediaViewerLayout.HomeButton className="opacity-0 group-hover:opacity-100" />
+      <Link href="/photos">
+        <MediaViewerLayout.HomeButton className="opacity-0 group-hover:opacity-100" />
+      </Link>
       <MediaViewerLayout.MediaContent>
         <div className="bg-foreground flex h-full w-full items-center justify-center">
           <img

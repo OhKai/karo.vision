@@ -16,17 +16,20 @@ import {
   Pencil,
   RefreshCw,
   Trash2,
-  Video,
 } from "lucide-react";
 import MediaThemeYtElement from "player.style/yt.js";
 import MediaThemeYt from "player.style/yt/react";
-import { useEffect, useRef, useState } from "react";
+import { createContext, ReactNode, use, useRef, useState } from "react";
 import MetaEditor from "@/components/meta-editor";
-import { convertBytesToRoundedString, fileURL, roundFPS } from "@/lib/utils";
-import { useParams, usePathname } from "next/navigation";
+import {
+  cn,
+  convertBytesToRoundedString,
+  fileURL,
+  roundFPS,
+} from "@/lib/utils";
 import PlayerError from "@/components/player-error";
 import { trpc } from "@/lib/trpc-client";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MediaViewerLayout } from "@/components/media-viewer-layout";
 import z from "zod";
 import {
@@ -37,23 +40,44 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import Link from "next/link";
 
-type VideoViewerProps = { videoId: number };
+type VideoControlsContextValue = {
+  onPointerMove: (e: React.PointerEvent) => void;
+  onMouseLeave: (e: React.MouseEvent) => void;
+};
 
-const VideoViewer = ({ videoId }: VideoViewerProps) => {
-  const playerRef = useRef<MediaThemeYtElement>(null);
+export const VideoControlsContext = createContext<VideoControlsContextValue>({
+  onPointerMove: () => {},
+  onMouseLeave: () => {},
+});
+
+type VideoViewerProps = {
+  videoId: number;
+  fullscreen?: boolean;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (open: boolean) => void;
+  children?: ReactNode;
+};
+
+const VideoViewer = ({
+  videoId,
+  fullscreen = false,
+  isSidebarOpen,
+  setIsSidebarOpen,
+  children,
+}: VideoViewerProps) => {
   const [isUserInactive, setUserInactive] = useState(true);
   const [isMediaPaused, setMediaPaused] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isConvertable, setIsConvertable] = useState(false);
   const queryClient = useQueryClient();
+  const playerRef = useRef<MediaThemeYtElement>(null);
   const { data: video, isPending } = useQuery(
     trpc.videos.byId.queryOptions(videoId),
   );
 
   const videoMutationOptions = trpc.videos.update.mutationOptions({
-    onSuccess: (data) => {
+    onSuccess: () => {
       // Since everything is local, we can be aggressive with busting the cache.
       queryClient.invalidateQueries({
         queryKey: trpc.videos.list.infiniteQueryKey(),
@@ -65,37 +89,32 @@ const VideoViewer = ({ videoId }: VideoViewerProps) => {
     },
   });
 
-  useEffect(() => {
-    const player = playerRef.current;
-    if (!player) return;
+  const playerRefCallback = (node: MediaThemeYtElement | null) => {
+    playerRef.current = node;
 
-    const handleUserInactive = (e: any) => {
-      setUserInactive(e.detail);
-    };
+    if (node) {
+      const handleUserInactive = (e: any) => {
+        setUserInactive(e.detail);
+      };
 
-    const handlePause = (e: any) => {
-      setMediaPaused(e.detail);
-    };
+      const handlePause = (e: any) => {
+        setMediaPaused(e.detail);
+      };
 
-    const handleErrorCode = (e: any) => {
-      // Code 4 = source not supported
-      if (e.detail === 4) {
-        // TODO: Only show this for viable formats?
-        setIsConvertable(true);
-      }
-    };
+      const handleErrorCode = (e: any) => {
+        // Code 4 = source not supported
+        if (e.detail === 4) {
+          // TODO: Only show this for viable formats?
+          setIsConvertable(true);
+        }
+      };
 
-    // Event types: https://media-chrome.mux.dev/examples/vanilla/state-change-events-demo.html
-    player.addEventListener("userinactivechange", handleUserInactive);
-    player.addEventListener("mediapaused", handlePause);
-    player.addEventListener("mediaerrorcode", handleErrorCode);
-
-    return () => {
-      player.removeEventListener("userinactivechange", handleUserInactive);
-      player.removeEventListener("mediapaused", handlePause);
-      player.removeEventListener("mediaerrorcode", handleErrorCode);
-    };
-  }, []);
+      // Event types: https://media-chrome.mux.dev/examples/vanilla/state-change-events-demo.html
+      node.addEventListener("userinactivechange", handleUserInactive);
+      node.addEventListener("mediapaused", handlePause);
+      node.addEventListener("mediaerrorcode", handleErrorCode);
+    }
+  };
 
   const onPlayerControlPointerMove = (e: React.PointerEvent) => {
     // Treat the button as a player control element to prevent the other controls from
@@ -130,138 +149,178 @@ const VideoViewer = ({ videoId }: VideoViewerProps) => {
   const showControls = isMediaPaused || !isUserInactive;
 
   return (
-    <MediaViewerLayout showControls={showControls}>
-      <Link href="/">
-        <MediaViewerLayout.HomeButton
-          onPointerMove={onPlayerControlPointerMove}
-          onMouseLeave={onPlayerControlMouseLeave}
-        />
-      </Link>
-      <MediaViewerLayout.MediaContent>
-        {isConvertable ? (
-          <div className="bg-secondary flex h-full w-full items-center justify-center">
-            <PlayerError />
-          </div>
-        ) : (
-          <MediaThemeYt className="h-full w-full" ref={playerRef}>
-            <video
-              slot="media"
-              className="bg-foreground h-full w-full"
-              src={fileURL(videoId)}
-              playsInline
-              autoPlay
-            ></video>
-          </MediaThemeYt>
-        )}
-      </MediaViewerLayout.MediaContent>
-      <MediaViewerLayout.Sidebar
-        toggleButtonProps={{
-          onPointerMove: onPlayerControlPointerMove,
-          onMouseLeave: onPlayerControlMouseLeave,
-        }}
+    <VideoControlsContext.Provider
+      value={{
+        onPointerMove: onPlayerControlPointerMove,
+        onMouseLeave: onPlayerControlMouseLeave,
+      }}
+    >
+      <MediaViewerLayout
+        showControls={showControls}
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        className={cn({ "md:h-screen": fullscreen })}
       >
-        {isPending ? null : !video ? (
-          <div>Video metadata could not be loaded.</div>
-        ) : isEditing ? (
-          <MetaEditor
-            file={{
-              fileId: video.file.id,
-              name: video.file.name,
-              topic: video.file.topic,
-              title: video.file.title,
-              tags: video.file.tags,
-            }}
-            fileType="video"
-            onClose={() => setIsEditing(false)}
-            mutationOptions={videoMutationOptions}
-            topicSuggestions={["Youtube", "Twitch", "Movies", "TV Shows"]}
-            additionalSchema={z.object({
-              description: z.string(),
-            })}
-            additionalDefaults={{ description: video.description ?? "" }}
-            renderAdditional={(form) => (
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Notes</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder=""
-                        className="text-accent-foreground"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-          />
-        ) : (
-          <>
-            <MediaViewerLayout.SidebarInfo
-              topic={video.file.topic}
-              title={video.file.title ?? video.file.name}
-              tags={video.file.tags ?? []}
-              description={video.description}
-            >
-              <span>{video.file.createdAt.toLocaleDateString()}</span>
-              <span>{convertBytesToRoundedString(video.file.size)}</span>
-              <span>
-                {video.width}x{video.height}
-              </span>
-              <span>{roundFPS(video.framerate)} FPS</span>
-              <span className="col-span-2 truncate">{video.file.dirname}</span>
-            </MediaViewerLayout.SidebarInfo>
-            <MediaViewerLayout.SidebarActions>
-              <div className="flex gap-2.5">
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => setIsEditing(true)}
-                >
-                  <Pencil /> Edit
+        <MediaViewerLayout.MediaContent>
+          {children}
+          {isConvertable ? (
+            <div className="bg-secondary flex h-full w-full items-center justify-center">
+              <PlayerError />
+            </div>
+          ) : (
+            <MediaThemeYt className="h-full w-full" ref={playerRefCallback}>
+              <video
+                slot="media"
+                className="bg-foreground h-full w-full"
+                src={fileURL(videoId)}
+                playsInline
+                autoPlay
+              ></video>
+            </MediaThemeYt>
+          )}
+        </MediaViewerLayout.MediaContent>
+        <MediaViewerLayout.Sidebar
+          toggleButtonProps={{
+            onPointerMove: onPlayerControlPointerMove,
+            onMouseLeave: onPlayerControlMouseLeave,
+          }}
+        >
+          {isPending ? null : !video ? (
+            <div>Video metadata could not be loaded.</div>
+          ) : isEditing ? (
+            <MetaEditor
+              file={{
+                fileId: video.file.id,
+                name: video.file.name,
+                topic: video.file.topic,
+                title: video.file.title,
+                tags: video.file.tags,
+              }}
+              fileType="video"
+              onClose={() => setIsEditing(false)}
+              mutationOptions={videoMutationOptions}
+              topicSuggestions={["Youtube", "Twitch", "Movies", "TV Shows"]}
+              additionalSchema={z.object({
+                description: z.string(),
+              })}
+              additionalDefaults={{ description: video.description ?? "" }}
+              renderAdditional={(form) => (
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Notes</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder=""
+                          className="text-accent-foreground"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+            />
+          ) : (
+            <>
+              <MediaViewerLayout.SidebarInfo
+                topic={video.file.topic}
+                title={video.file.title ?? video.file.name}
+                tags={video.file.tags ?? []}
+                description={video.description}
+                dialogClose={!fullscreen}
+              >
+                <span>{video.file.createdAt.toLocaleDateString()}</span>
+                <span>{convertBytesToRoundedString(video.file.size)}</span>
+                <span>
+                  {video.width}x{video.height}
+                </span>
+                <span>{roundFPS(video.framerate)} FPS</span>
+                <span className="col-span-2 truncate">
+                  {video.file.dirname}
+                </span>
+              </MediaViewerLayout.SidebarInfo>
+              <MediaViewerLayout.SidebarActions>
+                <div className="flex gap-2.5">
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <Pencil /> Edit
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="icon">
+                        <EllipsisVertical />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuItem>
+                        <Camera />
+                        <span>Set as thumbnail</span>
+                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <FolderOpen />
+                        <span>Reveal in Finder</span>
+                        <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Download />
+                        <span>Download video</span>
+                        <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <RefreshCw />
+                        <span>Sync player</span>
+                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                <Button variant="destructive">
+                  <Trash2 /> Delete
                 </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
-                      <EllipsisVertical />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem>
-                      <Camera />
-                      <span>Set as thumbnail</span>
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <FolderOpen />
-                      <span>Reveal in Finder</span>
-                      <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Download />
-                      <span>Download video</span>
-                      <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <RefreshCw />
-                      <span>Sync player</span>
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <Button variant="destructive">
-                <Trash2 /> Delete
-              </Button>
-            </MediaViewerLayout.SidebarActions>
-          </>
-        )}
-      </MediaViewerLayout.Sidebar>
-    </MediaViewerLayout>
+              </MediaViewerLayout.SidebarActions>
+            </>
+          )}
+        </MediaViewerLayout.Sidebar>
+      </MediaViewerLayout>
+    </VideoControlsContext.Provider>
+  );
+};
+
+/**
+ * Video control component using a media viewer layout control. This component makes use of the
+ * VideoControlsContext to handle pointer events and mouse leave events to show or hide the
+ * controls in sync with player controls.
+ */
+export const VideoControl = ({
+  children,
+  ...props
+}: React.ComponentProps<typeof MediaViewerLayout.Control>) => {
+  const context = use(VideoControlsContext);
+
+  if (!context) {
+    throw new Error(
+      "useVideoControls must be used within VideoControlsContext",
+    );
+  }
+
+  const { onPointerMove, onMouseLeave } = context;
+
+  return (
+    <MediaViewerLayout.Control
+      onPointerMove={onPointerMove}
+      onMouseLeave={onMouseLeave}
+      {...props}
+    >
+      {children}
+    </MediaViewerLayout.Control>
   );
 };
 

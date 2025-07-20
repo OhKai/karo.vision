@@ -7,12 +7,47 @@ import VideoTile from "./video-tile";
 import SearchPage, { useSearchPage } from "@/components/search-page";
 import FilesTable from "@/components/files-table";
 import { TableCell, TableHead } from "@/components/ui/table";
-import { useRouter } from "next/navigation";
 import { convertSecondsToRoundedString } from "@/lib/utils";
+import VideoModal from "@/components/video-modal";
+import { useState, useMemo } from "react";
 
 const Home = () => {
   const searchPage = useSearchPage("videos");
-  const router = useRouter();
+  const [selectedVideoId, setSelectedVideoId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Flatten all videos into a single array for navigation
+  const allVideos = useMemo(() => {
+    if (!searchPage.data?.pages) return [];
+    return searchPage.data.pages.flat();
+  }, [searchPage.data]);
+
+  const currentVideoIndex = useMemo(() => {
+    if (!selectedVideoId || !allVideos.length) return -1;
+    return allVideos.findIndex((video) => video.fileId === selectedVideoId);
+  }, [selectedVideoId, allVideos]);
+
+  const handleOpenVideo = (videoId: number) => {
+    setSelectedVideoId(videoId);
+    setIsModalOpen(true);
+  };
+
+  const handleNavigate = (direction: "next" | "prev") => {
+    if (!allVideos.length) return;
+
+    // TODO: getting close to the end of the list should trigger a fetch for more videos.
+    const newIndex =
+      direction === "next"
+        ? Math.min(currentVideoIndex + 1, allVideos.length - 1)
+        : Math.max(currentVideoIndex - 1, 0);
+
+    if (newIndex !== currentVideoIndex && allVideos[newIndex]) {
+      setSelectedVideoId(allVideos[newIndex].fileId);
+    }
+  };
+
+  const hasNext = currentVideoIndex < allVideos.length - 1;
+  const hasPrev = currentVideoIndex > 0;
 
   return (
     <SearchPage
@@ -60,7 +95,7 @@ const Home = () => {
                     ? searchPage.tripwireRef
                     : undefined
                 }
-                onClick={() => router.push(`/videos/${video.fileId}`)}
+                onClick={() => handleOpenVideo(video.fileId)}
               >
                 <FilesTable.ThumbnailCell fileId={video.fileId} />
                 <TableCell className="max-w-[65px] truncate max-md:px-2 md:w-[100px] md:max-w-[100px]">
@@ -77,6 +112,7 @@ const Home = () => {
               <VideoCard
                 key={video.fileId}
                 video={video}
+                onClick={() => handleOpenVideo(video.fileId)}
                 ref={
                   pageIndex === searchPage.data!.pages.length - 1 &&
                   (videoIndex === page.length - 10 ||
@@ -95,6 +131,7 @@ const Home = () => {
               <VideoTile
                 key={video.fileId}
                 video={video}
+                onClick={() => handleOpenVideo(video.fileId)}
                 ref={
                   pageIndex === searchPage.data!.pages.length - 1 &&
                   (videoIndex === page.length - 13 ||
@@ -107,6 +144,14 @@ const Home = () => {
           )}
         </div>
       )}
+      <VideoModal
+        videoId={selectedVideoId}
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        onNavigate={handleNavigate}
+        hasNext={hasNext}
+        hasPrev={hasPrev}
+      />
     </SearchPage>
   );
 };

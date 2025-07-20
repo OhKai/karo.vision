@@ -1,15 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRightToLine, House } from "lucide-react";
+import { ArrowRightToLine, XIcon } from "lucide-react";
 import { ReactNode, createContext, useContext, useState } from "react";
 import Tags from "./tags";
 import { cn } from "@/lib/utils";
+import { DialogClose } from "./ui/dialog";
 
 // Context for sharing state between compound components
 type MediaViewerContextType = {
   isSidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
+  setIsSidebarOpen: (open: boolean) => void;
   showControls: boolean;
 };
 
@@ -26,23 +27,28 @@ const useMediaViewer = () => {
 type MediaViewerLayoutProps = {
   children: ReactNode;
   showControls?: boolean;
-  initialSidebarOpen?: boolean;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (open: boolean) => void;
+  className?: string;
 };
 
 // Root layout component
 export const MediaViewerLayout = ({
   children,
   showControls = true,
-  initialSidebarOpen = true,
+  isSidebarOpen,
+  setIsSidebarOpen,
+  className,
 }: MediaViewerLayoutProps) => {
-  const [isSidebarOpen, setSidebarOpen] = useState(initialSidebarOpen);
-
   return (
     <MediaViewerContext.Provider
-      value={{ isSidebarOpen, setSidebarOpen, showControls }}
+      value={{ isSidebarOpen, setIsSidebarOpen, showControls }}
     >
       <div
-        className="group flex flex-col md:h-screen md:flex-row md:overflow-hidden"
+        className={cn(
+          "group flex flex-col md:flex-row md:overflow-hidden",
+          className,
+        )}
         data-showcontrols={showControls}
       >
         {children}
@@ -51,19 +57,23 @@ export const MediaViewerLayout = ({
   );
 };
 
-type HomeButtonProps = React.ComponentProps<typeof Button>;
+type ControlProps = React.ComponentProps<typeof Button>;
 
-MediaViewerLayout.HomeButton = ({ className, ...props }: HomeButtonProps) => {
+MediaViewerLayout.Control = ({
+  className,
+  children,
+  ...props
+}: ControlProps) => {
   return (
     <Button
-      title="Back to home page"
+      size="icon"
       className={cn(
-        "bg-primary/35 absolute top-4 left-[9px] z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0",
+        "bg-primary/35 absolute z-10 backdrop-blur-lg transition-opacity [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0",
         className,
       )}
       {...props}
     >
-      <House />
+      {children}
     </Button>
   );
 };
@@ -73,7 +83,7 @@ type MediaContentProps = {
 };
 
 MediaViewerLayout.MediaContent = ({ children }: MediaContentProps) => {
-  return <>{children}</>;
+  return <div className="relative h-full w-full">{children}</div>;
 };
 
 type SidebarProps = {
@@ -82,24 +92,24 @@ type SidebarProps = {
 };
 
 MediaViewerLayout.Sidebar = ({ children, toggleButtonProps }: SidebarProps) => {
-  const { isSidebarOpen, setSidebarOpen } = useMediaViewer();
+  const { isSidebarOpen, setIsSidebarOpen } = useMediaViewer();
 
   return (
     <div
       className="bg-background group/sidebar relative mr-0 flex shrink-0 flex-col px-4 py-4 md:w-[350px] md:transition-all md:duration-500 md:data-[opened=false]:-mr-[350px]"
       data-opened={isSidebarOpen}
     >
-      <Button
-        onClick={() => setSidebarOpen(!isSidebarOpen)}
+      <MediaViewerLayout.Control
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         title="Toggle sidebar"
         {...toggleButtonProps}
         className={cn(
-          "bg-primary/35 absolute -left-[57px] hidden backdrop-blur-lg transition-opacity md:flex [&:not(:hover)]:group-data-[showcontrols=false]:opacity-0",
+          "-left-[57px] hidden md:flex",
           toggleButtonProps?.className,
         )}
       >
         <ArrowRightToLine className="transition-transform duration-500 group-data-[opened=false]/sidebar:-rotate-180" />
-      </Button>
+      </MediaViewerLayout.Control>
       {children}
     </div>
   );
@@ -110,6 +120,7 @@ type SidebarInfoProps = {
   title: string;
   tags?: string[];
   description?: string | null;
+  dialogClose?: boolean; // If true, adds dialog close button
   children?: ReactNode; // For the metadata spans
 };
 
@@ -118,16 +129,31 @@ MediaViewerLayout.SidebarInfo = ({
   title,
   tags = [],
   description,
+  dialogClose = false,
   children,
 }: SidebarInfoProps) => {
   return (
     <>
       {topic && (
-        <h4 className="text-muted-foreground mb-[3px] text-[15px] font-medium">
+        <h4
+          className={cn(
+            "text-muted-foreground mb-[3px] text-[15px] font-medium",
+            {
+              "mr-6": dialogClose,
+            },
+          )}
+        >
           {topic}
         </h4>
       )}
-      <h3 className="mb-5 text-xl font-medium tracking-[0.25px] break-words">
+      <h3
+        className={cn(
+          "mb-5 text-xl font-medium tracking-[0.25px] break-words",
+          {
+            "mr-6": dialogClose && !topic,
+          },
+        )}
+      >
         {title}
       </h3>
       <div className="-mx-4 flex grow flex-col overflow-auto px-4">
@@ -141,6 +167,12 @@ MediaViewerLayout.SidebarInfo = ({
           <div className="text-secondary-foreground text-sm">{description}</div>
         )}
       </div>
+      {dialogClose && (
+        <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
+          <XIcon />
+          <span className="sr-only">Close</span>
+        </DialogClose>
+      )}
     </>
   );
 };

@@ -10,11 +10,14 @@ import { TableCell, TableHead } from "@/components/ui/table";
 import { convertSecondsToRoundedString } from "@/lib/utils";
 import VideoModal from "@/components/video-modal";
 import { useState, useMemo } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { trpc } from "@/lib/trpc-client";
 
 const Home = () => {
   const searchPage = useSearchPage("videos");
   const [selectedVideoId, setSelectedVideoId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   // Flatten all videos into a single array for navigation
   const allVideos = useMemo(() => {
@@ -27,9 +30,26 @@ const Home = () => {
     return allVideos.findIndex((video) => video.fileId === selectedVideoId);
   }, [selectedVideoId, allVideos]);
 
+  const prefetchSiblingVideos = (index: number = currentVideoIndex) => {
+    // Prefetch the next and previous videos if they exist so we don't have a short loading state
+    // flash when navigating. We could also set the query data from the list we already have, but
+    // the data might diverge in the future (e.g. description).
+    let newIndex = Math.min(index + 1, allVideos.length - 1);
+    queryClient.prefetchQuery(
+      trpc.videos.byId.queryOptions(allVideos[newIndex].fileId),
+    );
+    newIndex = Math.max(index - 1, 0);
+    queryClient.prefetchQuery(
+      trpc.videos.byId.queryOptions(allVideos[newIndex].fileId),
+    );
+  };
+
   const handleOpenVideo = (videoId: number) => {
     setSelectedVideoId(videoId);
     setIsModalOpen(true);
+    prefetchSiblingVideos(
+      allVideos.findIndex((video) => video.fileId === videoId),
+    );
   };
 
   const handleNavigate = (direction: "next" | "prev") => {
@@ -43,6 +63,7 @@ const Home = () => {
 
     if (newIndex !== currentVideoIndex && allVideos[newIndex]) {
       setSelectedVideoId(allVideos[newIndex].fileId);
+      prefetchSiblingVideos(newIndex);
     }
   };
 

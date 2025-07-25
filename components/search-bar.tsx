@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/popover";
 import SortToggleGroup from "./sort-toggle-group";
 import ViewToggleGroup from "./view-toggle-group";
-import { ViewState } from "@/lib/use-view-store";
+import { SearchOptionsState } from "@/lib/use-search-options-store";
 
 export type SearchSortBy =
   | "title-asc"
@@ -31,8 +31,8 @@ type SearchBarProps = {
   onChange: (search: string[]) => void;
   onSortChange: (sort: SearchSortBy) => void;
   viewToggle?: {
-    page: keyof ViewState;
-    enabledViews: ViewState[keyof ViewState][];
+    page: keyof SearchOptionsState;
+    enabledViews: SearchOptionsState[keyof SearchOptionsState]["view"][];
   };
 };
 

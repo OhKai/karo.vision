@@ -1,28 +1,35 @@
-import { useViewStore, ViewState } from "@/lib/use-view-store";
+import {
+  useSearchOptionsStore,
+  SearchOptionsState,
+} from "@/lib/use-search-options-store";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { useTransition } from "react";
 
 type ViewToggleGroupProps = {
-  viewKey: keyof ViewState;
-  enabledViews: ViewState[keyof ViewState][];
+  viewKey: keyof SearchOptionsState;
+  enabledViews: SearchOptionsState[keyof SearchOptionsState]["view"][];
 };
 
 const ViewToggleGroup = ({ viewKey, enabledViews }: ViewToggleGroupProps) => {
-  const view = useViewStore((state) => state[viewKey]);
-  const updateView = useViewStore((state) => state.updateView);
+  const view = useSearchOptionsStore((state) => state[viewKey].view);
+  const updateSearchOptions = useSearchOptionsStore(
+    (state) => state.updateSearchOptions,
+  );
   const [isPending, startTransition] = useTransition();
 
   return (
     <ToggleGroup
       type="single"
-      size="sm"
+      size="xs"
       className="w-auto"
       variant="outline"
       value={view}
       onValueChange={(value) => {
         if (!value) return;
         startTransition(() =>
-          updateView(viewKey, value as ViewState[keyof ViewState]),
+          updateSearchOptions(viewKey, {
+            view: value as SearchOptionsState[keyof SearchOptionsState]["view"],
+          }),
         );
       }}
     >

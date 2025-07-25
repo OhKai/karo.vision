@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CircleHelp } from "lucide-react";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 
 type FilesTableProps = {
   className?: string;
@@ -56,7 +56,7 @@ type RowProps = {
   };
   isPending?: boolean;
   ref?: React.Ref<HTMLTableRowElement>;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLTableRowElement>;
   children?: React.ReactNode;
 };
 

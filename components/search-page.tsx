@@ -1,11 +1,14 @@
 "use client";
 
 import SearchBar, { SearchSortBy } from "@/components/search-bar";
-import { useViewStore, ViewState } from "@/lib/use-view-store";
+import {
+  useSearchOptionsStore,
+  SearchOptionsState,
+} from "@/lib/use-search-options-store";
 import { useIntersectionObserver } from "@/lib/use-intersection-observer";
 import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
 import { useQueryParams } from "@/lib/use-query-params";
-import { useState, useEffect, use } from "react";
+import { useState, useMemo } from "react";
 import useChange from "@/lib/use-change";
 import {
   useQueryClient,
@@ -15,10 +18,14 @@ import {
 import { trpc } from "@/lib/trpc-client";
 import type { Inputs, Outputs } from "@/lib/trpc-client";
 import { TRPCInfiniteData } from "@trpc/tanstack-react-query";
+import { UnionFromGeneric } from "@/lib/typescript-utils";
+import { MouseEvent } from "react";
 
 export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
   const queryClient = useQueryClient();
-  const pageView = useViewStore((state) => state[page]);
+  const { view: pageView, openInNewTab } = useSearchOptionsStore(
+    (state) => state[page],
+  );
 
   useChange(pageView, () => {
     // Wipe cache and force a re-fetch when view changes to avoid performance issues when switching
@@ -59,10 +66,7 @@ export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
     // Since typescript doesn't let us call a union type of different function signatures, we cast
     // the call as the specific "videos" one and then cast the result as the generic type. The
     // routes should have the same input.
-    (
-      trpc[page].list
-        .infiniteQueryOptions as typeof trpc.videos.list.infiniteQueryOptions
-    )(
+    (trpc[page] as typeof trpc.videos).list.infiniteQueryOptions(
       {
         direction: "forward",
         search: search.filter((q) => q.length > 0),
@@ -81,7 +85,10 @@ export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
       },
     ),
   ) as UseInfiniteQueryResult<
-    TRPCInfiniteData<Inputs[typeof page]["list"], Outputs[typeof page]["list"]>
+    TRPCInfiniteData<
+      UnionFromGeneric<T, Inputs>["list"],
+      UnionFromGeneric<T, Outputs>["list"]
+    >
   >;
 
   // The ref callback can be used on multiple elements. It will set the same entry and call the same
@@ -98,28 +105,106 @@ export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
   const tripwireRef =
     hasNextPage && isFetchingNextPage ? undefined : _tripwireRef;
 
+  // Flatten all entries into a single array for navigation
+  const allEntries = useMemo(() => {
+    if (!data?.pages) return [];
+    return data.pages.flat();
+  }, [data]);
+
+  // Selected id for modal view.
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const prefetchSiblingEntries = (index: number) => {
+    // Prefetch the next and previous entries if they exist so we don't have a short loading state
+    // flash when navigating. We could also set the query data from the list we already have, but
+    // the data might diverge in the future (e.g. description).
+    let newIndex = Math.min(index + 1, allEntries.length - 1);
+    queryClient.prefetchQuery(
+      (trpc[page] as typeof trpc.videos).byId.queryOptions(
+        allEntries[newIndex].fileId,
+      ),
+    );
+    newIndex = Math.max(index - 1, 0);
+    queryClient.prefetchQuery(
+      (trpc[page] as typeof trpc.videos).byId.queryOptions(
+        allEntries[newIndex].fileId,
+      ),
+    );
+  };
+
+  const currentEntryIndex = useMemo(() => {
+    return allEntries.findIndex((entry) => entry.fileId === selectedId);
+  }, [allEntries, selectedId]);
+
+  /**
+   * Handle opening an entry in a modal instead of opening it in a new tab, if the option is
+   * selected.
+   */
+  const onClick = (e: MouseEvent, fileId: number) => {
+    if (openInNewTab) {
+      return;
+    }
+
+    e.preventDefault();
+    setSelectedId(fileId);
+    prefetchSiblingEntries(
+      allEntries.findIndex((entry) => entry.fileId === fileId),
+    );
+  };
+
+  /**
+   * Navigate to the next or previous entry in the list in modal view.
+   */
+  const onNavigate = (direction: "next" | "prev") => {
+    if (!allEntries.length) return;
+
+    // TODO: getting close to the end of the list should trigger a fetch for more entries.
+    const newIndex =
+      direction === "next"
+        ? Math.min(currentEntryIndex + 1, allEntries.length - 1)
+        : Math.max(currentEntryIndex - 1, 0);
+
+    if (newIndex !== currentEntryIndex && allEntries[newIndex]) {
+      setSelectedId(allEntries[newIndex].fileId);
+      prefetchSiblingEntries(newIndex);
+    }
+  };
+
+  const onModalClose = () => {
+    setSelectedId(null);
+  };
+
+  const hasNext = currentEntryIndex < allEntries.length - 1;
+  const hasPrev = currentEntryIndex > 0;
+
   return {
     pageView,
     search,
     updateSearch,
     sort,
     updateSort,
-    data,
+    data: allEntries,
     isPending,
     isPlaceholderData,
     tripwireRef,
     tripwireEntry,
     isExternalChange,
+    selectedId,
+    onClick,
+    onNavigate,
+    onModalClose,
+    hasNext,
+    hasPrev,
   };
 };
 
 type SearchPageProps = {
-  page: keyof ViewState;
+  page: keyof SearchOptionsState;
   search: string[];
   updateSearch: (search: string[]) => void;
   sort: SearchSortBy;
   updateSort: (sort: SearchSortBy) => void;
-  enabledViews?: ViewState[keyof ViewState][];
+  enabledViews?: SearchOptionsState[keyof SearchOptionsState]["view"][];
   searchOptionsNode?: React.ReactNode;
   children: React.ReactNode;
   isExternalChange?: boolean;

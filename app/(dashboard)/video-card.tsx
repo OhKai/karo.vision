@@ -6,7 +6,8 @@ import {
   fileURL,
 } from "@/lib/utils";
 import { CircleHelp, Info } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 export const useVideoPreview = ({
   playerRef,
@@ -89,7 +90,7 @@ const VideoCard = ({
     };
   };
   ref?: React.Ref<HTMLDivElement>;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }) => {
   const playerRef = useRef<HTMLVideoElement>(null);
   const { isShowingPreview, startPreview, stopPreview, onPlayerReady } =
@@ -100,64 +101,66 @@ const VideoCard = ({
   const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
   return (
-    <FileCard
-      ref={ref}
-      onMouseEnter={startPreview}
-      onMouseLeave={stopPreview}
-      onClick={onClick}
-    >
-      <FileCard.Left>
-        {!hasThumb ? (
-          <CircleHelp className="text-muted-foreground h-[150px] w-[150px]" />
-        ) : isShowingPreview ? (
-          <video
-            src={fileURL(video.fileId)}
-            playsInline
-            autoPlay
-            muted
-            controls={false}
-            onPlay={onPlayerReady}
-            onSeeked={onPlayerReady}
-            ref={playerRef}
-            width={400}
-            height={225}
-            loop
-            className="h-[225px] w-[400px]"
-            poster={fileThumbURL(video.fileId)}
-            onError={() => setIsPlayable(false)}
-          />
-        ) : (
-          <img
-            src={fileThumbURL(video.fileId)}
-            loading="lazy"
-            className={cn(
-              "max-h-full max-w-full transition-opacity duration-300",
-              {
-                "opacity-0": !hasInitiallyLoaded,
-              },
-            )}
-            onError={(e) => {
-              setHasThump(false);
-            }}
-            onLoad={(e) => {
-              if (!hasInitiallyLoaded) {
-                e.currentTarget.classList.add("opacity-100");
-                setHasInitiallyLoaded(true);
-              }
-            }}
-          />
-        )}
-        <div className="bg-foreground/45 text-background absolute right-1.5 bottom-2 rounded-sm px-2 py-1 text-[0.8rem] font-medium backdrop-blur-lg">
-          {convertSecondsToRoundedString(video.duration)}
-        </div>
-        {!isPlayable && (
-          <div className="text-border absolute top-1/2 left-1/2 -mt-4 -ml-[80px] flex h-8 w-40 items-center justify-center rounded-sm bg-black/45 text-sm font-medium opacity-0 backdrop-blur-lg transition-opacity group-hover:opacity-100">
-            <Info className="mr-1.5 h-5 w-5" /> Can't play video
+    <Link href={`/videos/${video.fileId}`} target="_blank">
+      <FileCard
+        ref={ref}
+        onMouseEnter={startPreview}
+        onMouseLeave={stopPreview}
+        onClick={onClick}
+      >
+        <FileCard.Left>
+          {!hasThumb ? (
+            <CircleHelp className="text-muted-foreground h-[150px] w-[150px]" />
+          ) : isShowingPreview ? (
+            <video
+              src={fileURL(video.fileId)}
+              playsInline
+              autoPlay
+              muted
+              controls={false}
+              onPlay={onPlayerReady}
+              onSeeked={onPlayerReady}
+              ref={playerRef}
+              width={400}
+              height={225}
+              loop
+              className="h-[225px] w-[400px]"
+              poster={fileThumbURL(video.fileId)}
+              onError={() => setIsPlayable(false)}
+            />
+          ) : (
+            <img
+              src={fileThumbURL(video.fileId)}
+              loading="lazy"
+              className={cn(
+                "max-h-full max-w-full transition-opacity duration-300",
+                {
+                  "opacity-0": !hasInitiallyLoaded,
+                },
+              )}
+              onError={(e) => {
+                setHasThump(false);
+              }}
+              onLoad={(e) => {
+                if (!hasInitiallyLoaded) {
+                  e.currentTarget.classList.add("opacity-100");
+                  setHasInitiallyLoaded(true);
+                }
+              }}
+            />
+          )}
+          <div className="bg-foreground/45 text-background absolute right-1.5 bottom-2 rounded-sm px-2 py-1 text-[0.8rem] font-medium backdrop-blur-lg">
+            {convertSecondsToRoundedString(video.duration)}
           </div>
-        )}
-      </FileCard.Left>
-      <FileCard.Right content={video.file} />
-    </FileCard>
+          {!isPlayable && (
+            <div className="text-border absolute top-1/2 left-1/2 -mt-4 -ml-[80px] flex h-8 w-40 items-center justify-center rounded-sm bg-black/45 text-sm font-medium opacity-0 backdrop-blur-lg transition-opacity group-hover:opacity-100">
+              <Info className="mr-1.5 h-5 w-5" /> Can't play video
+            </div>
+          )}
+        </FileCard.Left>
+        <FileCard.Right content={video.file} />
+      </FileCard>
+    </Link>
   );
 };
 

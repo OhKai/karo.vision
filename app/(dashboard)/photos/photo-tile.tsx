@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import FileTile from "@/components/file-tile";
 import { cn, fileThumbURL, fileURL } from "@/lib/utils";
 import { CircleHelp, ImageOff } from "lucide-react";
@@ -7,6 +7,7 @@ import Link from "next/link";
 const PhotoTile = ({
   photo,
   ref,
+  onClick,
 }: {
   photo: {
     fileId: number;
@@ -23,13 +24,14 @@ const PhotoTile = ({
     };
   };
   ref?: React.Ref<HTMLDivElement>;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }) => {
   const [hasThumb, setHasThumb] = useState(true);
   const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
   return (
-    <Link href={`/photos/${photo.fileId}`}>
-      <FileTile ref={ref}>
+    <Link href={`/photos/${photo.fileId}`} target="_blank">
+      <FileTile ref={ref} onClick={onClick}>
         <FileTile.Top>
           {!hasThumb ? (
             <div

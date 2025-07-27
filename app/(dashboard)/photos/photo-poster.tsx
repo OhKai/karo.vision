@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { cn, fileURL } from "@/lib/utils";
 import { CircleHelp } from "lucide-react";
 import Link from "next/link";
@@ -6,6 +6,7 @@ import Link from "next/link";
 const PhotoPoster = ({
   photo,
   ref,
+  onClick,
 }: {
   photo: {
     fileId: number;
@@ -22,15 +23,17 @@ const PhotoPoster = ({
     };
   };
   ref?: React.Ref<HTMLDivElement>;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }) => {
   const [hasThumb, setHasThumb] = useState(true);
   const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
 
   return (
-    <Link href={`/photos/${photo.fileId}`} className="w-full">
+    <Link href={`/photos/${photo.fileId}`} className="w-full" target="_blank">
       <div
         className="bg-muted hover:bg-input group flex w-full justify-center overflow-hidden rounded shadow-xs transition-colors"
         ref={ref}
+        onClick={onClick}
       >
         {!hasThumb ? (
           <div className="flex w-full items-center justify-center">

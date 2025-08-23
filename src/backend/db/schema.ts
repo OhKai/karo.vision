@@ -87,3 +87,21 @@ export const photosRelations = relations(photos, ({ one }) => ({
     references: [files.id],
   }),
 }));
+
+export const music = sqliteTable("music", {
+  fileId: int("file_id")
+    .primaryKey()
+    .references(() => files.id, { onDelete: "cascade" }),
+  format: text().notNull(),
+  duration: real().notNull(),
+  sampleRate: int("sample_rate").notNull(),
+  channels: text().notNull(),
+  resumeTime: int("resume_time"),
+});
+
+export const musicRelations = relations(music, ({ one }) => ({
+  file: one(files, {
+    fields: [music.fileId],
+    references: [files.id],
+  }),
+}));

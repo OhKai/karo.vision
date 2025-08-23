@@ -10,7 +10,7 @@ import { result } from "@/lib/utils";
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { Db } from "../db/drizzle";
-import { files, photos, rootFolders, videos } from "../db/schema";
+import { files, music, photos, rootFolders, videos } from "../db/schema";
 import { sql } from "drizzle-orm";
 import pLimit from "p-limit";
 
@@ -69,6 +69,19 @@ export const addFile = async (
             width: metadata.value.width ?? -1,
             height: metadata.value.height ?? -1,
             format: metadata.value.format ?? "",
+          })
+          .run();
+
+        break;
+
+      case "music":
+        tx.insert(music)
+          .values({
+            fileId: newFile.id,
+            format: metadata.value.format ?? "",
+            duration: metadata.value.duration ?? -1,
+            sampleRate: metadata.value.sampleRate ?? -1,
+            channels: metadata.value.channels ?? "",
           })
           .run();
 

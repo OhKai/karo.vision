@@ -87,10 +87,19 @@ The app uses tRPC for type-safe API calls between frontend and backend:
 
 ### React Best Practices
 
-- **Avoid unnecessary effects**: Calculate derived state during render instead of using `useEffect` (see [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect))
+- **Avoid unnecessary effects**: Calculate derived state during render instead of using `useEffect` (see [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect) and TkDodo's Blog like [Ref Callbacks, React 19 and the Compiler](https://tkdodo.eu/blog/ref-callbacks-react-19-and-the-compiler))
 - **Don't use refs for derived state**: If a value can be calculated from props/state, calculate it during render
 - **Effects are for synchronization**: Use effects only for synchronizing with external systems, not for transforming data
 - **Prefer composition over effects**: When possible, express logic through component composition and state updates
+
+### React 19 & Ref Callbacks
+
+- **Prefer ref callbacks over useEffect for DOM operations**: Ref callbacks are more declarative and convey intent better than effects
+- **React 19 supports cleanup functions**: Return a cleanup function from ref callbacks just like effects
+- **Avoid unnecessary useCallback wrapping**: Don't wrap ref callbacks in useCallback unless absolutely necessary for performance
+- **Use ref callbacks for observers and measurements**: Ideal for ResizeObserver, IntersectionObserver, focus management, and DOM measurements
+- **Keep ref callbacks simple**: Extract complex logic to named functions outside the component when possible
+- **React Compiler considerations**: Excessive useCallback usage may hinder future compiler optimizations
 
 ### TypeScript Best Practices
 

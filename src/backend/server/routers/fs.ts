@@ -38,9 +38,17 @@ export const fsRouter = (server: FastifyInstance, db: Db) => {
       // Get the Content-Type based on the file extension.
       const mime = mimeTypes.lookup(file.name) || "application/octet-stream";
 
-      // Check if video file requested range.
-      if (mime.startsWith("video") && range) {
-        return serveRangeVideo(
+      // CORS headers for media files in development only
+      // In production, frontend and backend are same-origin so CORS isn't needed
+      if (process.env.NODE_ENV === "development") {
+        reply.header("Access-Control-Allow-Origin", "*");
+        reply.header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
+        reply.header("Access-Control-Allow-Headers", "Range");
+      }
+
+      // Check if file requested range.
+      if (range) {
+        return serveRangeFile(
           path.join(file.dirname, file.name),
           file.size,
           mime,
@@ -133,7 +141,7 @@ const rangeParse = (str: string) => {
 };
 
 // Inspired by koa-range
-const serveRangeVideo = async (
+const serveRangeFile = async (
   filePath: string,
   size: number,
   mime: string,

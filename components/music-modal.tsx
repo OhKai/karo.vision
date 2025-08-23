@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils";
 import { useSidebarStore } from "@/lib/use-sidebar-store";
 import PhotoViewer from "./photo-viewer";
 import { MediaViewerLayout } from "./media-viewer-layout";
+import MusicViewer from "./music-viewer";
 
-type PhotoModalProps = {
-  photoId?: number | null;
+type MusicModalProps = {
+  musicId?: number | null;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onNavigate?: (direction: "next" | "prev") => void;
@@ -17,18 +18,18 @@ type PhotoModalProps = {
   hasPrev?: boolean;
 };
 
-const PhotoModal = ({
-  photoId,
+const MusicModal = ({
+  musicId,
   isOpen,
   onOpenChange,
   onNavigate,
   hasNext = false,
   hasPrev = false,
-}: PhotoModalProps) => {
-  const isSidebarOpen = useSidebarStore((state) => state.isPhotosOpened);
-  const setIsSidebarOpen = useSidebarStore((state) => state.togglePhotosOpened);
+}: MusicModalProps) => {
+  const isSidebarOpen = useSidebarStore((state) => state.isMusicOpened);
+  const setIsSidebarOpen = useSidebarStore((state) => state.toggleMusicOpened);
 
-  if (!photoId) {
+  if (!musicId) {
     return null;
   }
 
@@ -38,9 +39,9 @@ const PhotoModal = ({
         className="h-[95vh] overflow-hidden border-0 p-0 sm:max-w-[95vw]"
         showCloseButton={false}
       >
-        <PhotoViewer
-          photoId={photoId}
-          key={photoId}
+        <MusicViewer
+          musicId={musicId}
+          key={musicId}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         >
@@ -70,10 +71,10 @@ const PhotoModal = ({
               </MediaViewerLayout.Control>
             </>
           )}
-        </PhotoViewer>
+        </MusicViewer>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default PhotoModal;
+export default MusicModal;

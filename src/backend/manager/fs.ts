@@ -141,6 +141,10 @@ type MusicMetadata = {
   size: number;
   createdAt: Date;
   updatedAt: Date;
+  format?: string;
+  duration?: number;
+  sampleRate?: number;
+  channels?: string;
 };
 
 type OtherMetadata = {
@@ -242,6 +246,39 @@ export async function readFileMetadata(file: File) {
               height: videoStream.height,
               format: videoStream.codec_name,
             })),
+    });
+  } else if (file.type === "music") {
+    // TODO: set the ffmpeg path for production binaries
+    const ffmpegCommand = ffmpeg(file.path);
+    const probeData = await new Promise<ffmpeg.FfprobeData>(
+      (resolve, reject) =>
+        ffmpegCommand.ffprobe((err, metadata) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(metadata);
+        }),
+      // If ffprobe fails, but stat() succeeds, we still return the metadata, but without probe
+      // data.
+    ).catch(() => undefined);
+
+    // Find the audio stream for music meta infos.
+    const audioStream = probeData?.streams.find(
+      (stream) => stream.codec_type === "audio",
+    );
+
+    return result.ok({
+      ...statsObj,
+      ...(audioStream && {
+        // Wrongly typed as string in fluent-ffmpeg. Except when it is "N/A".
+        duration:
+          typeof audioStream.duration === "string"
+            ? -1
+            : (audioStream.duration as unknown as number),
+        format: audioStream.codec_name,
+        sampleRate: audioStream.sample_rate,
+        channels: audioStream.channel_layout,
+      }),
     });
   }
 

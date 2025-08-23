@@ -22,6 +22,13 @@
       "when": 1748740792614,
       "tag": "0002_daily_jack_power",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1754419447642,
+      "tag": "0003_black_mongu",
+      "breakpoints": true
     }
   ]
 }

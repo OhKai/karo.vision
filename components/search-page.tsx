@@ -21,7 +21,9 @@ import { TRPCInfiniteData } from "@trpc/tanstack-react-query";
 import { UnionFromGeneric } from "@/lib/typescript-utils";
 import { MouseEvent } from "react";
 
-export const useSearchPage = <T extends "videos" | "photos">(page: T) => {
+export const useSearchPage = <T extends "videos" | "photos" | "music">(
+  page: T,
+) => {
   const queryClient = useQueryClient();
   const { view: pageView, openInNewTab } = useSearchOptionsStore(
     (state) => state[page],

@@ -131,6 +131,7 @@ const PhotoViewer = ({
               title={photo.file.title ?? photo.file.name}
               tags={photo.file.tags ?? []}
               description={photo.description}
+              dialogClose={!fullscreen}
             >
               <span>{photo.file.createdAt.toLocaleDateString()}</span>
               <span>{convertBytesToRoundedString(photo.file.size)}</span>

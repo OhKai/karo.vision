@@ -23,6 +23,38 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MediaViewerLayout } from "@/components/media-viewer-layout";
 import { Wave } from "@foobar404/wave";
 
+const initAudioVisualizer = (
+  wave: Wave,
+  size: { width: number; height: number },
+) => {
+  wave.clearAnimations();
+
+  wave.addAnimation(
+    new wave.animations.Arcs({
+      diameter: 0,
+      lineWidth: 4 * window.devicePixelRatio,
+      count: 2 * Math.floor(size.width / (140 * window.devicePixelRatio)),
+      lineColor: "#290073",
+      frequencyBand: "lows",
+    }),
+  );
+
+  wave.addAnimation(
+    new wave.animations.Glob({
+      fillColor: {
+        gradient: ["#290073", "#3d2ce4"],
+        rotate: 45,
+      },
+      diameter: Math.min(size.width, size.height) * 0.35,
+      lineWidth: 10 * window.devicePixelRatio,
+      lineColor: "#290073",
+      frequencyBand: "mids",
+      mirroredX: true,
+      glow: { strength: 15, color: "#290073" },
+    }),
+  );
+};
+
 type MusicViewerProps = {
   musicId: number;
   fullscreen?: boolean;
@@ -57,8 +89,11 @@ const MusicViewer = ({
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvasWidth, setCanvasWidth] = useState(0);
-  const [canvasHeight, setCanvasHeight] = useState(0);
+  const waveRef = useRef<Wave | null>(null);
+  const [canvasWidth, setCanvasWidth] = useState<number | undefined>(undefined);
+  const [canvasHeight, setCanvasHeight] = useState<number | undefined>(
+    undefined,
+  );
 
   const syncCanvasSize = (canvas: HTMLCanvasElement) => {
     canvasRef.current = canvas;
@@ -102,6 +137,13 @@ const MusicViewer = ({
              */
             setCanvasWidth(newWidth);
             setCanvasHeight(newHeight);
+
+            // Adapt animations for new canvas size.
+            waveRef.current &&
+              initAudioVisualizer(waveRef.current, {
+                width: newWidth,
+                height: newHeight,
+              });
           }
         }
       }
@@ -126,37 +168,27 @@ const MusicViewer = ({
         <div className="bg-foreground flex h-full w-full flex-col items-center justify-center">
           <canvas
             ref={syncCanvasSize}
-            className="h-full w-full"
+            className="h-full min-h-0 w-full min-w-0"
             width={canvasWidth}
             height={canvasHeight}
           ></canvas>
           <audio
             ref={audioRef}
             src={fileURL(musicId)}
+            className="my-4 w-11/12"
             controls
             crossOrigin="anonymous"
             onLoadedMetadata={() => {
               try {
-                let wave = new Wave(audioRef.current!, canvasRef.current!);
-
-                wave.addAnimation(
-                  new wave.animations.Square({
-                    count: 50,
-                    diameter: 300,
-                    lineColor: "#141fe3",
-                  }),
+                waveRef.current = new Wave(
+                  audioRef.current!,
+                  canvasRef.current!,
                 );
 
-                wave.addAnimation(
-                  new wave.animations.Glob({
-                    fillColor: {
-                      gradient: ["red", "blue", "green"],
-                      rotate: 45,
-                    },
-                    lineWidth: 10,
-                    lineColor: "#fff",
-                  }),
-                );
+                initAudioVisualizer(waveRef.current, {
+                  width: canvasRef.current!.width,
+                  height: canvasRef.current!.height,
+                });
               } catch (error) {
                 console.error("Failed to initialize wave", error);
               }
@@ -178,7 +210,7 @@ const MusicViewer = ({
               title: music.file.title,
               tags: music.file.tags,
             }}
-            fileType="music"
+            fileType="song"
             onClose={() => setIsEditing(false)}
             mutationOptions={musicMutationOptions}
             topicSuggestions={["Nature", "Portrait", "Architecture", "Street"]}
@@ -189,6 +221,7 @@ const MusicViewer = ({
               topic={music.file.topic}
               title={music.file.title ?? music.file.name}
               tags={music.file.tags ?? []}
+              dialogClose={!fullscreen}
             >
               <span>{music.file.createdAt.toLocaleDateString()}</span>
               <span>{convertBytesToRoundedString(music.file.size)}</span>

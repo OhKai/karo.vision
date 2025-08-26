@@ -46,7 +46,7 @@ export const MediaViewerLayout = ({
     >
       <div
         className={cn(
-          "group flex flex-col md:flex-row md:overflow-hidden",
+          "group flex flex-col overflow-y-auto md:flex-row md:overflow-y-hidden",
           className,
         )}
         data-showcontrols={showControls}
@@ -83,7 +83,11 @@ type MediaContentProps = {
 };
 
 MediaViewerLayout.MediaContent = ({ children }: MediaContentProps) => {
-  return <div className="relative h-full w-full">{children}</div>;
+  // Note the hidden overflow is necessary to avoid the scroll container being stuck and showing a
+  // bar at the bottom when scrolling in mobile view and resizing to desktop view after.
+  return (
+    <div className="relative h-full w-full md:overflow-hidden">{children}</div>
+  );
 };
 
 type SidebarProps = {

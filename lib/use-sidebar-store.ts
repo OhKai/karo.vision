@@ -6,7 +6,7 @@ export type SidebarState = {
   isMusicOpened: boolean;
 };
 
-type SidebarAction = {
+type SidebarActions = {
   toggleVideosOpened: () => void;
   togglePhotosOpened: () => void;
   toggleMusicOpened: () => void;
@@ -18,7 +18,7 @@ const initialSidebarState: SidebarState = {
   isMusicOpened: true,
 };
 
-export const useSidebarStore = create<SidebarState & SidebarAction>((set) => ({
+export const useSidebarStore = create<SidebarState & SidebarActions>((set) => ({
   ...initialSidebarState,
   toggleVideosOpened: () =>
     set((state) => {

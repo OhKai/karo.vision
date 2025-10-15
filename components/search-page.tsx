@@ -21,6 +21,14 @@ import { TRPCInfiniteData } from "@trpc/tanstack-react-query";
 import { UnionFromGeneric } from "@/lib/typescript-utils";
 import { MouseEvent } from "react";
 
+export const parseSearchQuery = (query: URLSearchParams) => {
+  const search = [query.get("search") ?? ""];
+  const sort = (query.get("sort") ?? "date-desc") as SearchSortBy;
+  const seed = parseInt(query.get("seed") ?? "0");
+
+  return { search, sort, seed };
+};
+
 export const useSearchPage = <T extends "videos" | "photos" | "music">(
   page: T,
 ) => {
@@ -39,9 +47,7 @@ export const useSearchPage = <T extends "videos" | "photos" | "music">(
   const { query, updateQuery, debounceQueryUpdate, isExternalChange } =
     useQueryParams();
   // Get search query from URL.
-  const search = [query.get("search") ?? ""];
-  const sort = (query.get("sort") ?? "date-desc") as SearchSortBy;
-  const seed = parseInt(query.get("seed") ?? "0");
+  const { search, sort, seed } = parseSearchQuery(query);
 
   const updateSearch = (search: string[]) => {
     // Update new search query in URL with debounce.

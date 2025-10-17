@@ -3,12 +3,14 @@
 import SearchPage, { useSearchPage } from "@/components/search-page";
 import FilesTable from "@/components/files-table";
 import { TableHead } from "@/components/ui/table";
-import { useRouter } from "next/navigation";
 import MusicModal from "@/components/music-modal";
+import { useAudioPlayer } from "@/lib/use-audio-player";
+import { useQueryParams } from "@/lib/use-query-params";
 
 const MusicPage = () => {
   const searchPage = useSearchPage("music");
-  const router = useRouter();
+  const { query } = useQueryParams();
+  const audioPlayer = useAudioPlayer();
 
   return (
     <SearchPage page="music" {...searchPage}>
@@ -41,7 +43,10 @@ const MusicPage = () => {
                   ? searchPage.tripwireRef
                   : undefined
               }
-              onClick={(e) => searchPage.onClick(e, title.fileId)}
+              onClick={(e) => {
+                searchPage.onClick(e, title.fileId);
+                audioPlayer.playTrack(title.fileId, query.toString());
+              }}
             >
               <FilesTable.ThumbnailCell fileId={title.fileId} />
             </FilesTable.Row>
@@ -49,14 +54,10 @@ const MusicPage = () => {
         </FilesTable>
       )}
       <MusicModal
-        musicId={searchPage.selectedId}
         isOpen={searchPage.selectedId !== null}
         onOpenChange={() => {
           searchPage.onModalClose();
         }}
-        onNavigate={searchPage.onNavigate}
-        hasNext={searchPage.hasNext}
-        hasPrev={searchPage.hasPrev}
       />
     </SearchPage>
   );

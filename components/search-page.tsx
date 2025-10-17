@@ -113,7 +113,7 @@ export const useSearchPage = <T extends "videos" | "photos" | "music">(
   const tripwireRef =
     hasNextPage && isFetchingNextPage ? undefined : _tripwireRef;
 
-  // Flatten all entries into a single array for navigation
+  // Flatten all entries into a single array for navigation.
   const allEntries = useMemo(() => {
     if (!data?.pages) return [];
     return data.pages.flat();

@@ -40,7 +40,6 @@ const PhotoModal = ({
       >
         <PhotoViewer
           photoId={photoId}
-          key={photoId}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         >

@@ -22,7 +22,12 @@ import {
 } from "lucide-react";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import MetaEditor from "@/components/meta-editor";
-import { cn, convertBytesToRoundedString, fileURL } from "@/lib/utils";
+import {
+  cn,
+  convertBytesToRoundedString,
+  convertSecondsToRoundedString,
+  fileURL,
+} from "@/lib/utils";
 import { trpc } from "@/lib/trpc-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MediaViewerLayout } from "@/components/media-viewer-layout";
@@ -65,7 +70,6 @@ const initAudioVisualizer = (
 };
 
 type MusicViewerProps = {
-  musicId: number;
   fullscreen?: boolean;
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
@@ -73,16 +77,16 @@ type MusicViewerProps = {
 };
 
 const MusicViewer = ({
-  musicId,
   fullscreen = false,
   isSidebarOpen,
   setIsSidebarOpen,
   children,
 }: MusicViewerProps) => {
+  const audioPlayer = useAudioPlayer();
   const [isEditing, setIsEditing] = useState(false);
   const queryClient = useQueryClient();
   const { data: music, isPending } = useQuery(
-    trpc.music.byId.queryOptions(musicId),
+    trpc.music.byId.queryOptions(audioPlayer.currentTrackId!),
   );
   const { query } = useQueryParams();
 
@@ -92,7 +96,7 @@ const MusicViewer = ({
         queryKey: trpc.music.list.infiniteQueryKey(),
       });
       return queryClient.invalidateQueries({
-        queryKey: trpc.music.byId.queryKey(musicId),
+        queryKey: trpc.music.byId.queryKey(audioPlayer.currentTrackId!),
       });
     },
   });
@@ -103,14 +107,6 @@ const MusicViewer = ({
   const [canvasWidth, setCanvasWidth] = useState<number | undefined>(undefined);
   const [canvasHeight, setCanvasHeight] = useState<number | undefined>(
     undefined,
-  );
-  const audioPlayer = useAudioPlayer();
-  useChange(
-    musicId,
-    () => {
-      audioPlayer.playTrack(musicId, query.toString());
-    },
-    true,
   );
 
   // TODO: Move the <audio> element to a higher level so that playback is global.
@@ -208,22 +204,51 @@ const MusicViewer = ({
             className="h-full min-h-0 w-full min-w-0"
             width={canvasWidth}
             height={canvasHeight}
+            onClick={audioPlayer.togglePlayPause}
           ></canvas>
           <div className="bg-foreground/50 flex w-full justify-center gap-2 px-3 py-2 backdrop-blur-sm">
             <audio
               ref={(el) => {
                 audioRef.current = el;
 
-                // Sync audio element's currentTime with Zustand state.
-                if (el) {
-                  el.ontimeupdate = () => {
-                    const currentTime = el.currentTime;
-                    lastInternalUpdate.current = currentTime;
-                    audioPlayer.setCurrentTime(currentTime);
-                  };
-                }
+                const handlePlay = () => {
+                  if (!audioPlayer.isPlaying) audioPlayer.play();
+                };
+                const handlePause = () => {
+                  if (audioPlayer.isPlaying) audioPlayer.pause();
+                };
+                const handleEnded = () => {
+                  if (audioPlayer.isPlaying) audioPlayer.pause();
+                };
+                const handleTimeUpdate = () => {
+                  const currentTime = el!.currentTime;
+                  lastInternalUpdate.current = currentTime;
+                  audioPlayer.setCurrentTime(currentTime);
+                };
+                const handleWaiting = () => {
+                  if (!audioPlayer.isLoading) audioPlayer.setIsLoading(true);
+                };
+                const handlePlaying = () => {
+                  if (audioPlayer.isLoading) audioPlayer.setIsLoading(false);
+                };
+
+                el!.addEventListener("play", handlePlay);
+                el!.addEventListener("pause", handlePause);
+                el!.addEventListener("ended", handleEnded);
+                el!.addEventListener("timeupdate", handleTimeUpdate);
+                el!.addEventListener("waiting", handleWaiting);
+                el!.addEventListener("playing", handlePlaying);
+
+                return () => {
+                  el!.removeEventListener("play", handlePlay);
+                  el!.removeEventListener("pause", handlePause);
+                  el!.removeEventListener("ended", handleEnded);
+                  el!.removeEventListener("timeupdate", handleTimeUpdate);
+                  el!.removeEventListener("waiting", handleWaiting);
+                  el!.removeEventListener("playing", handlePlaying);
+                };
               }}
-              src={fileURL(musicId)}
+              src={fileURL(audioPlayer.currentTrackId!)}
               autoPlay
               crossOrigin="anonymous"
               onLoadedMetadata={() => {
@@ -242,7 +267,10 @@ const MusicViewer = ({
                 }
               }}
             />
-            <Button className="bg-transparent" onClick={() => null}>
+            <Button
+              className="bg-transparent"
+              onClick={() => audioPlayer.rewind()}
+            >
               <Rewind />
             </Button>
             <Button
@@ -251,9 +279,15 @@ const MusicViewer = ({
             >
               {audioPlayer.isPlaying ? <Pause /> : <Play />}
             </Button>
-            <Button className="bg-transparent" onClick={() => null}>
+            <Button
+              className="bg-transparent"
+              onClick={() => audioPlayer.fastForward()}
+            >
               <FastForward />
             </Button>
+            <div className="text-muted flex items-center text-xs tabular-nums">
+              {convertSecondsToRoundedString(audioPlayer.currentTime)}
+            </div>
             <Slider
               value={[audioPlayer.currentTime]}
               max={music?.duration}
@@ -262,6 +296,12 @@ const MusicViewer = ({
                 audioPlayer.setCurrentTime(currentTime);
               }}
             />
+            <div className="text-muted flex items-center text-xs tabular-nums">
+              -
+              {convertSecondsToRoundedString(
+                Math.ceil((music?.duration ?? 0) - audioPlayer.currentTime),
+              )}
+            </div>
           </div>
         </div>
       </MediaViewerLayout.MediaContent>

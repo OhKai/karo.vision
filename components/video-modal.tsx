@@ -38,7 +38,6 @@ const VideoModal = ({
       >
         <VideoViewer
           videoId={videoId}
-          key={videoId}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         >

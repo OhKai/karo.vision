@@ -13,7 +13,6 @@ type AudioPlayerState = {
   currentTime: number;
   isLoading: boolean;
   repeat: "none" | "one" | "all";
-  shuffle: boolean;
 };
 
 type AudioPlayerActions = {
@@ -24,7 +23,6 @@ type AudioPlayerActions = {
   setCurrentTime: (time: number) => void;
   setIsLoading: (loading: boolean) => void;
   setRepeat: (mode: "none" | "one" | "all") => void;
-  toggleShuffle: () => void;
   playTrack: (trackId: number, query: string) => void;
 };
 
@@ -37,7 +35,6 @@ const useAudioPlayerStore = create<AudioPlayerState & AudioPlayerActions>()(
     currentTime: 0,
     isLoading: false,
     repeat: "none",
-    shuffle: false,
 
     play: () => set({ isPlaying: true }),
 
@@ -52,8 +49,6 @@ const useAudioPlayerStore = create<AudioPlayerState & AudioPlayerActions>()(
     setIsLoading: (loading) => set({ isLoading: loading }),
 
     setRepeat: (mode) => set({ repeat: mode }),
-
-    toggleShuffle: () => set((state) => ({ shuffle: !state.shuffle })),
 
     playTrack: (trackId, query) =>
       set({
@@ -128,6 +123,7 @@ export const useAudioPlayer = () => {
 
   if (currentIndex === -1 && audioPlayerStore.currentTrackId !== undefined) {
     // TODO: This needs to be reported somehow.
+    // TODO: It could happen if the current track is removed and query revalidated.
     console.warn(
       "Current track not found in fetched data. This should not happen.",
       audioPlayerStore.currentTrackId,
@@ -135,7 +131,59 @@ export const useAudioPlayer = () => {
   }
 
   const hasNext = hasNextPage || (data && currentIndex < data.length - 1);
-  const hasPrevious = hasPreviousPage || (data && currentIndex > 0);
+  const hasPrevious = hasPreviousPage || currentIndex > 0;
+
+  const rewind = async () => {
+    if (hasPrevious && audioPlayerStore.currentTime < 2.5) {
+      if (currentIndex > 0) {
+        const previousTrack = data![currentIndex - 1];
+
+        audioPlayerStore.playTrack(
+          previousTrack.fileId,
+          audioPlayerStore.query!,
+        );
+      } else {
+        // React Query only resolves fetchPreviousPage after synchronously syncing cache + hook
+        // state causing a re-render which blocks user interactions until new event handlers are
+        // committed to the DOM, so any concurrent calls from other places are either still pending
+        // (we await them here) or this closure already saw the freshest data so we can safely fetch
+        // a new page and know the returned data is what we expect.
+        // TODO: Show some form of error (network?) if this fails.
+        const res = await fetchPreviousPage({ cancelRefetch: false });
+        const page = res.data!.pages[0];
+
+        // Play the last track of the newly fetched page.
+        audioPlayerStore.playTrack(
+          page[page.length - 1].fileId,
+          audioPlayerStore.query!,
+        );
+      }
+
+      return;
+    }
+
+    audioPlayerStore.setCurrentTime(0);
+  };
+
+  const fastForward = async () => {
+    if (hasNext) {
+      if (currentIndex < (data?.length ?? 0) - 1) {
+        const nextTrack = data![currentIndex + 1];
+
+        audioPlayerStore.playTrack(nextTrack.fileId, audioPlayerStore.query!);
+      } else {
+        const res = await fetchNextPage({ cancelRefetch: false });
+        const page = res.data!.pages[res.data!.pages.length - 1];
+
+        // Play the first track of the newly fetched page.
+        audioPlayerStore.playTrack(page[0].fileId, audioPlayerStore.query!);
+      }
+
+      return;
+    }
+
+    currentTrack && audioPlayerStore.setCurrentTime(currentTrack.duration);
+  };
 
   return {
     ...audioPlayerStore,
@@ -143,5 +191,7 @@ export const useAudioPlayer = () => {
     currentTrack,
     hasNext,
     hasPrevious,
+    rewind,
+    fastForward,
   };
 };

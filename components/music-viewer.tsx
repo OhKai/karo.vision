@@ -17,25 +17,23 @@ import {
   Pencil,
   Play,
   Rewind,
-  SkipForward,
   Trash2,
 } from "lucide-react";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, use, useRef, useState } from "react";
 import MetaEditor from "@/components/meta-editor";
 import {
   cn,
   convertBytesToRoundedString,
   convertSecondsToRoundedString,
-  fileURL,
 } from "@/lib/utils";
 import { trpc } from "@/lib/trpc-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MediaViewerLayout } from "@/components/media-viewer-layout";
 import { Wave } from "@foobar404/wave";
 import { useAudioPlayer } from "@/lib/use-audio-player";
-import useChange from "@/lib/use-change";
 import { useQueryParams } from "@/lib/use-query-params";
 import { Slider } from "./ui/slider";
+import { AudioElementContext } from "@/app/(dashboard)/audio-player-provider";
 
 const initAudioVisualizer = (
   wave: Wave,
@@ -83,6 +81,7 @@ const MusicViewer = ({
   children,
 }: MusicViewerProps) => {
   const audioPlayer = useAudioPlayer();
+  const audioElement = use(AudioElementContext);
   const [isEditing, setIsEditing] = useState(false);
   const queryClient = useQueryClient();
   const { data: music, isPending } = useQuery(
@@ -101,7 +100,6 @@ const MusicViewer = ({
     },
   });
 
-  const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const waveRef = useRef<Wave | null>(null);
   const [canvasWidth, setCanvasWidth] = useState<number | undefined>(undefined);
@@ -109,27 +107,28 @@ const MusicViewer = ({
     undefined,
   );
 
-  // TODO: Move the <audio> element to a higher level so that playback is global.
-  const lastInternalUpdate = useRef(0);
-  useEffect(() => {
-    const el = audioRef.current;
-    // Calling play() before the audio is ready stops playback even with autoPlay.
-    if (!el || el.readyState === 0) return;
-
-    audioPlayer.isPlaying ? el.play() : el.pause();
-  }, [audioPlayer.isPlaying]);
-
-  useEffect(() => {
-    const el = audioRef.current;
-    if (!el) return;
-    // Prevent feedback loop when syncing currentTime between Zustand state and audio element.
-    if (lastInternalUpdate.current === audioPlayer.currentTime) return;
-
-    el.currentTime = audioPlayer.currentTime;
-  }, [audioPlayer.currentTime]);
-
   const syncCanvasSize = (canvas: HTMLCanvasElement) => {
     canvasRef.current = canvas;
+
+    try {
+      // We need to keep the same Wave instance to preserve animation.
+      if (!waveRef.current) {
+        waveRef.current = new Wave(
+          {
+            context: audioElement.getAudioContext()!,
+            source: audioElement.getAudioSource()!,
+          },
+          canvasRef.current!,
+        );
+
+        initAudioVisualizer(waveRef.current, {
+          width: canvasRef.current!.width,
+          height: canvasRef.current!.height,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to initialize wave", error);
+    }
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -186,6 +185,10 @@ const MusicViewer = ({
 
     return () => {
       observer.disconnect();
+      canvasRef.current = null;
+      // TODO: I don't think the wave instance is ever destroyed.
+      //waveRef.current?.clearAnimations();
+      //waveRef.current = null;
     };
   };
 
@@ -207,66 +210,6 @@ const MusicViewer = ({
             onClick={audioPlayer.togglePlayPause}
           ></canvas>
           <div className="bg-foreground/50 flex w-full justify-center gap-2 px-3 py-2 backdrop-blur-sm">
-            <audio
-              ref={(el) => {
-                audioRef.current = el;
-
-                const handlePlay = () => {
-                  if (!audioPlayer.isPlaying) audioPlayer.play();
-                };
-                const handlePause = () => {
-                  if (audioPlayer.isPlaying) audioPlayer.pause();
-                };
-                const handleEnded = () => {
-                  if (audioPlayer.isPlaying) audioPlayer.pause();
-                };
-                const handleTimeUpdate = () => {
-                  const currentTime = el!.currentTime;
-                  lastInternalUpdate.current = currentTime;
-                  audioPlayer.setCurrentTime(currentTime);
-                };
-                const handleWaiting = () => {
-                  if (!audioPlayer.isLoading) audioPlayer.setIsLoading(true);
-                };
-                const handlePlaying = () => {
-                  if (audioPlayer.isLoading) audioPlayer.setIsLoading(false);
-                };
-
-                el!.addEventListener("play", handlePlay);
-                el!.addEventListener("pause", handlePause);
-                el!.addEventListener("ended", handleEnded);
-                el!.addEventListener("timeupdate", handleTimeUpdate);
-                el!.addEventListener("waiting", handleWaiting);
-                el!.addEventListener("playing", handlePlaying);
-
-                return () => {
-                  el!.removeEventListener("play", handlePlay);
-                  el!.removeEventListener("pause", handlePause);
-                  el!.removeEventListener("ended", handleEnded);
-                  el!.removeEventListener("timeupdate", handleTimeUpdate);
-                  el!.removeEventListener("waiting", handleWaiting);
-                  el!.removeEventListener("playing", handlePlaying);
-                };
-              }}
-              src={fileURL(audioPlayer.currentTrackId!)}
-              autoPlay
-              crossOrigin="anonymous"
-              onLoadedMetadata={() => {
-                try {
-                  waveRef.current = new Wave(
-                    audioRef.current!,
-                    canvasRef.current!,
-                  );
-
-                  initAudioVisualizer(waveRef.current, {
-                    width: canvasRef.current!.width,
-                    height: canvasRef.current!.height,
-                  });
-                } catch (error) {
-                  console.error("Failed to initialize wave", error);
-                }
-              }}
-            />
             <Button
               className="bg-transparent"
               onClick={() => audioPlayer.rewind()}

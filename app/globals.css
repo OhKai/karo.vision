@@ -213,4 +213,20 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  @keyframes audio-bar {
+    0%,
+    100% {
+      transform: scaleY(0.35);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+}
+
+@layer utilities {
+  .animate-audio-bar {
+    animation: audio-bar 0.8s ease-in-out infinite;
+  }
 }

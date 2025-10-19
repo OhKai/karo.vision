@@ -23,6 +23,7 @@ type AudioPlayerActions = {
   setCurrentTime: (time: number) => void;
   setIsLoading: (loading: boolean) => void;
   setRepeat: (mode: "none" | "one" | "all") => void;
+  stop: () => void;
   playTrack: (trackId: number, query: string) => void;
 };
 
@@ -50,13 +51,24 @@ const useAudioPlayerStore = create<AudioPlayerState & AudioPlayerActions>()(
 
     setRepeat: (mode) => set({ repeat: mode }),
 
+    stop: () =>
+      set({
+        isPlaying: false,
+        currentTime: 0,
+        isLoading: false,
+        repeat: "none",
+        query: undefined,
+        currentTrackId: undefined,
+      }),
+
     playTrack: (trackId, query) =>
       set({
         query,
         currentTrackId: trackId,
         isPlaying: true,
-        currentTime: 0,
         isLoading: true,
+        // Reset currentTime if changing tracks
+        ...(get().currentTrackId !== trackId ? { currentTime: 0 } : {}),
       }),
   })),
 );

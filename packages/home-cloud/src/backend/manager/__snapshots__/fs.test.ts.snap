@@ -1,0 +1,525 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`fs > readFileMetadata > should handle ffprobe errors gracefully (cut-off-half.mp4) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "aspectRatio": "16:9",
+    "createdAt": 2025-01-03T15:07:56.811Z,
+    "duration": 30.033333,
+    "format": "h264",
+    "framerate": "30/1",
+    "height": 270,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/corrupted-files/cut-off-half.mp4",
+    "size": 785012,
+    "type": "video",
+    "updatedAt": 2025-01-03T15:07:58.330Z,
+    "width": 480,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should handle ffprobe errors gracefully (cut-off-header.mp4) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T15:19:22.425Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/corrupted-files/cut-off-header.mp4",
+    "size": 128,
+    "type": "video",
+    "updatedAt": 2025-01-03T15:19:31.705Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should handle ffprobe errors gracefully (empty.mp4) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T14:57:41.187Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/corrupted-files/empty.mp4",
+    "size": 0,
+    "type": "video",
+    "updatedAt": 2025-01-03T14:57:41.187Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should handle ffprobe errors gracefully (empty.png) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T14:57:49.887Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/corrupted-files/empty.png",
+    "size": 0,
+    "type": "photo",
+    "updatedAt": 2025-01-03T14:57:49.887Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should handle ffprobe errors gracefully (zero-after-50000.mp4) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "aspectRatio": "16:9",
+    "createdAt": 2025-01-03T15:15:10.127Z,
+    "duration": 30.033333,
+    "format": "h264",
+    "framerate": "30/1",
+    "height": 270,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/corrupted-files/zero-after-50000.mp4",
+    "size": 51024,
+    "type": "video",
+    "updatedAt": 2025-01-03T15:17:25.316Z,
+    "width": 480,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a music file (file_example_MP3_700KB.mp3) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.265Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_MP3_700KB.mp3",
+    "size": 733645,
+    "type": "music",
+    "updatedAt": 2025-01-03T12:58:57.266Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a music file (file_example_OGG_480_1_7mg.ogg) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.228Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_OGG_480_1_7mg.ogg",
+    "size": 1734919,
+    "type": "music",
+    "updatedAt": 2025-01-03T12:58:57.230Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a music file (file_example_OOG_1MG.ogg) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.249Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_OOG_1MG.ogg",
+    "size": 1032948,
+    "type": "music",
+    "updatedAt": 2025-01-03T12:58:57.251Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a music file (file_example_WAV_1MG.wav) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.259Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_WAV_1MG.wav",
+    "size": 1048558,
+    "type": "music",
+    "updatedAt": 2025-01-03T12:58:57.261Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (Title.html) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.631Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/Title.html",
+    "size": 137453,
+    "type": "other",
+    "updatedAt": 2025-01-03T13:05:49.631Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file_example_CSV_5000.csv) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.708Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_CSV_5000.csv",
+    "size": 284042,
+    "type": "other",
+    "updatedAt": 2025-01-03T13:05:49.709Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file_example_JSON_1kb.json) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.692Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_JSON_1kb.json",
+    "size": 20471,
+    "type": "other",
+    "updatedAt": 2025-01-03T13:05:49.693Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file_example_ODP_200kB.odp) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.166Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_ODP_200kB.odp",
+    "size": 200092,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.166Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file_example_ODS_10.ods) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.169Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_ODS_10.ods",
+    "size": 31276,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.169Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file_example_PPT_250kB.ppt) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.182Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_PPT_250kB.ppt",
+    "size": 248320,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.183Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file_example_XLS_10.xls) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.193Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_XLS_10.xls",
+    "size": 8704,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.194Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file_example_XLSX_10.xlsx) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.185Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_XLSX_10.xlsx",
+    "size": 5425,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.186Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file_example_XML_24kb.xml) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.680Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_XML_24kb.xml",
+    "size": 23972,
+    "type": "other",
+    "updatedAt": 2025-01-03T13:05:49.680Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file-sample_100kB.doc) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.201Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file-sample_100kB.doc",
+    "size": 100352,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.202Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file-sample_100kB.docx) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.197Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file-sample_100kB.docx",
+    "size": 111303,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.198Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file-sample_100kB.odt) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.176Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file-sample_100kB.odt",
+    "size": 116076,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.176Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file-sample_100kB.rtf) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.209Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file-sample_100kB.rtf",
+    "size": 100605,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.210Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (file-sample_150kB.pdf) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T12:58:57.179Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file-sample_150kB.pdf",
+    "size": 142786,
+    "type": "other",
+    "updatedAt": 2025-01-03T12:58:57.179Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a other file (zip_2MB.zip) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.697Z,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/zip_2MB.zip",
+    "size": 2036861,
+    "type": "other",
+    "updatedAt": 2025-01-03T13:05:49.699Z,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a photo file (file_example_GIF_500kB.gif) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.758Z,
+    "height": 1267,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_GIF_500kB.gif",
+    "size": 510619,
+    "type": "photo",
+    "updatedAt": 2025-01-03T13:05:49.761Z,
+    "width": 1900,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a photo file (file_example_JPG_100kB.jpg) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.788Z,
+    "height": 700,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_JPG_100kB.jpg",
+    "size": 102117,
+    "type": "photo",
+    "updatedAt": 2025-01-03T13:05:49.788Z,
+    "width": 1050,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a photo file (file_example_PNG_500kB.png) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.781Z,
+    "height": 566,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_PNG_500kB.png",
+    "size": 512596,
+    "type": "photo",
+    "updatedAt": 2025-01-03T13:05:49.781Z,
+    "width": 850,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a photo file (file_example_SVG_20kB.svg) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.724Z,
+    "height": 0,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_SVG_20kB.svg",
+    "size": 22491,
+    "type": "photo",
+    "updatedAt": 2025-01-03T13:05:49.724Z,
+    "width": 0,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a photo file (file_example_TIFF_1MB.tiff) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.743Z,
+    "height": 434,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_TIFF_1MB.tiff",
+    "size": 1131930,
+    "type": "photo",
+    "updatedAt": 2025-01-03T13:05:49.749Z,
+    "width": 650,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a photo file (file_example_WEBP_50kB.webp) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.713Z,
+    "height": 700,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_WEBP_50kB.webp",
+    "size": 50408,
+    "type": "photo",
+    "updatedAt": 2025-01-03T13:05:49.713Z,
+    "width": 1050,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a photo file (file_example_favicon.ico) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "createdAt": 2025-01-03T13:05:49.729Z,
+    "height": 17,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_favicon.ico",
+    "size": 390,
+    "type": "photo",
+    "updatedAt": 2025-01-03T13:05:49.729Z,
+    "width": 9,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a video file (file_example_AVI_480_750kB.avi) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "aspectRatio": "16:9",
+    "createdAt": 2025-01-03T12:58:57.243Z,
+    "duration": 30.033333,
+    "format": "h264",
+    "framerate": "30/1",
+    "height": 270,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_AVI_480_750kB.avi",
+    "size": 742478,
+    "type": "video",
+    "updatedAt": 2025-01-03T12:58:57.245Z,
+    "width": 480,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a video file (file_example_MOV_480_700kB.mov) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "aspectRatio": "16:9",
+    "createdAt": 2025-01-03T12:58:57.233Z,
+    "duration": 30.033333,
+    "format": "h264",
+    "framerate": "30/1",
+    "height": 270,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_MOV_480_700kB.mov",
+    "size": 709764,
+    "type": "video",
+    "updatedAt": 2025-01-03T12:58:57.235Z,
+    "width": 480,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a video file (file_example_MP4_480_1_5MG.mp4) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "aspectRatio": "16:9",
+    "createdAt": 2025-01-03T12:58:57.270Z,
+    "duration": 30.033333,
+    "format": "h264",
+    "framerate": "30/1",
+    "height": 270,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_MP4_480_1_5MG.mp4",
+    "size": 1570024,
+    "type": "video",
+    "updatedAt": 2025-01-03T12:58:57.273Z,
+    "width": 480,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a video file (file_example_WEBM_480_900KB.webm) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "aspectRatio": "16:9",
+    "createdAt": 2025-01-03T12:58:57.214Z,
+    "duration": "N/A",
+    "format": "vp8",
+    "framerate": "30/1",
+    "height": 270,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_WEBM_480_900KB.webm",
+    "size": 901185,
+    "type": "video",
+    "updatedAt": 2025-01-03T12:58:57.215Z,
+    "width": 480,
+  },
+}
+`;
+
+exports[`fs > readFileMetadata > should read metadata for a video file (file_example_WMV_480_1_2MB.wmv) 1`] = `
+{
+  "ok": true,
+  "value": {
+    "aspectRatio": "16:9",
+    "createdAt": 2025-01-03T12:58:57.218Z,
+    "duration": 30.55,
+    "format": "wmv2",
+    "framerate": "30/1",
+    "height": 270,
+    "path": "/Users/kairohwer/dev/home-cloud/src/backend/manager/__fixtures__/sample-files/file_example_WMV_480_1_2MB.wmv",
+    "size": 1175629,
+    "type": "video",
+    "updatedAt": 2025-01-03T12:58:57.220Z,
+    "width": 480,
+  },
+}
+`;

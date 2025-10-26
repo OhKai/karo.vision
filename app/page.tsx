@@ -2,8 +2,8 @@ import { Github, Mail, Twitter } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="flex min-h-full items-center justify-center flex-col md:p-24 p-2">
-      <div className="flex scale-[0.875] items-center gap-2 text-3xl md:scale-100 dark:drop-shadow-[0_0_0.3rem_#ffffff70]">
+    <main className="font-sans flex min-h-dvh items-center justify-center flex-col md:p-24 p-2">
+      <div className="flex scale-[0.875] items-center gap-3.5 text-3xl md:scale-100 dark:drop-shadow-[0_0_0.3rem_#ffffff70]">
         <svg
           viewBox="0 0 100 100"
           fill="currentColor"
@@ -17,12 +17,12 @@ export default function Home() {
         </svg>
         <div className="font-semibold">KARO.VISION</div>
       </div>
-      <div className="w-[1px] h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
+      <div className="w-px h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
       <div className="font-extralight md:text-xl text-lg">
         <span className="font-semibold mr-4">Kai Rohwer</span>{" "}
         Software&nbsp;Engineer
       </div>
-      <div className="w-[1px] h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
+      <div className="w-px h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
       <div className="flex items-center gap-5">
         <a href="https://www.twitter.com/karo_vision_" target="_blank">
           <Twitter className="w-6 h-6" />
@@ -34,8 +34,9 @@ export default function Home() {
           <Github className="w-6 h-6" />
         </a>
       </div>
-      <div className="w-[1px] h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
+      <div className="w-px h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
       <div className="text-lg font-mono font-bold">
+        <a href="/home-cloud">Home Cloud</a> |{" "}
         <a href="https://www.apai.tech/apps">apai.tech</a>
       </div>
     </main>

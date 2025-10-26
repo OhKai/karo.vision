@@ -25,6 +25,7 @@ const AudioBarAnimation = ({
             "bg-primary animate-audio-bar h-full w-[3px] rounded-full",
           )}
           style={{
+            animationFillMode: "both",
             animationDelay: `${i * 0.15}s`,
             animationDuration: `${0.8 + i * 0.1}s`,
           }}

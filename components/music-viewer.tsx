@@ -13,6 +13,7 @@ import {
   EllipsisVertical,
   FastForward,
   FolderOpen,
+  Minimize2,
   Pause,
   Pencil,
   Play,
@@ -24,6 +25,7 @@ import MetaEditor from "@/components/meta-editor";
 import {
   cn,
   convertBytesToRoundedString,
+  convertSampleRateToRoundedString,
   convertSecondsToRoundedString,
 } from "@/lib/utils";
 import { trpc } from "@/lib/trpc-client";
@@ -273,12 +275,14 @@ const MusicViewer = ({
               topic={music.file.topic}
               title={music.file.title ?? music.file.name}
               tags={music.file.tags ?? []}
-              dialogClose={!fullscreen}
+              dialogClose={
+                !fullscreen && (audioPlayer.isPlaying ? <Minimize2 /> : true)
+              }
             >
               <span>{music.file.createdAt.toLocaleDateString()}</span>
               <span>{convertBytesToRoundedString(music.file.size)}</span>
               <span>{music.channels}</span>
-              <span>{music.sampleRate}</span>
+              <span>{convertSampleRateToRoundedString(music.sampleRate)}</span>
               <span className="col-span-2 truncate">{music.file.dirname}</span>
             </MediaViewerLayout.SidebarInfo>
             <MediaViewerLayout.SidebarActions>

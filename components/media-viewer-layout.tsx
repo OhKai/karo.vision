@@ -124,7 +124,7 @@ type SidebarInfoProps = {
   title: string;
   tags?: string[];
   description?: string | null;
-  dialogClose?: boolean; // If true, adds dialog close button
+  dialogClose?: boolean | ReactNode; // If true, adds dialog close button
   children?: ReactNode; // For the metadata spans
 };
 
@@ -173,7 +173,7 @@ MediaViewerLayout.SidebarInfo = ({
       </div>
       {dialogClose && (
         <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
-          <XIcon />
+          {dialogClose === true ? <XIcon /> : dialogClose}
           <span className="sr-only">Close</span>
         </DialogClose>
       )}

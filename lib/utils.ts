@@ -93,7 +93,7 @@ export const convertTimeStringToSeconds = (time: string) => {
   return (hours * 60 + minutes) * 60 + (seconds || 0);
 };
 
-export function roundFPS(fps: string) {
+export const roundFPS = (fps: string) => {
   if (fps.includes("/")) {
     const numerator = parseInt(fps);
     const denominator = parseInt(fps.substring(fps.indexOf("/") + 1));
@@ -101,7 +101,15 @@ export function roundFPS(fps: string) {
   } else {
     return fps;
   }
-}
+};
+
+export const convertSampleRateToRoundedString = (sampleRate: number) => {
+  if (sampleRate >= 1000) {
+    return `${(sampleRate / 1000).toFixed(1)} kHz`;
+  } else {
+    return `${sampleRate} Hz`;
+  }
+};
 
 export const fileURL = (fileId: number, download = false, token?: string) => {
   const queryParams = new URLSearchParams({

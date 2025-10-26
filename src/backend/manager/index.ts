@@ -16,7 +16,7 @@ import pLimit from "p-limit";
 
 export const initManager = async (db: Db) => {
   console.log("initManager");
-  console.log(await addRootFolder(db, "/Users/kairohwer/Downloads"));
+  console.log(await addRootFolder(db, "/Users/karo/my-media/"));
 };
 
 export const addFile = async (

@@ -1,12 +1,12 @@
-import { Result } from "@/lib/typescript-utils";
+import type { Result } from "@karo-vision/home-cloud-frontend/lib/typescript-utils";
 import {
-  File,
+  type File,
   generateVideoThumbnails,
   getFilesystemInfos,
   readFileMetadata,
   scanFolder,
 } from "./fs";
-import { result } from "@/lib/utils";
+import { result } from "@karo-vision/home-cloud-frontend/lib/utils";
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { Db } from "../db/drizzle";

@@ -88,7 +88,7 @@ The app uses tRPC for type-safe API calls between frontend and backend:
 ### React Best Practices
 
 - **Avoid unnecessary effects**: Calculate derived state during render instead of using `useEffect` (see [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect) and TkDodo's Blog like [Ref Callbacks, React 19 and the Compiler](https://tkdodo.eu/blog/ref-callbacks-react-19-and-the-compiler))
-- **Don't use refs for derived state**: If a value can be calculated from props/state, calculate it during render
+- **Don't use state for derived state**: If a value can be calculated from props/state, calculate it during render
 - **Effects are for synchronization**: Use effects only for synchronizing with external systems, not for transforming data
 - **Prefer composition over effects**: When possible, express logic through component composition and state updates
 

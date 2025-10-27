@@ -6,7 +6,7 @@ import {
   SearchOptionsState,
 } from "@/lib/use-search-options-store";
 import { useIntersectionObserver } from "@/lib/use-intersection-observer";
-import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
+import { INFINITE_SCROLL_PAGE_SIZE } from "@karo-vision/home-cloud-config";
 import { useQueryParams } from "@/lib/use-query-params";
 import { useState, useMemo } from "react";
 import useChange from "@/lib/use-change";

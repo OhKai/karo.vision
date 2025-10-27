@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
+  images: {
+    unoptimized: true,
+  },
   rewrites: async () => {
     // Enable dynamic routes with static export. This emulates what the node
     // server would do.

@@ -1,9 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
-import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
-import { isNotNull, like, sql, eq, or, and, asc, desc } from "drizzle-orm";
-import { files, music, photos } from "../../db/schema";
+import { INFINITE_SCROLL_PAGE_SIZE } from "@karo-vision/home-cloud-config";
+import { sql, eq, or, and, asc, desc } from "drizzle-orm";
+import { files, music } from "../../db/schema";
 
 export const musicRouter = router({
   byId: publicProcedure.input(z.number()).query(async ({ ctx, input }) => {

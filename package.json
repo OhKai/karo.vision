@@ -1,0 +1,20 @@
+{
+  "name": "@karo-vision/workspace",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev-home-cloud": "bun --filter '@karo-vision/home-cloud-frontend' --filter '@karo-vision/home-cloud-backend' dev"
+  },
+  "catalog": {
+    "typescript": "^5.9.3",
+    "eslint": "^9"
+  },
+  "devDependencies": {
+    "@karo-vision/home-cloud-config": "workspace:*",
+    "eslint-config-next": "16.0.0",
+    "prettier": "^3.6.2"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@karo-vision/home-cloud-headless",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@karo-vision/home-cloud-config": "workspace:*"
+  }
+}

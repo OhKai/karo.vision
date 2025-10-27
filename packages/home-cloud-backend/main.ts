@@ -1,7 +1,7 @@
-import { initDB } from "./db/drizzle";
-import { initManager } from "./manager";
-import { createServer } from "./server/index";
-import { PORT } from "@/config";
+import { initDB } from "@/db/drizzle";
+import { initManager } from "@/manager";
+import { createServer } from "@/server/index.ts";
+import { PORT } from "@karo-vision/home-cloud-config";
 
 (async () => {
   const db = initDB();

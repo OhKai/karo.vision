@@ -1,6 +1,6 @@
 import { initTRPC } from "@trpc/server";
 import type { Context } from "./context";
-import { transformer } from "@/lib/transformer";
+import { transformer } from "@karo-vision/home-cloud-frontend/lib/transformer";
 
 const t = initTRPC.context<Context>().create({
   transformer,

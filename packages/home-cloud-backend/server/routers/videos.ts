@@ -1,10 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
-import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
-import { isNotNull, like, sql, eq, or, and, asc, desc } from "drizzle-orm";
+import { INFINITE_SCROLL_PAGE_SIZE } from "@karo-vision/home-cloud-config";
+import { sql, eq, or, and, asc, desc } from "drizzle-orm";
 import { files, videos } from "../../db/schema";
-import { RouterLike, UtilsLike } from "@trpc/react-query/shared";
 
 export const videosRouter = router({
   byId: publicProcedure.input(z.number()).query(async ({ ctx, input }) => {
@@ -189,5 +188,5 @@ export const videosRouter = router({
     }),
 });
 
-export type VideosRouterLike = RouterLike<typeof videosRouter>;
-export type VideosUtilsLike = UtilsLike<typeof videosRouter>;
+export type VideosRouterLike = typeof videosRouter;
+export type VideosUtilsLike = typeof videosRouter;

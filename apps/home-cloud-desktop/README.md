@@ -1,6 +1,6 @@
 # home-cloud-desktop
 
-An Electron application with React and TypeScript
+An Electron application with React and TypeScript (scaffolding from `bun create @quick-start/electron@latest`)
 
 ## Recommended IDE Setup
 

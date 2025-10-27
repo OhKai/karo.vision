@@ -3,9 +3,9 @@ import path from "node:path";
 import ffmpeg from "fluent-ffmpeg";
 import fs from "node:fs/promises";
 import { Stats } from "node:fs";
-import type { Result } from "@/lib/typescript-utils";
-import { blockDevices, Systeminformation } from "systeminformation";
-import { result } from "@/lib/utils";
+import type { Result } from "@karo-vision/home-cloud-frontend/lib/typescript-utils";
+import { blockDevices, type Systeminformation } from "systeminformation";
+import { result } from "@karo-vision/home-cloud-frontend/lib/utils";
 
 // Some research about fast fs walk packages (01.01.2025):
 //

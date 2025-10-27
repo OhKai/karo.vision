@@ -1,11 +1,11 @@
 import {
   fastifyTRPCPlugin,
-  FastifyTRPCPluginOptions,
+  type FastifyTRPCPluginOptions,
 } from "@trpc/server/adapters/fastify";
 import fastify from "fastify";
-import { AppRouter, appRouter } from "./router";
+import { type AppRouter, appRouter } from "./router";
 import { createContext } from "./context";
-import { Db } from "../db/drizzle";
+import type { Db } from "../db/drizzle";
 import cors from "@fastify/cors";
 import { fsRouter } from "./routers/fs";
 

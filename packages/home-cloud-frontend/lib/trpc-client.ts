@@ -1,9 +1,9 @@
-import type { AppRouter } from "@/src/backend/server/router";
+import type { AppRouter } from "@karo-vision/home-cloud-backend/server/router";
 import { QueryClient } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { transformer } from "@/lib/transformer";
-import { PORT } from "@/config";
+import { PORT } from "@karo-vision/home-cloud-config";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 // Singletons method because this is a SPA and these only get created once on the client. It is

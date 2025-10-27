@@ -2,7 +2,6 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Dialog, DialogContent } from "./ui/dialog";
-import VideoViewer, { VideoControl } from "./video-viewer";
 import { cn } from "@/lib/utils";
 import { useSidebarStore } from "@/lib/use-sidebar-store";
 import PhotoViewer from "./photo-viewer";

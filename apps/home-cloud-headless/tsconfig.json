@@ -1,0 +1,10 @@
+{
+  "extends": "@karo-vision/home-cloud-config/tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.mts"],
+  "exclude": ["node_modules"]
+}

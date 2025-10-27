@@ -1,5 +1,5 @@
-import { FastifyInstance, FastifyReply } from "fastify";
-import { Db } from "../../db/drizzle";
+import type { FastifyInstance, FastifyReply } from "fastify";
+import type { Db } from "../../db/drizzle";
 import { files } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { createReadStream, ReadStream, promises as fs } from "node:fs";

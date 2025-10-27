@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import { trpc } from "./trpc-client";
-import { INFINITE_SCROLL_PAGE_SIZE } from "@/config";
+import { INFINITE_SCROLL_PAGE_SIZE } from "@karo-vision/home-cloud-config";
 
 type AudioPlayerState = {
   query?: string;

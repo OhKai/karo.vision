@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { ErrorResult, Result, ValueResult } from "./typescript-utils";
-import { PORT } from "@/config";
+import type { ErrorResult, ValueResult } from "./typescript-utils";
+import { PORT } from "@karo-vision/home-cloud-config";
 
 export const result = {
   ok: <T>(value?: T) => ({ ok: true, value }) as ValueResult<T>,

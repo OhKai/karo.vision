@@ -1,5 +1,5 @@
 import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
-import { Db } from "../db/drizzle";
+import type { Db } from "../db/drizzle";
 
 export const createContext = ({
   req,

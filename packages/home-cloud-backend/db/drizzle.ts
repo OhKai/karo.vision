@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 import * as schema from "./schema";
-import { DB_FILE_NAME } from "@/config";
+import { DB_FILE_NAME } from "@/karo-vision/home-cloud-config";
 
 /**
  * Establishes the database connection. If the database does not exist, it will be created and the

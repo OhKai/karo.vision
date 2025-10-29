@@ -31,7 +31,7 @@ import PlayerError from "@/components/player-error";
 import { trpc } from "@/lib/trpc-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MediaViewerLayout } from "@/components/media-viewer-layout";
-import z from "zod";
+import { z } from "zod";
 import {
   FormControl,
   FormField,

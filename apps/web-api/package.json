@@ -2,8 +2,18 @@
   "name": "@karo-vision/web-api",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "bun --watch main.ts",
+    "build": "bun build main.ts --target bun --outdir ./dist",
+    "start": "NODE_ENV=production bun dist/index.js"
+  },
+  "dependencies": {
+    "elysia": "^1.4.13",
+    "zod": "^4.1.12"
+  },
   "devDependencies": {
-    "typescript": "catalog:",
-    "@karo-vision/home-cloud-config": "workspace:*"
+    "@karo-vision/home-cloud-config": "workspace:*",
+    "@types/bun": "^1.3.1",
+    "typescript": "catalog:"
   }
 }

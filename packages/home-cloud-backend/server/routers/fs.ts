@@ -125,7 +125,7 @@ const rangeParse = (str: string) => {
     return null;
   }
 
-  return token[1]
+  return (token[1] as string)
     .split(",")
     .map((range) =>
       range.split("-").map((value) => {

@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "dev-web": "bun --filter '@karo-vision/web' --filter '@karo-vision/web-api' dev",
     "dev-home-cloud": "bun --filter '@karo-vision/home-cloud-frontend' --filter '@karo-vision/home-cloud-backend' dev"
   },
   "catalog": {

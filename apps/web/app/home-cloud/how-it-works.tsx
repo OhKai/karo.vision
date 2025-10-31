@@ -70,7 +70,7 @@ const HowItWorks = () => {
                     className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="flex items-center justify-center absolute -bottom-6 -right-6 size-[40%] max-size-[180px] md:max-size-[220px] overflow-hidden rounded-2xl border-4 border-background shadow-2xl transition-transform duration-500 hover:scale-105 md:size-[220px] aspect-square bg-linear-to-br/oklch from-slate-500 to-slate-800 p-2 md:p-5">
+                <div className="flex items-center justify-center absolute -bottom-6 -right-6 size-[40%] max-size-[180px] md:max-size-[220px] overflow-hidden rounded-2xl border-4 border-background shadow-2xl transition-transform duration-500 hover:scale-105 xl:size-[220px] aspect-square bg-linear-to-br/oklch from-slate-500 to-slate-800 p-2 md:p-5">
                   <img
                     src="/tv.png"
                     alt="TV viewing"

@@ -27,7 +27,7 @@ const HeroSection = () => {
         </p>
       </div>
 
-      <div className="w-full px-4 pt-[180px] pb-16 md:pb-20 md:pt-[170px]">
+      <div className="w-full px-4 pt-[45%] pb-16 md:pb-20 md:pt-[170px]">
         <div className="relative -mx-4 md:mx-auto -mb-2.5 flex max-w-5xl justify-center md:mb-[-25px]">
           <div className="absolute bottom-0 left-[4%] md:left-[8%] z-1 w-[45%] rotate-[-10deg] transition-all duration-500 hover:rotate-[-8deg] hover:scale-105 md:w-[340px] hover:-translate-y-3 mb-8 md:mb-[-175px]">
             <div className="overflow-hidden rounded-2xl md:rounded-4xl p-1 bg-background shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
@@ -38,7 +38,7 @@ const HeroSection = () => {
               />
             </div>
           </div>
-          <div className="relative z-3 w-1/2 transition-all duration-500 hover:scale-105 md:w-[360px] hover:-translate-y-7">
+          <div className="relative z-3 w-1/2 transition-all duration-500 hover:scale-105 md:w-[360px] md:hover:-translate-y-7">
             <div className="absolute inset-0 -z-10 rounded-t-4xl bg-primary/20 blur-2xl" />
             <div className="overflow-hidden rounded-t-2xl md:rounded-t-4xl bg-background shadow-[0_25px_70px_-15px_rgba(0,0,0,0.4)]">
               <img

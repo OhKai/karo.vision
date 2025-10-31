@@ -40,7 +40,7 @@ const FaqSection = () => {
   ];
 
   return (
-    <div className="relative z-10 w-full px-4 py-16 md:py-24">
+    <div className="relative z-10 w-full px-4 py-12 md:py-24">
       <div className="mx-auto max-w-3xl">
         <div className="mb-12 text-center">
           <h3 className="text-balance text-2xl font-bold text-foreground md:text-4xl">

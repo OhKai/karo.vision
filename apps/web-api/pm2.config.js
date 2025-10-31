@@ -1,5 +1,5 @@
 module.exports = {
-  title: "Karo.Vision Web API", // Name of your application
+  name: "karo.vision Web API", // Name of your application
   script: "dist/main.js", // Entry point of your application
   interpreter: "bun", // Bun interpreter
   env: {

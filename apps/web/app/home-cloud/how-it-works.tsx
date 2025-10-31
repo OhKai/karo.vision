@@ -2,7 +2,7 @@ import { Folder, Monitor, Tags } from "lucide-react";
 
 const HowItWorks = () => {
   return (
-    <div className="w-full px-4 py-16 md:py-24" id="how-it-works">
+    <div className="w-full px-4 py-12 md:py-24" id="how-it-works">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
           <h3 className="text-balance text-3xl font-bold text-foreground md:text-5xl">
@@ -21,17 +21,17 @@ const HowItWorks = () => {
                   Step 1
                 </span>
               </div>
-              <h4 className="text-3xl font-bold text-foreground md:text-4xl">
+              <h4 className="text-2xl font-bold text-foreground md:text-4xl">
                 Point to Your Media
               </h4>
-              <p className="text-pretty text-lg text-muted-foreground leading-relaxed">
+              <p className="text-pretty text-base md:text-lg text-muted-foreground leading-relaxed">
                 Choose any folder on your computer to get started. All the files
                 inside will be automatically indexed and update when you add or
                 remove them. You can add as many folders as you like.
               </p>
             </div>
             <div className="flex-1">
-              <div className="group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-6 bg-linear-to-t/oklch from-purple-500 to-purple-900 aspect-square">
+              <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-3 md:p-6 bg-linear-to-t/oklch from-purple-500 to-purple-900 aspect-square">
                 <img
                   src="/onboarding.png"
                   alt="Folder selection interface"
@@ -48,31 +48,32 @@ const HowItWorks = () => {
                   Step 2
                 </span>
               </div>
-              <h4 className="text-3xl font-bold text-foreground md:text-4xl">
+              <h4 className="text-2xl font-bold text-foreground md:text-4xl">
                 Access From Any Device In Your Home
               </h4>
-              <p className="text-pretty text-lg text-muted-foreground leading-relaxed">
+              <p className="text-pretty text-base md:text-lg text-muted-foreground leading-relaxed">
                 Enjoy your videos, photos, and music seamlessly across all your
                 home devices. You are not limited to just the dektop app &mdash;
                 it can open a{" "}
                 <span className="whitespace-nowrap">built-in</span> web server
                 that lets you stream your media to any device on your local
-                network. All using the same, modern UI in your favorite browser.
+                network. All using the same, modern interface in your favorite
+                browser.
               </p>
             </div>
             <div className="flex-1">
               <div className="relative">
-                <div className="group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 aspect-square bg-linear-to-t/oklch from-blue-800 to-indigo-900 p-6">
+                <div className="flex items-center justify-centergroup overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 aspect-square bg-linear-to-t/oklch from-blue-800 to-indigo-900 p-3 md:p-6">
                   <img
                     src="/device-group.png"
                     alt="Multi-device viewing"
                     className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="absolute -bottom-6 -right-6 w-[180px] overflow-hidden rounded-2xl border-4 border-background shadow-2xl transition-transform duration-500 hover:scale-105 md:w-[220px] aspect-square bg-linear-to-br/oklch from-slate-500 to-slate-800 p-5">
+                <div className="flex items-center justify-center absolute -bottom-6 -right-6 size-[40%] max-size-[180px] md:max-size-[220px] overflow-hidden rounded-2xl border-4 border-background shadow-2xl transition-transform duration-500 hover:scale-105 md:size-[220px] aspect-square bg-linear-to-br/oklch from-slate-500 to-slate-800 p-2 md:p-5">
                   <img
                     src="/tv.png"
-                    alt="Mobile view"
+                    alt="TV viewing"
                     className="h-full w-full object-contain"
                   />
                 </div>
@@ -87,17 +88,17 @@ const HowItWorks = () => {
                   Step 3
                 </span>
               </div>
-              <h4 className="text-3xl font-bold text-foreground md:text-4xl">
+              <h4 className="text-2xl font-bold text-foreground md:text-4xl">
                 Take Full Control
               </h4>
-              <p className="text-pretty text-lg text-muted-foreground leading-relaxed">
+              <p className="text-pretty text-base md:text-lg text-muted-foreground leading-relaxed">
                 Sort, filter, tag, comment, and group your media exactly how you
                 want. Purpose-built interfaces, custom tags, and powerful search
                 put you in complete control of your library.
               </p>
             </div>
             <div className="flex-1">
-              <div className="group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-10 bg-linear-to-tr/oklch from-red-500 to-orange-500">
+              <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-6 md:p-10 bg-linear-to-tr/oklch from-red-500 to-orange-500">
                 <img
                   src="/editor-showcase.png"
                   alt="Organization features"

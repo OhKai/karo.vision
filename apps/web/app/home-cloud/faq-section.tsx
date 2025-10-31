@@ -20,7 +20,7 @@ const FaqSection = () => {
     {
       question: "How does the app handle my privacy and data?",
       answer:
-        "Your media never leaves your devices. The file-sharing with other devices in your home is done through a built-in web server that keeps everything local. We never access or sell your data.",
+        "Your files never leave your home network. The file-sharing with other devices in your home is done through a built-in web server that keeps everything local. We never access or sell your data.",
     },
     {
       question: "Can I organize media from multiple folders?",
@@ -43,10 +43,10 @@ const FaqSection = () => {
     <div className="relative z-10 w-full px-4 py-16 md:py-24">
       <div className="mx-auto max-w-3xl">
         <div className="mb-12 text-center">
-          <h3 className="text-balance text-3xl font-bold text-foreground md:text-4xl">
+          <h3 className="text-balance text-2xl font-bold text-foreground md:text-4xl">
             Frequently Asked Questions
           </h3>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-xl text-pretty text-base md:text-lg text-muted-foreground">
             Everything you need to know about our app. Can&apos;t find what
             you&apos;re looking for? Reach out to our support team.
           </p>
@@ -60,9 +60,9 @@ const FaqSection = () => {
             >
               <button
                 onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                className="flex w-full items-center justify-between gap-4 p-6 text-left transition-colors"
+                className="flex w-full items-center justify-between gap-3 md:gap-4 p-4 md:p-6 text-left transition-colors"
               >
-                <span className="text-lg font-semibold text-foreground">
+                <span className="text-base md:text-lg font-semibold text-foreground">
                   {faq.question}
                 </span>
                 <div className="shrink-0">

@@ -20,7 +20,7 @@ const HeroSection = () => {
             Your OS Is Missing
           </span>
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg text-muted-foreground md:text-xl leading-relaxed">
+        <p className="z-10 mx-auto mt-6 max-w-2xl text-pretty text-lg text-muted-foreground md:text-xl leading-relaxed">
           The most intuitive way to browse your videos, photos, and music. View
           everything from any device in your home, organize with ease, and never
           lose track of your files.
@@ -28,7 +28,7 @@ const HeroSection = () => {
       </div>
 
       <div className="w-full px-4 pt-[45%] pb-16 md:pb-20 md:pt-[170px]">
-        <div className="relative -mx-4 md:mx-auto -mb-2.5 flex max-w-5xl justify-center md:mb-[-25px]">
+        <div className="z-10 relative -mx-4 md:mx-auto -mb-2.5 flex max-w-5xl justify-center md:mb-[-25px]">
           <div className="absolute bottom-0 left-[4%] md:left-[8%] z-1 w-[45%] rotate-[-10deg] transition-all duration-500 hover:rotate-[-8deg] hover:scale-105 md:w-[340px] hover:-translate-y-3 mb-8 md:mb-[-175px]">
             <div className="overflow-hidden rounded-2xl md:rounded-4xl p-1 bg-background shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
               <img
@@ -60,17 +60,16 @@ const HeroSection = () => {
         </div>
         <div className="z-10 relative mx-auto max-w-2xl overflow-hidden rounded-2xl border border-border bg-card/95 shadow-2xl backdrop-blur-md">
           <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent" />
-          <div className="relative px-6 p-8 md:p-12">
-            <h3 className="text-balance text-center text-2xl font-bold text-foreground md:text-3xl">
-              Start <span className="whitespace-nowrap">Re-Discovering</span>{" "}
-              Today
+          <div className="relative px-6 p-8 sm:p-12">
+            <h3 className="text-balance text-center text-2xl font-bold text-foreground sm:text-3xl">
+              Start <span className="whitespace-nowrap">Re-Discovering</span>
             </h3>
-            <p className="mx-auto mt-3 max-w-lg text-pretty text-center text-muted-foreground">
-              Use the full featured app for free, forever. If you need more
+            <p className="mx-auto mt-4 sm:mt-3 max-w-lg text-pretty text-center text-muted-foreground">
+              Use the fully featured app for free, forever. If you need more
               files, upgrade anytime.
             </p>
             <HeroCTA />
-            <div className="mt-8 flex flex-col md:flex-row flex-wrap items-center justify-center gap-4 md:gap-6 text-sm text-muted-foreground">
+            <div className="mt-6 sm:mt-8 w-fit sm:w-auto flex mx-auto items-start flex-col sm:flex-row flex-wrap sm:items-center justify-center gap-4 sm:gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Check className="size-4 text-green-500" />
                 <span>Mac, Windows, Linux</span>

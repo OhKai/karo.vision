@@ -56,7 +56,7 @@ const FaqSection = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
+              className="overflow-hidden rounded-2xl border border-border bg-card/80 transition-all duration-300 hover:border-primary/50"
             >
               <button
                 onClick={() => setOpenFaq(openFaq === index ? null : index)}

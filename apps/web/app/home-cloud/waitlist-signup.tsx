@@ -26,9 +26,9 @@ const WaitlistSignup = () => {
   };
 
   return (
-    <div className="w-full px-4 py-12 md:py-24">
+    <div className="w-full px-4 py-12 md:py-24" id="waitlist">
       <div className="mx-auto max-w-3xl">
-        <div className="overflow-hidden rounded-3xl border border-border bg-linear-to-br from-card/95 to-card/80 p-8 shadow-2xl backdrop-blur-sm md:p-12">
+        <div className="overflow-hidden rounded-3xl border border-border bg-linear-to-br from-card/95 to-card/80 p-8 shadow-2xl md:p-12">
           <div className="text-center">
             <div className="mx-auto mb-2 md:mb-4 flex size-12 md:size-16 items-center justify-center rounded-full bg-primary/10">
               <Mail className="size-6 md:size-8 text-primary" />

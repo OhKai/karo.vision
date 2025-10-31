@@ -2,7 +2,7 @@ import { Folder, Monitor, Tags } from "lucide-react";
 
 const HowItWorks = () => {
   return (
-    <div className="w-full px-4 py-12 md:py-24" id="how-it-works">
+    <div className="w-full px-4 md:px-6 py-12 md:py-24" id="how-it-works">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
           <h3 className="text-balance text-3xl font-bold text-foreground md:text-5xl">
@@ -31,7 +31,7 @@ const HowItWorks = () => {
               </p>
             </div>
             <div className="flex-1">
-              <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-3 md:p-6 bg-linear-to-t/oklch from-purple-500 to-purple-900 aspect-square">
+              <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-3 md:p-6 bg-linear-to-t/oklch from-violet-500 to-violet-900 aspect-square">
                 <img
                   src="/onboarding.png"
                   alt="Folder selection interface"
@@ -63,14 +63,14 @@ const HowItWorks = () => {
             </div>
             <div className="flex-1">
               <div className="relative">
-                <div className="flex items-center justify-centergroup overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 aspect-square bg-linear-to-t/oklch from-blue-800 to-indigo-900 p-3 md:p-6">
+                <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 aspect-square bg-linear-to-bl/oklch from-blue-700 to-indigo-900 p-3 md:p-6">
                   <img
                     src="/device-group.png"
                     alt="Multi-device viewing"
                     className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="flex items-center justify-center absolute -bottom-6 -right-6 size-[40%] max-size-[180px] md:max-size-[220px] overflow-hidden rounded-2xl border-4 border-background shadow-2xl transition-transform duration-500 hover:scale-105 xl:size-[220px] aspect-square bg-linear-to-br/oklch from-slate-500 to-slate-800 p-2 md:p-5">
+                <div className="flex items-center justify-center absolute -bottom-6 -right-3 md:-right-6 size-[40%] max-size-[180px] md:max-size-[220px] overflow-hidden rounded-2xl border-4 border-background shadow-2xl transition-transform duration-500 hover:scale-105 xl:size-[220px] aspect-square bg-linear-to-br/oklch from-slate-500 to-slate-800 p-3 md:p-5">
                   <img
                     src="/tv.png"
                     alt="TV viewing"
@@ -98,7 +98,7 @@ const HowItWorks = () => {
               </p>
             </div>
             <div className="flex-1">
-              <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-6 md:p-10 bg-linear-to-tr/oklch from-red-500 to-orange-500">
+              <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-6 md:p-10 bg-linear-to-br/oklch from-red-500 to-orange-500">
                 <img
                   src="/editor-showcase.png"
                   alt="Organization features"

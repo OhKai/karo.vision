@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch main.ts",
-    "build": "bun build main.ts --target bun --outdir ./dist",
-    "start": "NODE_ENV=production bun dist/index.js"
+    "build": "bun build main.ts --target bun --outdir ./dist --production",
+    "start": "NODE_ENV=production bun dist/main.js",
+    "lint": "eslint"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.4.0",

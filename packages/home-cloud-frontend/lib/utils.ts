@@ -22,7 +22,9 @@ export const readLocalStorage = (key: string, initialValue: string) => {
     if (localStorageValue !== null) {
       return localStorageValue;
     } else {
-      initialValue && localStorage.setItem(key, initialValue);
+      if (initialValue) {
+        localStorage.setItem(key, initialValue);
+      }
       return initialValue;
     }
   } catch {

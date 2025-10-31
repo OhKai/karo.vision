@@ -1,10 +1,13 @@
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import nextTs from "eslint-config-next/typescript";
 
 /**
  * Root ESLint configuration for all packages that do not overwrite it with their own config (e.g.
  * Next and Electron apps).
  */
-const eslintConfig = defineConfig([...nextTs]);
+const eslintConfig = defineConfig([
+  ...nextTs,
+  globalIgnores(["**/out/**", "**/build/**", "**/dist/**"]),
+]);
 
 export default eslintConfig;

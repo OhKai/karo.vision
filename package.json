@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "dev-web": "bun --filter '@karo-vision/web' --filter '@karo-vision/web-api' dev",
-    "dev-home-cloud": "bun --filter '@karo-vision/home-cloud-frontend' --filter '@karo-vision/home-cloud-backend' dev"
+    "dev-home-cloud": "bun --filter '@karo-vision/home-cloud-frontend' --filter '@karo-vision/home-cloud-backend' dev",
+    "lint": "bun --filter '*' lint"
   },
   "catalog": {
     "typescript": "^5.9.3",

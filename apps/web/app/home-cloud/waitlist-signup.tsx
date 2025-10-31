@@ -5,6 +5,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { Mail } from "lucide-react";
 import { useState } from "react";
+import { WEB_API_URL } from "@karo-vision/home-cloud-config";
 
 const WaitlistSignup = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,15 @@ const WaitlistSignup = () => {
 
   const handleWaitlistSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    fetch(`${WEB_API_URL}/waitlist/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
     setIsSubmitted(true);
+    setEmail("");
     setTimeout(() => setIsSubmitted(false), 3000);
   };
 
@@ -48,6 +57,7 @@ const WaitlistSignup = () => {
                 type="submit"
                 size="lg"
                 className="whitespace-nowrap px-8"
+                disabled={isSubmitted}
               >
                 {isSubmitted ? "You're on the list!" : "Join Waitlist"}
               </Button>

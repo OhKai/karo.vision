@@ -81,7 +81,7 @@ jobs:
           # Restart with PM2
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            "source ~/.bashrc && cd ${{ vars.DEPLOY_PATH }} && pm2 reload pm2.config.js --update-env && pm2 save"
+            "source ~/.profile && cd ${{ vars.DEPLOY_PATH }} && pm2 reload pm2.config.js --update-env && pm2 save"
 
           # Set output URL
           echo "url=${{ vars.API_DEPLOY_URL }}" >> $GITHUB_OUTPUT

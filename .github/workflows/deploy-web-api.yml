@@ -84,7 +84,7 @@ jobs:
             "cd ${{ vars.DEPLOY_PATH }} && pm2 reload pm2.config.js --update-env && pm2 save"
 
           # Set output URL
-          echo "url=${{ vars.DEPLOY_URL }}" >> $GITHUB_OUTPUT
+          echo "url=${{ vars.API_DEPLOY_URL }}" >> $GITHUB_OUTPUT
 
       - name: Create deployment summary
         run: |

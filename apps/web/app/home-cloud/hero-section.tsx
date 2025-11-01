@@ -1,4 +1,5 @@
 import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
+import { OptimizedImage } from "@/components/optimized-image";
 import { Check, Star } from "lucide-react";
 import HeroCTA from "./hero-cta";
 
@@ -10,7 +11,7 @@ const HeroSection = () => {
         <div className="z-10 relative mb-6 inline-flex items-center gap-1.5 px-3 py-1.5 md:gap-2 rounded-full border border-primary/20 bg-primary/5 md:px-4 md:py-2 backdrop-blur-sm">
           <Star className="size-3 md:size-4 fill-primary text-primary" />
           <span className="text-xs md:text-sm font-medium text-primary">
-            A karo.vision solution
+            A KARO.VISION solution
           </span>
         </div>
         <h1 className="z-10 relative text-balance text-4xl sm:text-5xl font-bold tracking-tight text-foreground md:text-7xl lg:text-8xl">
@@ -31,29 +32,35 @@ const HeroSection = () => {
         <div className="z-10 relative -mx-4 md:mx-auto -mb-2.5 flex max-w-5xl justify-center md:mb-[-25px]">
           <div className="absolute bottom-0 left-[4%] md:left-[8%] z-1 w-[45%] rotate-[-10deg] transition-all duration-500 hover:rotate-[-8deg] hover:scale-105 md:w-[340px] hover:-translate-y-3 mb-8 md:mb-[-175px]">
             <div className="overflow-hidden rounded-2xl md:rounded-4xl p-1 bg-background shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
-              <img
-                src="/screenshot-photos.png"
-                alt="App Screenshot 1"
+              <OptimizedImage
+                src="screenshot-photos"
+                alt="Photos gallery interface showing grid of media files"
+                sizes="(max-width: 767px) 45vw, 340px"
                 className="h-full w-full object-cover"
+                loading="eager"
               />
             </div>
           </div>
           <div className="relative z-3 w-1/2 transition-all duration-500 hover:scale-105 md:w-[360px] md:hover:-translate-y-7">
             <div className="absolute inset-0 -z-10 rounded-t-4xl bg-primary/20 blur-2xl" />
             <div className="overflow-hidden rounded-t-2xl md:rounded-t-4xl bg-background shadow-[0_25px_70px_-15px_rgba(0,0,0,0.4)]">
-              <img
-                src="/screenshot-video-page.png"
-                alt="App Screenshot 2"
+              <OptimizedImage
+                src="screenshot-video-page"
+                alt="Video player interface with playback controls"
+                sizes="(max-width: 767px) 50vw, 360px"
                 className="h-full w-full object-cover"
+                loading="eager"
               />
             </div>
           </div>
           <div className="absolute bottom-0 right-[4%] md:right-[8%] z-2 w-[45%] rotate-10 transition-all duration-500 hover:rotate-[8deg] hover:scale-105 md:w-[340px] hover:-translate-y-3 mb-[-17px] md:mb-[-175px]">
             <div className="overflow-hidden rounded-2xl md:rounded-4xl p-1 bg-background shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
-              <img
-                src="/screenshot-videos.png"
-                alt="App Screenshot 3"
+              <OptimizedImage
+                src="screenshot-videos"
+                alt="Videos collection view with thumbnails"
+                sizes="(max-width: 767px) 45vw, 340px"
                 className="h-full w-full object-cover"
+                loading="eager"
               />
             </div>
           </div>

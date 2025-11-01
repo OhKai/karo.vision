@@ -3,6 +3,13 @@ import HowItWorks from "./how-it-works";
 //import PricingSection from "./pricing-section";
 import WaitlistSignup from "./waitlist-signup";
 import FaqSection from "./faq-section";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "KARO.VISION Home Cloud",
+  description:
+    "The ultimate solution for viewing, managing, and browsing your videos, photos, and audio files.",
+};
 
 const HomeCloud = () => {
   return (

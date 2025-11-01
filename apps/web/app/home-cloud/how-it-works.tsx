@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/optimized-image";
 import { Folder, Monitor, Tags } from "lucide-react";
 
 const HowItWorks = () => {
@@ -32,9 +33,10 @@ const HowItWorks = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-3 md:p-6 bg-linear-to-t/oklch from-violet-500 to-violet-900 aspect-square">
-                <img
-                  src="/onboarding.png"
+                <OptimizedImage
+                  src="onboarding"
                   alt="Folder selection interface"
+                  sizes="(max-width: 767px) 100vw, 50vw"
                   className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
@@ -64,16 +66,18 @@ const HowItWorks = () => {
             <div className="flex-1">
               <div className="relative">
                 <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 aspect-square bg-linear-to-bl/oklch from-blue-700 to-indigo-900 p-3 md:p-6">
-                  <img
-                    src="/device-group.png"
+                  <OptimizedImage
+                    src="device-group"
                     alt="Multi-device viewing"
+                    sizes="(max-width: 767px) 100vw, 50vw"
                     className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div className="flex items-center justify-center absolute -bottom-6 -right-3 md:-right-6 size-[40%] max-size-[180px] md:max-size-[220px] overflow-hidden rounded-2xl border-4 border-background shadow-2xl transition-transform duration-500 hover:scale-105 xl:size-[220px] aspect-square bg-linear-to-br/oklch from-slate-500 to-slate-800 p-3 md:p-5">
-                  <img
-                    src="/tv.png"
+                  <OptimizedImage
+                    src="tv"
                     alt="TV viewing"
+                    sizes="(max-width: 767px) 40vw, 220px"
                     className="h-full w-full object-contain"
                   />
                 </div>
@@ -99,9 +103,10 @@ const HowItWorks = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-center group overflow-hidden rounded-3xl border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 p-6 md:p-10 bg-linear-to-br/oklch from-red-500 to-orange-500">
-                <img
-                  src="/editor-showcase.png"
+                <OptimizedImage
+                  src="editor-showcase"
                   alt="Organization features"
+                  sizes="(max-width: 767px) 100vw, 50vw"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 rounded-2xl shadow-lg"
                 />
               </div>

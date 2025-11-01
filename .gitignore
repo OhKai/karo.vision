@@ -21,8 +21,8 @@ build
 dist
 out
 
-# optimized images in next
-public/optimized
+# optimized images in next apps
+**/public/optimized
 
 # misc
 .DS_Store

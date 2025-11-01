@@ -48,7 +48,7 @@ export const OptimizedImage = ({
   ).join(", ");
 
   return (
-    <picture className={className}>
+    <picture>
       {/* Modern browsers: WebP */}
       <source type="image/webp" srcSet={webpSrcSet} sizes={sizes} />
 

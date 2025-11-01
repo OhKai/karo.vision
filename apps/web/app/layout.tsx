@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "KARO.VISION",
   description: "Next Gen App Experiences.",
+  metadataBase: new URL("https://karo.vision"),
 };
 
 export default function RootLayout({

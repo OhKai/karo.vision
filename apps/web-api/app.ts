@@ -12,7 +12,7 @@ export const createApp = () => {
         env.NODE_ENV === "development"
           ? {}
           : {
-              origin: /.*\.karo\.vision$/,
+              origin: /(.*\.)?karo\.vision$/,
             },
       ),
     )

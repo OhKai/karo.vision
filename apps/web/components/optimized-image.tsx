@@ -48,7 +48,7 @@ export const OptimizedImage = ({
   ).join(", ");
 
   return (
-    <picture>
+    <picture className={className}>
       {/* Modern browsers: WebP */}
       <source type="image/webp" srcSet={webpSrcSet} sizes={sizes} />
 
@@ -59,8 +59,8 @@ export const OptimizedImage = ({
       <img
         src={`${basePath}/${src}-${DEFAULT_SIZES[DEFAULT_SIZES.length - 1]}.png`}
         alt={alt}
-        className={className}
         loading={loading}
+        className={className}
         {...props}
       />
     </picture>

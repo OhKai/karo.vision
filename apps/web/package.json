@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --bun next dev",
-    "build": "bun --bun next build",
+    "build": "bun optimize-images && bun --bun next build",
     "optimize-images": "bun run scripts/optimize-images.ts",
     "start": "next start",
     "lint": "eslint"

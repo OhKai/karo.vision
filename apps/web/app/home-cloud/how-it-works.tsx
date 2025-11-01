@@ -14,7 +14,7 @@ const HowItWorks = () => {
           </p>
         </div>
         <div className="space-y-24 md:space-y-32">
-          <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12 lg:gap-16">
+          <div className="flex flex-col md:items-center gap-8 md:flex-row md:gap-12 lg:gap-16">
             <div className="flex-1 space-y-4">
               <div className="inline-flex items-center gap-3 rounded-full bg-primary/10 px-4 py-2">
                 <Folder className="size-5 text-primary" />
@@ -36,13 +36,13 @@ const HowItWorks = () => {
                 <OptimizedImage
                   src="onboarding"
                   alt="Folder selection interface"
-                  sizes="(max-width: 767px) 100vw, 50vw"
+                  sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 558px"
                   className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-8 md:flex-row-reverse md:gap-12 lg:gap-16">
+          <div className="flex flex-col md:items-center gap-8 md:flex-row-reverse md:gap-12 lg:gap-16">
             <div className="flex-1 space-y-4">
               <div className="inline-flex items-center gap-3 rounded-full bg-primary/10 px-4 py-2">
                 <Monitor className="size-5 text-primary" />
@@ -69,7 +69,7 @@ const HowItWorks = () => {
                   <OptimizedImage
                     src="device-group"
                     alt="Multi-device viewing"
-                    sizes="(max-width: 767px) 100vw, 50vw"
+                    sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 558px"
                     className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
@@ -84,7 +84,7 @@ const HowItWorks = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12 lg:gap-16">
+          <div className="flex flex-col md:items-center gap-8 md:flex-row md:gap-12 lg:gap-16">
             <div className="flex-1 space-y-4">
               <div className="inline-flex items-center gap-3 rounded-full bg-primary/10 px-4 py-2">
                 <Tags className="size-5 text-primary" />
@@ -106,8 +106,8 @@ const HowItWorks = () => {
                 <OptimizedImage
                   src="editor-showcase"
                   alt="Organization features"
-                  sizes="(max-width: 767px) 100vw, 50vw"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 rounded-2xl shadow-lg"
+                  sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 558px"
+                  className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105 rounded-2xl shadow-lg"
                 />
               </div>
             </div>

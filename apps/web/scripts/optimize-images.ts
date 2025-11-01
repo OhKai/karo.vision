@@ -1,17 +1,16 @@
-import sharp from 'sharp';
-import { readdir, mkdir, stat } from 'fs/promises';
-import { join, parse } from 'path';
-import { existsSync } from 'fs';
+import sharp from "sharp";
+import { readdir, mkdir, stat } from "fs/promises";
+import { join, parse } from "path";
+import { existsSync } from "fs";
 
 // Configuration
-const PUBLIC_DIR = join(process.cwd(), 'public');
-const IMAGES_DIR = join(PUBLIC_DIR, 'images');
-const OUTPUT_DIR = join(PUBLIC_DIR, 'optimized');
+const IMAGES_DIR = join(process.cwd(), "images");
+const OUTPUT_DIR = join(process.cwd(), "public/optimized");
 
 // Standard sizes based on common device widths and DPR
 const STANDARD_SIZES = [256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840];
 
-const FORMATS = ['webp', 'png'] as const; // WebP for modern browsers, PNG fallback
+const FORMATS = ["webp", "png"] as const; // WebP for modern browsers, PNG fallback
 const QUALITY = {
   webp: 80,
   png: 85,
@@ -20,24 +19,25 @@ const QUALITY = {
 // Images to exclude from optimization
 const EXCLUDE_PATTERNS = [/^optimized/, /^favicon/, /\.ico$/, /\.svg$/];
 
-type ImageFormat = typeof FORMATS[number];
+type ImageFormat = (typeof FORMATS)[number];
 
 async function optimizeImage(
   inputPath: string,
   outputPath: string,
   width: number,
-  format: ImageFormat
+  format: ImageFormat,
 ): Promise<void> {
   const image = sharp(inputPath);
   const metadata = await image.metadata();
 
   // Don't upscale images
-  const targetWidth = metadata.width && width > metadata.width ? metadata.width : width;
+  const targetWidth =
+    metadata.width && width > metadata.width ? metadata.width : width;
 
   await image
     .resize(targetWidth, undefined, {
       withoutEnlargement: true,
-      fit: 'inside',
+      fit: "inside",
     })
     .toFormat(format, { quality: QUALITY[format] })
     .toFile(outputPath);
@@ -46,7 +46,7 @@ async function optimizeImage(
 async function processImage(
   imagePath: string,
   fileName: string,
-  outputSubDir: string
+  outputSubDir: string,
 ): Promise<void> {
   const stats = await stat(imagePath);
   const sizeInMB = (stats.size / (1024 * 1024)).toFixed(2);
@@ -79,7 +79,7 @@ async function findImages(dir: string): Promise<string[]> {
     const relativeName = entry.name;
 
     // Skip excluded patterns
-    if (EXCLUDE_PATTERNS.some(pattern => pattern.test(relativeName))) {
+    if (EXCLUDE_PATTERNS.some((pattern) => pattern.test(relativeName))) {
       continue;
     }
 
@@ -93,11 +93,11 @@ async function findImages(dir: string): Promise<string[]> {
 }
 
 async function main() {
-  console.log('🖼️  Image Optimization Script\n');
+  console.log("🖼️  Image Optimization Script\n");
   console.log(`Source: ${IMAGES_DIR}`);
   console.log(`Output: ${OUTPUT_DIR}`);
-  console.log(`Sizes: ${STANDARD_SIZES.join(', ')}px`);
-  console.log(`Formats: ${FORMATS.join(', ')}\n`);
+  console.log(`Sizes: ${STANDARD_SIZES.join(", ")}px`);
+  console.log(`Formats: ${FORMATS.join(", ")}\n`);
 
   // Create output directory
   if (!existsSync(OUTPUT_DIR)) {
@@ -114,12 +114,12 @@ async function main() {
   const images = await findImages(IMAGES_DIR);
 
   if (images.length === 0) {
-    console.log('No images found to optimize.');
+    console.log("No images found to optimize.");
     return;
   }
 
   console.log(`Found ${images.length} image(s) to optimize\n`);
-  console.log('─'.repeat(60));
+  console.log("─".repeat(60));
 
   // Process each image
   for (const imagePath of images) {
@@ -127,11 +127,11 @@ async function main() {
     await processImage(imagePath, fileName, OUTPUT_DIR);
   }
 
-  console.log('\n' + '─'.repeat(60));
-  console.log('✅ Image optimization complete!\n');
+  console.log("\n" + "─".repeat(60));
+  console.log("✅ Image optimization complete!\n");
 }
 
 main().catch((error) => {
-  console.error('Error optimizing images:', error);
+  console.error("Error optimizing images:", error);
   process.exit(1);
 });

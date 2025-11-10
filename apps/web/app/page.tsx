@@ -1,5 +1,6 @@
-import { Github, Mail, Twitter } from "lucide-react";
+import { Github, Linkedin, Twitter } from "lucide-react";
 import { ThemeProvider } from "next-themes";
+import ProjectCard from "./project-card";
 
 export default function Home() {
   return (
@@ -26,19 +27,52 @@ export default function Home() {
         </div>
         <div className="w-px h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
         <div className="flex items-center gap-6">
-          <a href="https://www.twitter.com/karo_vision_" target="_blank">
-            <Twitter className="w-6 h-6" />
-          </a>
-          <a href="mailto:info@apai.tech">
-            <Mail className="w-6 h-6" />
+          <a
+            href="https://www.linkedin.com/in/kai-rohwer-167406199/"
+            target="_blank"
+          >
+            <Linkedin className="size-6" />
           </a>
           <a href="https://github.com/OhKai" target="_blank">
-            <Github className="w-6 h-6" />
+            <Github className="size-6" />
+          </a>
+          <a href="https://www.twitter.com/karo_vision_" target="_blank">
+            <Twitter className="size-6" />
           </a>
         </div>
         <div className="w-px h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
-        <div className="text-lg font-mono font-bold">
-          <a href="/home-cloud">Home Cloud</a>
+        <div className="text-lg font-mono font-bold">Personal Projects</div>
+        <div className="mt-4 flex flex-col items-center gap-4">
+          <ProjectCard
+            href="/home-cloud"
+            title="Home Cloud"
+            type="Electron App"
+            description="A personal cloud storage solution for seamless file access and sharing."
+            image="screenshot-photos"
+            linkType="Website"
+          />
+          <ProjectCard
+            href="/apai"
+            title="APAI"
+            type="Web App"
+            description="AI tools directory & design experiments."
+            image="screenshot-videos"
+            linkType="Website"
+          />
+          <ProjectCard
+            href="https://apps.apple.com/de/app/sketch-ball-draw-the-line/id1639201509"
+            title="Sketch Ball"
+            type="Swift App"
+            description="Casual line-drawing game with procedural gameplay."
+            image="screenshot-photos"
+            linkType="App Store"
+          />
+          <ProjectCard
+            title="Apfel-Live.de"
+            type="Web App"
+            description="Liveticker website for Apple Keynote events ~2014. My first major production project with peak traffic of over 30,000 concurrent users."
+            image="screenshot-photos"
+          />
         </div>
       </main>
     </ThemeProvider>

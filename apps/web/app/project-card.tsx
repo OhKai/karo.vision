@@ -19,7 +19,7 @@ const ProjectCard = ({
   linkType = "Website",
 }: ProjectCardProps) => {
   const content = (
-    <div className="group flex md:flex-row flex-col gap-12 items-center p-6 rounded-lg hover:bg-secondary/5 transition-colors duration-300 border border-transparent hover:border-border">
+    <div className="group flex md:flex-row flex-col md:gap-12 gap-6 items-center p-6 rounded-lg hover:bg-secondary/5 transition-colors duration-300 border border-transparent hover:border-border">
       <div className="relative overflow-hidden rounded-2xl shrink-0 w-[80vw] max-w-80 max-h-36 h-[40vw] md:w-64 md:h-40 bg-secondary/5 border border-border/50">
         <OptimizedImage
           src={image}
@@ -28,14 +28,14 @@ const ProjectCard = ({
           className="h-full w-full object-cover object-top"
         />
       </div>
-      <div className="flex-1 flex flex-col gap-3">
+      <div className="flex-1 flex flex-col gap-3 self-start md:self-auto">
         <div className="flex items-center gap-2">
           <h3 className="text-xl font-semibold">{title}</h3>
           <span className="text-xs font-medium text-muted-foreground px-2.5 py-1 bg-secondary/20 rounded-full">
             {type}
           </span>
         </div>
-        <p className="text-muted-foreground text-sm leading-relaxed max-w-md w-md">
+        <p className="text-muted-foreground text-sm leading-relaxed md:w-md">
           {description}
         </p>
         {href && (
@@ -49,11 +49,16 @@ const ProjectCard = ({
   );
 
   return href ? (
-    <a href={href} target="_blank" rel="noopener noreferrer">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="md:max-w-none md:w-auto max-w-md w-full"
+    >
       {content}
     </a>
   ) : (
-    content
+    <div className="md:max-w-none md:w-auto max-w-md w-full">{content}</div>
   );
 };
 

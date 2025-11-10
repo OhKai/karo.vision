@@ -5,7 +5,7 @@ import ProjectCard from "./project-card";
 export default function Home() {
   return (
     <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-      <main className="font-sans flex min-h-dvh items-center justify-center flex-col md:p-24 p-2">
+      <main className="font-sans flex min-h-dvh items-center justify-center flex-col md:p-24 p-12">
         <div className="flex scale-[0.875] items-center gap-3.5 text-3xl md:scale-100 dark:drop-shadow-[0_0_0.3rem_#ffffff70]">
           <svg
             viewBox="0 0 100 100"
@@ -42,7 +42,7 @@ export default function Home() {
         </div>
         <div className="w-px h-10 dark:bg-[#2e2e2e] bg-[#d5d5d5] my-6"></div>
         <div className="text-lg font-mono font-bold">Personal Projects</div>
-        <div className="mt-4 flex flex-col items-center gap-4">
+        <div className="mt-4 flex flex-col items-center gap-6">
           <ProjectCard
             href="/home-cloud"
             title="Home Cloud"

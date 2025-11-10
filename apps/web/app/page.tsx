@@ -52,11 +52,11 @@ export default function Home() {
             linkType="Website"
           />
           <ProjectCard
-            href="/apai"
+            href="https://apai.tech/"
             title="APAI"
             type="Web App"
             description="AI tools directory & design experiments."
-            image="screenshot-videos"
+            image="apai"
             linkType="Website"
           />
           <ProjectCard
@@ -64,14 +64,14 @@ export default function Home() {
             title="Sketch Ball"
             type="Swift App"
             description="Casual line-drawing game with procedural gameplay."
-            image="screenshot-photos"
+            image="sketch-ball"
             linkType="App Store"
           />
           <ProjectCard
             title="Apfel-Live.de"
             type="Web App"
             description="Liveticker website for Apple Keynote events ~2014. My first major production project with peak traffic of over 30,000 concurrent users."
-            image="screenshot-photos"
+            image="apfel-live"
           />
         </div>
       </main>

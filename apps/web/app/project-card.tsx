@@ -24,7 +24,7 @@ const ProjectCard = ({
         <OptimizedImage
           src={image}
           alt={title}
-          sizes="(max-width: 767px) 40vw, 220px"
+          sizes="(max-width: 400px) 100vw, (max-width: 767px) 318px, 254px"
           className="h-full w-full object-cover object-top"
         />
       </div>

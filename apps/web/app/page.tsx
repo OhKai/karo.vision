@@ -60,7 +60,7 @@ export default function Home() {
             linkType="Website"
           />
           <ProjectCard
-            href="https://apps.apple.com/de/app/sketch-ball-draw-the-line/id1639201509"
+            href="https://apps.apple.com/us/app/sketch-ball-draw-the-line/id1639201509"
             title="Sketch Ball"
             type="Swift App"
             description="Casual line-drawing game with procedural gameplay."

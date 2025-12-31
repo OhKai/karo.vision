@@ -41,6 +41,43 @@
   --radius-xl: calc(var(--radius) + 4px);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-float-delayed: float-delayed 10s ease-in-out infinite;
+  --animate-float-slow: float-slow 12s ease-in-out infinite;
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+    }
+    33% {
+      transform: translateY(-20px) translateX(10px);
+    }
+    66% {
+      transform: translateY(10px) translateX(-10px);
+    }
+  }
+
+  /* Adding all animation keyframes used in quiz components */
+  @keyframes float-delayed {
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      transform: translateY(20px) translateX(-20px);
+    }
+  }
+
+  @keyframes float-slow {
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      transform: translateY(-30px) translateX(-15px);
+    }
+  }
 }
 
 :root {

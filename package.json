@@ -16,8 +16,8 @@
   },
   "devDependencies": {
     "@karo-vision/home-cloud-config": "workspace:*",
-    "eslint-config-next": "16.0.1",
-    "prettier": "^3.6.2",
+    "eslint-config-next": "16.1.1",
+    "prettier": "^3.7.4",
     "typescript": "catalog:",
     "eslint": "catalog:"
   }

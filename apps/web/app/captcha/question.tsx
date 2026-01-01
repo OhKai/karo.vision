@@ -17,6 +17,9 @@ type QuizQuestionProps = {
 export function Question({ question, onNext, onAnswer }: QuizQuestionProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const showContext = selectedAnswer !== null;
+  const context = showContext
+    ? question.answers[selectedAnswer!].context || question.defaultContext
+    : null;
 
   const handleAnswerClick = (index: number) => {
     setSelectedAnswer(index);
@@ -48,9 +51,9 @@ export function Question({ question, onNext, onAnswer }: QuizQuestionProps) {
               <span className="relative z-10 flex items-center justify-center gap-3">
                 {selectedAnswer === index &&
                   (answer.isCorrect ? (
-                    <CheckCircle2 className="h-6 w-6 animate-in zoom-in" />
+                    <CheckCircle2 className="h-6 w-6 animate-in zoom-in shrink-0" />
                   ) : (
-                    <XCircle className="h-6 w-6 animate-in zoom-in" />
+                    <XCircle className="h-6 w-6 animate-in zoom-in shrink-0" />
                   ))}
                 {answer.content}
               </span>
@@ -64,7 +67,7 @@ export function Question({ question, onNext, onAnswer }: QuizQuestionProps) {
       {showContext && (
         <Card className="mb-6 border-0 bg-purple-900/30 backdrop-blur-sm p-6 shadow-xl shadow-purple-900/20 animate-in fade-in slide-in-from-bottom-4 duration-600 delay-100 fill-mode-both">
           <p className="mb-4 text-center text-lg font-semibold leading-relaxed text-pretty text-slate-200">
-            {question.defaultContext}
+            {context}
           </p>
           <div className="flex justify-center">
             <Button
